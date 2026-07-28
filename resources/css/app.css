@@ -1,0 +1,255 @@
+@import 'tailwindcss';
+
+@variant dark (&:where(.dark, .dark *));
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-darkBg: #0A0A0C;
+    --color-darkCard: #121216;
+    --color-darkBorder: #1F2937;
+
+    --color-neonGreen: #10B981;
+    --color-neonGreen-400: #34D399;
+    --color-neonGreen-600: #059669;
+    --color-neonGreen-glow: #059669;
+
+    --color-card: #ffffff;
+
+    --shadow-neon-glow: 0 0 20px rgba(16, 185, 129, 0.2);
+    --shadow-neon-button: 0 4px 14px 0 rgba(16, 185, 129, 0.4);
+}
+
+/* ===== VENDEUR CSS (dashboard pages only) ===== */
+@import './vendeur.css';
+
+/* ===== SIDEBAR VENDOR ===== */
+@import './sidebar-vendor.css';
+
+
+
+/* ===== TEXT GLOW EFFECT ===== */
+.text-glow {
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+/* ===== HEADER SCROLLED EFFECT ===== */
+.header-scrolled {
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-color: rgba(226, 232, 240, 0.8) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08) !important;
+}
+.dark .header-scrolled {
+    background-color: rgba(18, 18, 22, 0.75) !important;
+    border-color: rgba(31, 41, 55, 0.8) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ===== LANDING PAGE GRADIENT OVERLAY ===== */
+.gradient-overlay {
+    background: linear-gradient(180deg, #f8fafc 30%, rgba(248, 250, 252, 0.8) 75%, #f8fafc 100%);
+}
+.dark .gradient-overlay {
+    background: linear-gradient(180deg, #0A0A0C 30%, rgba(10, 10, 12, 0.85) 75%, #0A0A0C 100%);
+}
+@media (min-width: 1024px) {
+    .gradient-overlay {
+        background: linear-gradient(90deg, #f8fafc 20%, rgba(248, 250, 252, 0.4) 70%, transparent 100%);
+    }
+    .dark .gradient-overlay {
+        background: linear-gradient(90deg, #0A0A0C 20%, rgba(10, 10, 12, 0.4) 70%, transparent 100%);
+    }
+}
+
+/* ===== FORM STEP (Register multi-step) ===== */
+.form-step {
+    display: none;
+}
+.form-step.active {
+    display: block;
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== WAITING CARD (Auth Pending) ===== */
+.waiting-card {
+    text-align: center;
+}
+.waiting-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2.5em;
+    color: white;
+    animation: waitingPulse 2s ease-in-out infinite;
+}
+@keyframes waitingPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(243, 156, 18, 0); }
+}
+.waiting-card h2 {
+    color: #e67e22;
+    margin-bottom: 10px;
+}
+.waiting-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+.waiting-card .phone {
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    font-size: 1.1em;
+}
+.waiting-card .phone strong {
+    color: #1ca04e;
+}
+.dark .waiting-card h2 { color: #FBBF24; }
+.dark .waiting-card p { color: #9CA3AF; }
+.dark .waiting-card .phone { background: #1F2937; }
+.dark .waiting-card .phone strong { color: #10B981; }
+
+/* ===== THEME TOGGLE BUTTON ===== */
+.nav-theme-btn {
+    background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+    padding: 6px 8px; cursor: pointer; color: rgba(255,255,255,0.7);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.3s; font-size: 0.9em;
+}
+.nav-theme-btn:hover { color: #1ca04e; border-color: #1ca04e; }
+.dark .nav-theme-btn { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
+.dark .nav-theme-btn:hover { border-color: #10B981; color: #10B981; }
+
+/* ===== TEMPLATE SWITCHING (Landing) ===== */
+.template-container.hidden {
+    display: none;
+}
+
+/* ===== LINK COPY INPUT ===== */
+.link-copy input {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.85em;
+    width: 100%;
+    outline: none;
+}
+
+/* ===== FORFAIT ROW ===== */
+.forfait-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+.forfait-row .f-duree { font-weight: 600; color: #333; }
+.forfait-row .f-prix { color: #1ca04e; font-weight: 700; }
+
+/* ===== SHOP PREVIEW ===== */
+.shop-preview {
+    border: 2px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* ===== NO TICKET MESSAGE ===== */
+.no-ticket {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+/* ===== TOKEN DISPLAY ===== */
+.token-display {
+    background: #f1f5f9;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    color: #333;
+}
+
+/* ===== NO FORFAITS MESSAGE ===== */
+.no-forfaits {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+/* ===== SITE FOOTER ===== */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.site-footer {
+    margin-top: auto;
+    border-top: 1px solid #e5e7eb;
+    background: #f8fafc;
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: 10px;
+    color: #64748b;
+    transition: background .3s, border-color .3s, color .3s;
+}
+.site-footer .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    color: #0f172a;
+}
+.site-footer .footer-brand i {
+    color: #1ca04e;
+    font-size: 8px;
+}
+.site-footer .footer-copy {
+    font-size: 10px;
+    color: #64748b;
+}
+.dark .site-footer {
+    background: #050507;
+    border-top-color: #1f2937;
+}
+.dark .site-footer .footer-brand {
+    color: #f9fafb;
+}
+.dark .site-footer .footer-copy {
+    color: #6b7280;
+}
+
+/* ===== ALPINE CLOAK ===== */
+[x-cloak] { display: none !important; }
+
+/* ===== BADGE ERROR ===== */
+.badge-error {
+    background-color: #ef4444;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+}

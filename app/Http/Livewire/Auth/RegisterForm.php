@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Http\Livewire\Auth;
+
+use App\Models\Setting;
+use App\Models\Vendeur;
+use App\Notifications\AdminVendorRegisteredNotification;
+use App\Notifications\VendorRegisteredNotification;
+use Livewire\Component;
+use Illuminate\Support\Facades\Log;
+use Exception;
+
+class RegisterForm extends Component
+{
+    public int $step = 1;
+    public string $nom = '';
+    public string $prenom = '';
+    public string $email = '';
+    public string $telephone = '';
+    public string $password = '';
+    public string $passwordConfirmation = '';
+
+    public function nextStep(): void
+    {
+        if ($this->step === 1) {
+            $this->validate([
+                'nom' => 'required|string|max:100',
+                'prenom' => 'required|string|max:100',
+            ]);
+        } elseif ($this->step === 2) {
+            $this->validate([
+                'email' => 'required|email:rfc,dns|unique:vendeurs,email',
+                'telephone' => 'required|string|max:20',
+            ]);
+        }
+        $this->step++;
+        Log::info('Inscription étape suivante', ['step' => $this->step]);
+    }
+
+    public function submit(): void
+    {
+        Log::info('Form submitted', ['step' => $this->step]);
+        if ($this->step === 3) {
+            $this->register();
+        } else {
+            $this->nextStep();
+        }
+    }
+
+    public function prevStep(): void { $this->step--; }
+
+    public function register(): void
+    {
+        Log::info('Tentative inscription', ['email' => $this->email]);
+
+        $this->validate([
+            'nom' => 'required|string|max:100',
+            'prenom' => 'required|string|max:100',
+            'email' => 'required|email:rfc,dns|unique:vendeurs,email',
+            'telephone' => 'required|string|max:20',
+            'password' => 'required|string|min:6|same:passwordConfirmation',
+        ]);
+
+        try {
+            $vendeur = Vendeur::create([
+                'nom' => $this->nom, 'prenom' => $this->prenom,
+                'email' => $this->email, 'telephone' => $this->telephone,
+                'password' => $this->password, 'statut' => 'en_attente',
+                'commission_pct' => config('platform.commission_pct', 10),
+                'card_number' => Vendeur::generateCardNumber(),
+            ]);
+            Log::info('Vendeur créé avec succès', ['email' => $this->email]);
+        } catch (Exception $e) {
+            Log::error('Erreur création vendeur', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->dispatch('toast', type: 'error', message: 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer plus tard.');
+            return;
+        }
+
+        try {
+            $vendeur->notify(new VendorRegisteredNotification());
+            Log::info('Notification vendeur envoyée', ['to' => $vendeur->email]);
+        } catch (Exception $e) {
+            Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
+        }
+
+        session(['pending_vendor_email' => $this->email]);
+
+        try {
+            $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+                'vendor.verify',
+                now()->addMinutes(60),
+                ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
+            );
+            \Illuminate\Support\Facades\Mail::to($vendeur->email)->send(
+                new \App\Mail\EmailVerificationMail($vendeur, $verificationUrl)
+            );
+        } catch (Exception $e) {
+            Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
+        }
+
+        $this->redirectRoute('vendor.verify-email');
+    }
+
+    public function render() { return view('livewire.auth.register-form'); }
+}

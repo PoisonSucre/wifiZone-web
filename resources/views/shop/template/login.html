@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wifi Pour Tous</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="theme-color" content="#3B5998" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div id="main" class="main">
+        <h3 class="nom">Bonne Année 2025</h3>
+        <div class="box">
+            <h3 class="brand"></h3>
+            <marquee style="font-weight: 600; text-shadow: 2px 5px 3px black;">
+                Besoin d'un Ticket : Appeler sur ces numéros  
+                <span style="color: yellow">66-63-59-58 / 64-65-86-44</span> pour vous en procurer !!!
+            </marquee>
+        </div>
+
+        <!-- Section QR code -->
+        <div class="box">
+            <button class="small-button" onclick="window.location='https://laksa19.github.io/myqr';">
+                <img src="qr.png" style="width:16px; height:15px;"> Scannez le Qrcode ici
+            </button>
+            <button class="small-button" onclick="window.location.href='https://51eb-102-180-122-130.ngrok-free.app/recuperer_ticket.php'">
+                <img src="ticket.png" style="width:20px; height:15px;"> Récupérer un ticket Acheté
+            </button>
+        </div>
+
+        <!-- Formulaire de connexion -->
+<div class="box" id="infologin"></div>
+<form autocomplete="on" name="login" action="$(link-login-only)" method="post" onsubmit="return doLogin()">
+    <input type="hidden" name="dst" value="$(link-orig)" />
+    <input type="hidden" name="popup" value="true" />
+    <input class="username" id="username" name="username" type="text" placeholder="Nom d'utilisateur" required />
+    <div class="password-container">
+        <input class="password" id="password" name="password" type="password" placeholder="Mot de passe" required />
+        <svg class="eye" onclick="togglePasswordVisibility()" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+    </div>
+    <button class="button" type="submit">
+     Valider
+    </button>
+</form>
+  <!-- Message pour la promo -->
+  $(if trial == 'yes')
+        <div class="box" style="color: rgb(0, 0, 0); text-shadow: 2px 5px 3px rgb(253, 127, 9); font-weight: 700;">
+            Profitez de la promo gratuite avant le<br />
+            <a class="blink" style="color:#ff0000;" href="$(link-login-only)?dst=$(link-orig-esc)&amp;username=T-$(mac-esc)">
+                Cliquez ici
+            </a>
+        </div>
+        $(endif)
+
+        <!-- Message d'erreur -->
+        $(if error)
+        <div class="notice"><i class='fas fa-exclamation-circle'></i> $(error)</div>
+        $(endif)
+        <br>
+
+
+        <!-- Table des tarifs -->   
+
+        <table class="table" border="0" cellspacing="2" cellpadding="3">
+        <span class="pub">Acheter nos tickets avec :</span>
+        <div class="notification">
+        <i style="background-image: url('wave.png'); width: 40px; height: 35px; display: inline-block; background-size: cover;"></i>
+        <i style="background-image: url('orange.png'); width: 70px; height: 40px; display: inline-block; background-size: cover;"></i>
+        <i style="background-image: url('Moov.png'); width: 40px; height: 40px; display: inline-block; background-size: cover;"></i>
+        
+    </div>
+            <caption style="font-size: 16px; font-weight: 800; margin-bottom:5px;">Nos Tarifs</caption>
+            <tr>
+                <th>Forfait</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+            
+            <tr>
+            <td>1 Heure</td>
+    <td>150 Fcfa</td>
+    <td>
+        <form action="https://51eb-102-180-122-130.ngrok-free.app/payment_process.php" method="POST" target="_blank">
+            <input type="hidden" name="montant" value="150">
+            <input type="hidden" name="forfait" value="1h">
+            <input type="hidden" name="order_id" value="order_001">
+            <button type="submit" class="pay-button">Payer</button>
+        </form>
+    </td>
+</tr>
+<tr>
+    <td>5 Heures</td>
+    <td>250 Fcfa</td>
+    <td>
+        <form action="https://51eb-102-180-122-130.ngrok-free.app/payment_process.php" method="POST" target="_blank" >
+            <input type="hidden" name="montant" value="250">
+            <input type="hidden" name="forfait" value="5h">
+            <input type="hidden" name="order_id" value="order_002"> <!-- Identifiant unique de commande -->
+            <button type="submit" class="pay-button">Payer</button>
+        </form>
+    </td>
+</tr>
+<tr>
+    <td>24 Heures</td>
+    <td>350 Fcfa</td>
+    <td>
+        <form action="https://51eb-102-180-122-130.ngrok-free.app/payment_process.php" method="POST" target="_blank">
+            <input type="hidden" name="montant" value="350">
+            <input type="hidden" name="forfait" value="24h">
+            <input type="hidden" name="order_id" value="order_003"> <!-- Identifiant unique de commande -->
+            <button type="submit" class="pay-button">Payer</button>
+        </form>
+    </td>
+</tr>
+<tr>
+    <td>3 Jours</td>
+    <td>600 Fcfa</td>
+    <td>
+        <form action="https://51eb-102-180-122-130.ngrok-free.app/payment_process.php" method="POST" target="_blank">
+            <input type="hidden" name="montant" value="600">
+            <input type="hidden" name="forfait" value="3jrs">
+            <input type="hidden" name="order_id" value="order_004"> <!-- Identifiant unique de commande -->
+            <button type="submit" class="pay-button">Payer</button>
+        </form>
+    </td>
+</tr>
+<tr>
+    <td>1 Semaine</td>
+    <td>1000 Fcfa</td>
+    <td>
+        <form action="https://51eb-102-180-122-130.ngrok-free.app/payment_process.php" method="POST" target="_blank">
+            <input type="hidden" name="montant" value="1000">
+            <input type="hidden" name="forfait" value="7jrs">
+            <input type="hidden" name="order_id" value="order_005"> <!-- Identifiant unique de commande -->
+            <button type="submit" class="pay-button">Payer</button>
+        </form>
+    </td>
+</tr>
+
+
+        </table>
+
+        <div class="infos">
+            Les tickets peuvent être achetés en appelant sur ces numéros :
+            <span style="color:rgb(0, 0, 0); font-weight: 800;">66-63-59-58 / 64-65-86-44</span>
+        </div>
+
+        <br />
+        <div class="box" style="color:#000000; font-weight: 600;">
+            <i>Designed by Raider Corporation</i><br />
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.querySelector('.password');
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+
+        function doLogin() {
+            document.login.action = '$(link-login-only)';
+            document.login.dst.value = '$(link-orig)';
+            return true;
+        }
+
+
+   
+    </script>
+    <script>
+    // Fonction pour récupérer les paramètres d'URL
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Récupérer les valeurs de l'URL
+    const username = getUrlParameter('username');
+    const password = getUrlParameter('password');
+
+    // Pré-remplir les champs du formulaire si les données existent
+    if (username) {
+        document.getElementById('username').value = username;
+    }
+    if (password) {
+        document.getElementById('password').value = password;
+    }
+</script>
+</body>
+</html>
