@@ -126,7 +126,6 @@
     }
     .phone-notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:86px; height:18px; background:#0a0b0c; border-radius:0 0 12px 12px; z-index:5; }
     .phone-screen{ position:relative; border-radius:1.7rem; overflow:hidden; background:#f8fafc; min-height:440px; }
-    .dark .phone-screen{ background:#111316; }
     .phone-state{ position:absolute; inset:0; padding:30px 18px 18px; opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease; pointer-events:none; }
     .phone-state.active{ opacity:1; transform:translateY(0); pointer-events:auto; }
 
@@ -164,7 +163,7 @@
                 Solution Automatisée Pour Wi-Fi Zone
             </div>
             <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.08]">
-                Monétisez votre <span class="text-neonGreen text-glow">WiFi Zone</span> en ligne et en toute simplicité
+                Monétisez votre <span class="text-neonGreen text-glow">WiFi Zone</span> en ligne
             </h1>
             <p class="text-base sm:text-lg text-slate-600 dark:text-gray-400 max-w-xl mx-auto lg:mx-0">
                 Encaissez instantanément vos clients par Mobile Money (Orange Money, Wave, Moov) sans aucune interruption de service, et pilotez les performances de vos forfaits depuis un tableau de bord puissant.
@@ -179,34 +178,31 @@
                         <i class="fas fa-store"></i> Démarrer Maintenant
                     </a>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                <a href="#vendeurs" class="inline-flex items-center justify-center gap-2 bg-white dark:bg-darkCard/80 hover:bg-slate-100 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full transition-all shadow-sm">
-                    <i class="fas fa-play"></i> En savoir plus
+                <a href="<?php echo e(route('installation')); ?>" class="inline-flex items-center justify-center gap-2 bg-white dark:bg-darkCard/80 hover:bg-slate-100 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full transition-all shadow-sm flex items-center gap-2 group">
+                    <i class="fas fa-wifi text-xs"></i> Besoin d'un WifiZone (installation)
+                    <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
                 </a>
             </div>
 
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 max-w-xl mx-auto lg:mx-0 border-t border-slate-200/70 dark:border-darkBorder/40">
                 <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="520" data-decimals="0">0</span>+</p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="20" data-decimals="0">0</span>+</p>
                     <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Vendeurs actifs</p>
                 </div>
                 <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="2.4" data-decimals="1">0</span>M+</p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="2" data-decimals="1">0</span>K+</p>
                     <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Tickets vendus</p>
                 </div>
                 <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="180" data-decimals="0">0</span>M+</p>
-                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">FCFA reversés</p>
-                </div>
-                <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="99.9" data-decimals="1">0</span>%</p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="98" data-decimals="0">0</span>%</p>
                     <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Disponibilité</p>
                 </div>
             </div>
         </div>
 
         
-        <div class="relative flex justify-center lg:justify-end">
+        <div class="relative flex justify-center lg:justify-end hidden lg:block">
             <div class="relative float-y">
                 <div class="phone-frame">
                     <div class="phone-notch"></div>
@@ -215,49 +211,48 @@
                         <div class="phone-state active" data-phone-state>
                             <div class="flex items-center justify-between mb-5">
                                 <div>
-                                    <p class="text-[9px] uppercase tracking-widest text-slate-400 dark:text-gray-500 font-bold">Portail Captif</p>
-                                    <p class="text-xs font-bold text-slate-800 dark:text-white">Ouaga_WiFi_Zone</p>
+                                    <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold">Portail Captif</p>
+                                    <p class="text-xs font-bold text-slate-800">Ouaga_WiFi_Zone</p>
                                 </div>
                                 <i class="fas fa-wifi text-neonGreen"></i>
                             </div>
-                            <p class="text-[10px] font-semibold text-slate-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Choisissez un forfait</p>
+                            <p class="text-[10px] font-semibold text-slate-500 mb-2 uppercase tracking-wide">Choisissez un forfait</p>
                             <div class="space-y-2">
-                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60 text-[11px] text-slate-600 dark:text-gray-400">
-                                    <span>1 Heure</span><span class="font-bold text-slate-700 dark:text-gray-300">150 FCFA</span>
+                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 text-[11px] text-slate-600">
+                                    <span>1 Heure</span><span class="font-bold text-slate-700">150 FCFA</span>
                                 </div>
-                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border-2 border-neonGreen bg-neonGreen/5 text-[11px] text-slate-800 dark:text-white">
+                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border-2 border-neonGreen bg-neonGreen/5 text-[11px] text-slate-800">
                                     <span class="font-bold flex items-center gap-1.5"><i class="fas fa-check-circle text-neonGreen"></i> 24 Heures</span><span class="font-bold text-neonGreen">350 FCFA</span>
                                 </div>
-                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60 text-[11px] text-slate-600 dark:text-gray-400">
-                                    <span>1 Semaine</span><span class="font-bold text-slate-700 dark:text-gray-300">1000 FCFA</span>
+                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 text-[11px] text-slate-600">
+                                    <span>1 Semaine</span><span class="font-bold text-slate-700">1000 FCFA</span>
                                 </div>
                             </div>
-                            <div class="mt-5 w-full py-2.5 rounded-xl bg-neonGreen text-white text-center text-[11px] font-bold">Continuer</div>
+                            <div class="mt-5 w-full py-2.5 rounded-xl bg-slate-900 text-white text-center text-[11px] font-bold">Continuer</div>
                         </div>
                         
                         <div class="phone-state" data-phone-state>
-                            <p class="text-[9px] uppercase tracking-widest text-slate-400 dark:text-gray-500 font-bold mb-1">Étape 2/3</p>
-                            <p class="text-xs font-bold text-slate-800 dark:text-white mb-4">Choisissez votre moyen de paiement</p>
+                            <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Étape 2/3</p>
+                            <p class="text-xs font-bold text-slate-800 mb-4">Choisissez votre moyen de paiement</p>
                             <div class="space-y-2.5">
                                 <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border-2 border-neonGreen bg-neonGreen/5">
-                                    <span class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-[9px] font-black">OM</span>
-                                    <span class="text-[11px] font-bold text-slate-800 dark:text-white">Orange Money</span>
+                                    <img src="/template/orange.png" alt="Orange Money" class="h-6 max-w-[50px] object-contain">
+                                    <span class="text-[11px] font-bold text-slate-800">Orange Money</span>
                                     <i class="fas fa-check-circle text-neonGreen text-xs ml-auto"></i>
                                 </div>
-                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60">
-                                    <span class="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center text-white text-[9px] font-black">W</span>
-                                    <span class="text-[11px] font-semibold text-slate-500 dark:text-gray-400">Wave</span>
+                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-200">
+                                    <img src="/template/wave.png" alt="Wave" class="h-6 max-w-[60px] object-contain">
                                 </div>
-                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60">
-                                    <span class="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-white text-[9px] font-black">M</span>
-                                    <span class="text-[11px] font-semibold text-slate-500 dark:text-gray-400">Moov Money</span>
+                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-200">
+                                    <img src="/template/moov.png" alt="Moov Money" class="h-6 max-w-[50px] object-contain">
+                                    <span class="text-[11px] font-semibold text-slate-500">Moov Money</span>
                                 </div>
                             </div>
                             <div class="mt-5 flex items-center justify-between px-1">
-                                <span class="text-[10px] text-slate-500 dark:text-gray-500 uppercase font-semibold">Total</span>
-                                <span class="text-sm font-black text-slate-900 dark:text-white">350 FCFA</span>
+                                <span class="text-[10px] text-slate-500 uppercase font-semibold">Total</span>
+                                <span class="text-sm font-black text-slate-900">350 FCFA</span>
                             </div>
-                            <div class="mt-3 w-full py-2.5 rounded-xl bg-neonGreen text-white text-center text-[11px] font-bold">Payer maintenant</div>
+                            <div class="mt-3 w-full py-2.5 rounded-xl bg-slate-900 text-white text-center text-[11px] font-bold">Payer maintenant</div>
                         </div>
                         
                         <div class="phone-state" data-phone-state>
@@ -265,22 +260,39 @@
                                 <div class="w-14 h-14 rounded-full bg-neonGreen/10 flex items-center justify-center text-neonGreen text-2xl mb-4">
                                     <i class="fas fa-check"></i>
                                 </div>
-                                <p class="text-sm font-bold text-slate-900 dark:text-white">Paiement confirmé</p>
-                                <p class="text-[11px] text-slate-500 dark:text-gray-400 mt-1">Vous êtes connecté au réseau</p>
-                                <div class="mt-5 w-full bg-slate-50 dark:bg-darkBg/60 border border-slate-100 dark:border-darkBorder/40 rounded-xl p-3">
-                                    <p class="text-[8px] text-slate-400 dark:text-gray-500 uppercase tracking-widest font-semibold mb-1">Code de connexion</p>
-                                    <p class="font-mono text-sm font-bold text-neonGreen tracking-widest">WIFI-2481</p>
+                                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-3">Vos identifiants</p>
+                                <div class="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-3">
+                                    <div class="flex items-center gap-3 text-left">
+                                        <div class="w-8 h-8 rounded-full bg-neonGreen/10 flex items-center justify-center text-neonGreen text-[11px] shrink-0">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 uppercase tracking-wide font-semibold">Utilisateur</p>
+                                            <p class="font-mono text-sm font-bold text-slate-900">wifi2025</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 text-left">
+                                        <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-[11px] shrink-0">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 uppercase tracking-wide font-semibold">Mot de passe</p>
+                                            <p class="font-mono text-sm font-bold text-slate-900">24533</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-4 flex items-center gap-1.5"><i class="fas fa-signal text-neonGreen"></i> Débit haute vitesse actif · 24h</p>
+                                <button class="mt-4 w-full py-2.5 rounded-xl bg-slate-900 text-white text-[11px] font-bold flex items-center justify-center gap-2">
+                                    <i class="fas fa-download"></i> Télécharger la facture
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 
-                <div class="hidden sm:block absolute -left-16 top-10 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-2xl px-4 py-3 shadow-xl float-y" style="animation-delay:-2.5s">
-                    <p class="text-[9px] font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wide flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-neonGreen animate-pulse"></span> Revenus en direct</p>
-                    <p class="font-display text-lg font-extrabold text-slate-900 dark:text-white mt-0.5">+ <span id="live-revenue-ticker">45 200</span> FCFA</p>
+                <div class="hidden sm:block absolute -left-16 top-10 bg-gradient-to-r from-red-600 to-red-700 rounded-2xl px-4 py-3 shadow-xl float-y" style="animation-delay:-2.5s">
+                    <p class="text-[9px] font-semibold text-white uppercase tracking-wide flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Service Actif</p>
+                    <p class="font-display text-lg font-extrabold text-white mt-0.5">24h/7J</p>
                 </div>
 
                 
@@ -294,20 +306,30 @@
 </section>
 
 
-
-
 <section class="py-6 sm:py-8 bg-white dark:bg-darkBg border-y border-slate-100 dark:border-darkBorder/30 transition-colors duration-300 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
         <p class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 shrink-0">Compatible avec</p>
         <div class="marquee-wrap relative overflow-hidden flex-1 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div class="marquee-track gap-10 sm:gap-14 items-center">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = array_merge(
-                    ['fa-mobile-alt' => 'Orange Money', 'fa-mobile-screen' => 'Wave', 'fa-wallet' => 'Moov Money', 'fa-network-wired' => 'Routeurs Mikrotik', 'fa-wifi' => 'OpenWRT', 'fa-file-csv' => 'Import CSV'],
-                    ['fa-mobile-alt' => 'Orange Money', 'fa-mobile-screen' => 'Wave', 'fa-wallet' => 'Moov Money', 'fa-network-wired' => 'Routeurs Mikrotik', 'fa-wifi' => 'OpenWRT', 'fa-file-csv' => 'Import CSV']
-                ); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $icon => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                <?php
+                $items = [
+                    ['type' => 'img', 'src' => '/template/orange.png', 'alt' => 'Orange Money', 'label' => 'Orange Money'],
+                    ['type' => 'img', 'src' => '/template/wave.png', 'alt' => 'Wave', 'label' => 'Wave'],
+                    ['type' => 'img', 'src' => '/template/moov.png', 'alt' => 'Moov Money', 'label' => 'Moov Money'],
+                    ['type' => 'img', 'src' => '/template/mikrotik.svg', 'alt' => 'MikroTik', 'label' => 'Routeurs Mikrotik'],
+                ];
+                $items = array_merge($items, $items);
+                ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <div class="flex items-center gap-2.5 text-slate-500 dark:text-gray-500 shrink-0">
-                    <i class="fas <?php echo e($icon); ?> text-neonGreen/80"></i>
-                    <span class="text-xs sm:text-sm font-bold whitespace-nowrap"><?php echo e($label); ?></span>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item['type'] === 'img'): ?>
+                        <img src="<?php echo e($item['src']); ?>" alt="<?php echo e($item['alt']); ?>" class="h-5 sm:h-6 max-w-[80px] sm:max-w-[100px] object-contain">
+                    <?php else: ?>
+                        <i class="fas <?php echo e($item['icon']); ?> text-neonGreen/80"></i>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!in_array($item['label'], ['Routeurs Mikrotik', 'Wave'])): ?>
+                    <span class="text-xs sm:text-sm font-bold whitespace-nowrap"><?php echo e($item['label']); ?></span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             </div>
@@ -357,30 +379,6 @@
                 <p class="text-slate-600 dark:text-gray-400 leading-relaxed text-xs sm:text-sm">
                     Importez vos tickets en quelques clics depuis un fichier CSV. Pas de configuration technique complexe, pas de serveur distant à gérer.
                 </p>
-            </div>
-        </div>
-
-        
-        <div class="max-w-4xl mx-auto rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder shadow-sm overflow-hidden">
-            <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-darkBorder/40">
-                <div class="p-6 sm:p-8">
-                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-5">Sans <?php echo e(config('platform.name')); ?></p>
-                    <ul class="space-y-4 text-sm text-slate-500 dark:text-gray-500">
-                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Cartes à gratter perdues ou dupliquées</li>
-                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Aucune visibilité sur les ventes réelles</li>
-                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Files d'attente pour payer en espèces</li>
-                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Gestion manuelle des codes de connexion</li>
-                    </ul>
-                </div>
-                <div class="p-6 sm:p-8 bg-neonGreen/5">
-                    <p class="text-xs font-bold uppercase tracking-widest text-neonGreen mb-5">Avec <?php echo e(config('platform.name')); ?></p>
-                    <ul class="space-y-4 text-sm text-slate-700 dark:text-gray-300 font-medium">
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Codes uniques générés et sécurisés automatiquement</li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Tableau de bord avec revenus en temps réel</li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Paiement Mobile Money en libre-service, 24/7</li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Livraison instantanée du ticket sur le téléphone</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -502,38 +500,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-<section id="recuperer-ticket" class="py-16 sm:py-24 bg-white dark:bg-darkBg transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase mb-3">Récupérer un Ticket</h2>
-            <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Vous avez déjà payé ? Retrouvez votre code de connexion
-            </p>
-            <p class="mt-3 text-sm sm:text-base text-slate-600 dark:text-gray-400">
-                Entrez le numéro qui a servi au paiement pour récupérer vos identifiants WiFi
-            </p>
-        </div>
-        <div class="max-w-md mx-auto">
-            <a href="<?php echo e(route('recuperer-ticket')); ?>"
-               class="w-full block bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-8 shadow-sm hover:border-neonGreen/30 hover:shadow-neon-glow transition-all text-center group">
-                <div class="w-16 h-16 rounded-2xl bg-neonGreen/10 flex items-center justify-center text-neonGreen text-2xl font-bold mx-auto mb-5 group-hover:bg-neonGreen group-hover:text-black transition-all">
-                    <i class="fas fa-ticket-alt"></i>
-                </div>
-                <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">Récupérer mon ticket</h3>
-                <p class="text-slate-600 dark:text-gray-400 text-xs sm:text-sm mb-6">
-                    Saisissez votre numéro de téléphone (Orange Money, Wave, Moov)
-                </p>
-                <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neonGreen text-white dark:text-white font-bold text-sm shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-0.5 group-hover:scale-105">
-                    <i class="fas fa-arrow-right"></i> Accéder à la récupération
-                </div>
-            </a>
         </div>
     </div>
 </section>
@@ -723,7 +689,7 @@
             <?php
             $faqs = [
                 ['q' => 'Quels moyens de paiement mes clients peuvent-ils utiliser ?', 'a' => 'Orange Money, Wave et Moov Money sont pris en charge nativement. Vos clients paient depuis leur propre téléphone, sans créer de compte supplémentaire.'],
-                ['q' => 'Dois-je changer mon routeur ou mon installation actuelle ?', 'a' => 'Non. La plateforme s\'intègre à votre équipement existant (Mikrotik, OpenWRT et la plupart des routeurs compatibles hotspot) sans configuration technique complexe.'],
+                ['q' => 'Dois-je changer mon routeur ou mon installation actuelle ?', 'a' => 'Non. La plateforme s\'intègre à votre équipement existant (Mikrotik) sans configuration technique complexe.'],
                 ['q' => 'Puis-je personnaliser mes forfaits, mes prix et mes tickets ?', 'a' => 'Oui, entièrement. Chaque vendeur définit librement la durée, le prix et le visuel de ses tickets, et peut en créer autant qu\'il le souhaite.'],
                 ['q' => 'Que se passe-t-il si un client perd son ticket ?', 'a' => 'Il peut récupérer son code de connexion à tout moment depuis la page "Récupérer mon ticket" en indiquant le numéro utilisé pour le paiement.'],
                 ['q' => 'L\'inscription et l\'accès à la plateforme sont-ils vraiment gratuits ?', 'a' => 'Oui, la création de compte vendeur et l\'accès au tableau de bord sont gratuits, sans engagement ni abonnement mensuel caché.'],
@@ -861,17 +827,6 @@
         }, 3800);
     }
 
-    // --- Live revenue ticker (ambient, cosmetic) ---
-    function initRevenueTicker() {
-        const el = document.getElementById('live-revenue-ticker');
-        if (!el) return;
-        let value = 45200;
-        setInterval(function() {
-            value += Math.floor(Math.random() * 350) + 50;
-            el.textContent = value.toLocaleString('fr-FR');
-        }, 4200);
-    }
-
     // --- FAQ accordion ---
     function toggleFaq(btn) {
         const expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -882,7 +837,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         initStatCounters();
         initPhoneCycler();
-        initRevenueTicker();
     });
 </script>
 <?php $__env->stopPush(); ?>

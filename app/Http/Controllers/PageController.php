@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    public function installation()
+    {
+        return view('livewire.installation.installation-page');
+    }
+
     public function contact()
     {
         return view('pages.contact');

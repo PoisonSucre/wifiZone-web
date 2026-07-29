@@ -16,6 +16,7 @@ use App\Http\Controllers\PaymentInitController;
 Route::get('/', fn () => view('pages.landing'))->name('home');
 Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop');
 Route::get('/contact', fn () => view('pages.contact'))->name('contact');
+Route::get('/installation', [PageController::class, 'installation'])->name('installation');
 Route::get('/merci', [PageController::class, 'merci'])->name('merci');
 Route::get('/annule', [PageController::class, 'annule'])->name('annule');
 Route::match(['get', 'post'], '/recuperer-ticket', [PageController::class, 'recupererTicket'])->name('recuperer-ticket');
