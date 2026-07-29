@@ -9,6 +9,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\TemplateDownloadController;
+use App\Http\Controllers\PaymentInitController;
 
 
 // --- Public ---
@@ -18,6 +19,7 @@ Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 Route::get('/merci', [PageController::class, 'merci'])->name('merci');
 Route::get('/annule', [PageController::class, 'annule'])->name('annule');
 Route::match(['get', 'post'], '/recuperer-ticket', [PageController::class, 'recupererTicket'])->name('recuperer-ticket');
+Route::post('/payment/init', [PaymentInitController::class, 'init'])->name('payment.init');
 
 // --- Auth (Vendeur) ---
 Route::middleware('guest')->group(function () {
@@ -54,15 +56,38 @@ Route::middleware(['auth', 'vendeur.status'])->prefix('vendeur')->name('vendor.'
     Route::get('/', fn () => view('vendor.dashboard'))->name('dashboard');
     Route::get('/tickets', fn () => view('vendor.tickets'))->name('tickets');
     Route::get('/boutique', fn () => view('vendor.boutique'))->name('boutique');
+    Route::get('/alertes', fn () => view('vendor.alertes'))->name('alertes');
     Route::get('/boutique/download', [TemplateDownloadController::class, 'download'])->name('boutique.download');
     Route::get('/apercu', function () {
         $vendeur = auth()->user();
-        $vendeur->couleur = session('preview_couleur', $vendeur->couleur);
-        $vendeur->couleur_top = session('preview_couleur_top', $vendeur->couleur_top);
-        $vendeur->nom_portail = session('preview_nom_portail', $vendeur->nom_portail);
-        $vendeur->message_bienvenue = session('preview_message', $vendeur->message_bienvenue);
-        $vendeur->logo = session('preview_logo', $vendeur->logo);
-        $forfaits = $vendeur->forfaits()->orderBy('ordre')->get();
+        $hsId = (int) request()->query('hotspot', 0);
+        $hotspot = $hsId > 0 ? \App\Models\Hotspot::where('id', $hsId)->where('vendeur_id', $vendeur->id)->first() : null;
+
+        $pKey = fn ($k) => $hotspot ? "preview_{$k}_{$hotspot->id}" : "preview_{$k}";
+
+        if ($hotspot) {
+            $couleur = session($pKey('couleur'), $hotspot->couleur);
+            $couleur_top = session($pKey('couleur_top'), $hotspot->couleur_top);
+            $nom_portail = session($pKey('nom_portail'), $hotspot->nom_portail);
+            $message_bienvenue = session($pKey('message'), $hotspot->message_bienvenue);
+            $logo = session($pKey('logo'), $hotspot->logo);
+        } else {
+            $couleur = session($pKey('couleur'), $vendeur->couleur);
+            $couleur_top = session($pKey('couleur_top'), $vendeur->couleur_top);
+            $nom_portail = session($pKey('nom_portail'), $vendeur->nom_portail);
+            $message_bienvenue = session($pKey('message'), $vendeur->message_bienvenue);
+            $logo = session($pKey('logo'), $vendeur->logo);
+        }
+
+        $vendeur->couleur = $couleur;
+        $vendeur->couleur_top = $couleur_top;
+        $vendeur->nom_portail = $nom_portail;
+        $vendeur->message_bienvenue = $message_bienvenue;
+        $vendeur->logo = $logo;
+
+        $forfaits = $hotspot
+            ? $hotspot->forfaits()->orderBy('ordre')->get()
+            : $vendeur->forfaits()->orderBy('ordre')->get();
         return view('shop.template.preview', compact('vendeur', 'forfaits'));
     })->name('preview');
     Route::get('/import', fn () => view('vendor.import'))->name('import');

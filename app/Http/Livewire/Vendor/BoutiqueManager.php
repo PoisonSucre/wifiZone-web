@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Vendor;
 
 use App\Models\Forfait;
+use App\Models\Hotspot;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -22,38 +23,60 @@ class BoutiqueManager extends Component
     public string $forfaitLabel = '';
     public int $forfaitMontant = 0;
     public int $forfaitDuree = 60;
+    public bool $showForfaitModal = false;
     public bool $showDeleteModal = false;
     public ?int $deleteForfaitId = null;
+    public ?int $hotspotId = null;
+
+    private function previewKey(string $key): string
+    {
+        return $this->hotspotId ? "preview_{$key}_{$this->hotspotId}" : "preview_{$key}";
+    }
 
     public function mount(): void
     {
-        $vendeur = auth()->user();
-        $this->couleur = $vendeur->couleur ?? '#1ca04e';
-        $this->couleurTop = $vendeur->couleur_top ?? '#110904';
-        $this->nomPortail = $vendeur->nom_portail ?? '';
-        $this->messageBienvenue = $vendeur->message_bienvenue ?? '';
+        $hs = (int) request()->query('hotspot', 0);
+        if ($hs > 0) {
+            $this->hotspotId = $hs;
+        }
+
+        if ($this->hotspotId) {
+            $hotspot = Hotspot::where('id', $this->hotspotId)->where('vendeur_id', auth()->id())->first();
+            if ($hotspot) {
+                $this->couleur = $hotspot->couleur;
+                $this->couleurTop = $hotspot->couleur_top;
+                $this->nomPortail = $hotspot->nom_portail;
+                $this->messageBienvenue = $hotspot->message_bienvenue ?? '';
+            }
+        } else {
+            $vendeur = auth()->user();
+            $this->couleur = $vendeur->couleur ?? '#1ca04e';
+            $this->couleurTop = $vendeur->couleur_top ?? '#110904';
+            $this->nomPortail = $vendeur->nom_portail ?? '';
+            $this->messageBienvenue = $vendeur->message_bienvenue ?? '';
+        }
 
         $this->cleanupPreviewSession();
     }
 
     public function updatedCouleur($value): void
     {
-        session(['preview_couleur' => $value]);
+        session([$this->previewKey('couleur') => $value]);
     }
 
     public function updatedCouleurTop($value): void
     {
-        session(['preview_couleur_top' => $value]);
+        session([$this->previewKey('couleur_top') => $value]);
     }
 
     public function updatedNomPortail($value): void
     {
-        session(['preview_nom_portail' => $value]);
+        session([$this->previewKey('nom_portail') => $value]);
     }
 
     public function updatedMessageBienvenue($value): void
     {
-        session(['preview_message' => $value]);
+        session([$this->previewKey('message') => $value]);
     }
 
     public function updatedLogo(): void
@@ -64,9 +87,10 @@ class BoutiqueManager extends Component
             $this->cleanupTempLogo();
 
             $ext = $this->logo->getClientOriginalExtension();
-            $filename = 'preview_logo_' . auth()->id() . '_' . Str::random(16) . '.' . $ext;
+            $prefix = $this->hotspotId ? 'preview_logo_' . auth()->id() . '_hs' . $this->hotspotId : 'preview_logo_' . auth()->id();
+            $filename = $prefix . '_' . Str::random(16) . '.' . $ext;
             $this->logo->storeAs('public/tmp/preview', $filename);
-            session(['preview_logo' => 'storage/tmp/preview/' . $filename]);
+            session([$this->previewKey('logo') => 'storage/tmp/preview/' . $filename]);
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
@@ -77,21 +101,32 @@ class BoutiqueManager extends Component
     public function updateShop(): void
     {
         try {
-            $vendeur = auth()->user();
+            $previewCouleur = session($this->previewKey('couleur'), $this->couleur);
+            $previewCouleurTop = session($this->previewKey('couleur_top'), $this->couleurTop);
+            $previewNomPortail = session($this->previewKey('nom_portail'), $this->nomPortail);
+            $previewMessage = session($this->previewKey('message'), $this->messageBienvenue);
+            $previewLogo = session($this->previewKey('logo'));
+
             $data = [
-                'couleur' => session('preview_couleur', $this->couleur),
-                'couleur_top' => session('preview_couleur_top', $this->couleurTop),
-                'nom_portail' => session('preview_nom_portail', $this->nomPortail),
-                'message_bienvenue' => session('preview_message', $this->messageBienvenue),
+                'couleur' => $previewCouleur,
+                'couleur_top' => $previewCouleurTop,
+                'nom_portail' => $previewNomPortail,
+                'message_bienvenue' => $previewMessage,
             ];
 
-            $previewLogo = session('preview_logo');
             if ($previewLogo && file_exists(public_path($previewLogo))) {
                 $ext = pathinfo($previewLogo, PATHINFO_EXTENSION);
-                $permanent = 'assets/uploads/logos/logo_' . $vendeur->id . '.' . $ext;
-                if ($vendeur->logo && file_exists(public_path($vendeur->logo))) {
-                    unlink(public_path($vendeur->logo));
+                $suffix = $this->hotspotId ? 'hs' . $this->hotspotId : 'v' . auth()->id();
+                $permanent = 'assets/uploads/logos/logo_' . $suffix . '.' . $ext;
+
+                $oldField = $this->hotspotId
+                    ? Hotspot::where('id', $this->hotspotId)->value('logo')
+                    : auth()->user()->logo;
+
+                if ($oldField && file_exists(public_path($oldField))) {
+                    unlink(public_path($oldField));
                 }
+
                 $tmpPath = public_path($previewLogo);
                 $destPath = public_path($permanent);
                 if (!is_dir(dirname($destPath))) {
@@ -101,11 +136,19 @@ class BoutiqueManager extends Component
                 $data['logo'] = $permanent;
             } elseif ($this->logo) {
                 $this->validate(['logo' => 'image|mimes:jpeg,png,gif,webp|max:2048']);
-                if ($vendeur->logo && file_exists(public_path($vendeur->logo))) {
-                    unlink(public_path($vendeur->logo));
+
+                $suffix = $this->hotspotId ? 'hs' . $this->hotspotId : 'v' . auth()->id();
+
+                $oldField = $this->hotspotId
+                    ? Hotspot::where('id', $this->hotspotId)->value('logo')
+                    : auth()->user()->logo;
+
+                if ($oldField && file_exists(public_path($oldField))) {
+                    unlink(public_path($oldField));
                 }
+
                 $ext = $this->logo->getClientOriginalExtension();
-                $filename = 'logo_' . $vendeur->id . '.' . $ext;
+                $filename = 'logo_' . $suffix . '.' . $ext;
                 $destPath = public_path('assets/uploads/logos/' . $filename);
                 if (!is_dir(dirname($destPath))) {
                     mkdir(dirname($destPath), 0755, true);
@@ -114,7 +157,12 @@ class BoutiqueManager extends Component
                 $data['logo'] = 'assets/uploads/logos/' . $filename;
             }
 
-            $vendeur->update($data);
+            if ($this->hotspotId) {
+                Hotspot::where('id', $this->hotspotId)->where('vendeur_id', auth()->id())->update($data);
+            } else {
+                auth()->user()->update($data);
+            }
+
             $this->cleanupPreviewSession();
             $this->dispatch('toast', type: 'success', message: 'Boutique mise à jour.');
         } catch (ValidationException $e) {
@@ -122,6 +170,12 @@ class BoutiqueManager extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', type: 'error', message: 'Erreur lors de la mise à jour: ' . $e->getMessage());
         }
+    }
+
+    public function openAddForfaitModal(): void
+    {
+        $this->resetForfaitForm();
+        $this->showForfaitModal = true;
     }
 
     public function addForfait(): void
@@ -138,6 +192,7 @@ class BoutiqueManager extends Component
 
             Forfait::create([
                 'vendeur_id' => $vendeur->id,
+                'hotspot_id' => $this->hotspotId,
                 'label' => $this->forfaitLabel,
                 'montant' => $this->forfaitMontant,
                 'duree_minutes' => $this->forfaitDuree,
@@ -145,6 +200,7 @@ class BoutiqueManager extends Component
             ]);
 
             $this->resetForfaitForm();
+            $this->showForfaitModal = false;
             $this->dispatch('toast', type: 'success', message: 'Forfait ajouté.');
         } catch (ValidationException $e) {
             throw $e;
@@ -161,6 +217,7 @@ class BoutiqueManager extends Component
             $this->forfaitLabel = $forfait->label;
             $this->forfaitMontant = $forfait->montant;
             $this->forfaitDuree = $forfait->duree_minutes;
+            $this->showForfaitModal = true;
         }
     }
 
@@ -180,6 +237,7 @@ class BoutiqueManager extends Component
             ]);
 
             $this->resetForfaitForm();
+            $this->showForfaitModal = false;
             $this->dispatch('toast', type: 'success', message: 'Forfait mis à jour.');
         } catch (ValidationException $e) {
             throw $e;
@@ -218,7 +276,11 @@ class BoutiqueManager extends Component
         }
     }
 
-    public function cancelEdit(): void { $this->resetForfaitForm(); }
+    public function cancelEdit(): void
+    {
+        $this->resetForfaitForm();
+        $this->showForfaitModal = false;
+    }
 
     private function resetForfaitForm(): void
     {
@@ -231,12 +293,14 @@ class BoutiqueManager extends Component
     private function cleanupPreviewSession(): void
     {
         $this->cleanupTempLogo();
-        session()->forget(['preview_couleur', 'preview_couleur_top', 'preview_nom_portail', 'preview_message', 'preview_logo']);
+        $keys = ['couleur', 'couleur_top', 'nom_portail', 'message', 'logo'];
+        $prefixed = array_map(fn ($k) => $this->previewKey($k), $keys);
+        session()->forget($prefixed);
     }
 
     private function cleanupTempLogo(): void
     {
-        $previewLogo = session('preview_logo');
+        $previewLogo = session($this->previewKey('logo'));
         if ($previewLogo && Storage::exists(str_replace('storage/', 'public/', $previewLogo))) {
             Storage::delete(str_replace('storage/', 'public/', $previewLogo));
         }
@@ -245,9 +309,11 @@ class BoutiqueManager extends Component
     public function render()
     {
         $vendeur = auth()->user();
-        $forfaits = Forfait::where('vendeur_id', $vendeur->id)->orderBy('ordre')->get();
+        $forfaits = Forfait::where('vendeur_id', $vendeur->id)
+            ->when($this->hotspotId, fn ($q) => $q->where('hotspot_id', $this->hotspotId))
+            ->orderBy('ordre')
+            ->get();
         $hotspots = $vendeur->hotspots()->orderBy('name')->get();
-        $hotspotId = (int) request()->query('hotspot', 0);
-        return view('livewire.vendor.boutique-manager', compact('vendeur', 'forfaits', 'hotspots', 'hotspotId'));
+        return view('livewire.vendor.boutique-manager', compact('vendeur', 'forfaits', 'hotspots'));
     }
 }

@@ -13,6 +13,12 @@ class Hotspot extends Model
         'name',
         'description',
         'statut',
+        'couleur',
+        'couleur_top',
+        'nom_portail',
+        'message_bienvenue',
+        'logo',
+        'mikrotik_url',
     ];
 
     protected $casts = [

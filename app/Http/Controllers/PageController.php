@@ -21,16 +21,18 @@ class PageController extends Controller
 
         $transaction = null;
         $ticket = null;
+        $mikrotikUrl = null;
 
         if ($token) {
             $transaction = Transaction::where('token', $token)->first();
             if ($transaction) {
                 $transaction->update(['verification_status' => 'verifie']);
-                $ticket = $transaction->ticket;
+                $ticket = $transaction->ticket()->with('hotspot')->first();
+                $mikrotikUrl = $ticket?->hotspot?->mikrotik_url;
             }
         }
 
-        return view('pages.merci', compact('token', 'transaction', 'ticket'));
+        return view('pages.merci', compact('token', 'transaction', 'ticket', 'mikrotikUrl'));
     }
 
     public function annule(Request $request)
@@ -49,23 +51,31 @@ class PageController extends Controller
     public function recupererTicket(Request $request)
     {
         $token = $request->input('token') ?? $request->query('token');
+        $phone = $request->input('phone') ?? $request->query('phone');
         $ticket = null;
         $message = null;
 
-        if ($token) {
-            $transaction = Transaction::where('token', $token)
-                ->where('statut', 'completed')
-                ->where('verification_status', 'verifie')
-                ->first();
+        $query = Transaction::where('statut', 'completed')
+            ->where('verification_status', 'verifie');
 
-            if ($transaction && $transaction->ticket) {
-                $ticket = $transaction->ticket->load('vendeur');
-                $message = 'success';
-            } else {
-                $message = 'not_found';
-            }
+        if ($token) {
+            $query->where('token', $token);
+        } elseif ($phone) {
+            $query->where('phone_number', $phone);
+        } else {
+            $message = 'missing_input';
+            return view('pages.recuperer-ticket', compact('token', 'phone', 'ticket', 'message'));
         }
 
-        return view('pages.recuperer-ticket', compact('token', 'ticket', 'message'));
+        $transaction = $query->first();
+
+        if ($transaction && $transaction->ticket) {
+            $ticket = $transaction->ticket->load('vendeur');
+            $message = 'success';
+        } else {
+            $message = 'not_found';
+        }
+
+        return view('pages.recuperer-ticket', compact('token', 'phone', 'ticket', 'message'));
     }
 }

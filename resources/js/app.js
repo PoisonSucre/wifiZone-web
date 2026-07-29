@@ -69,8 +69,34 @@ window.Chart = Chart;
         }).catch(function () {});
     };
 
-    document.addEventListener('livewire:navigated', function () {
+document.addEventListener('livewire:navigated', function () {
         const t = localStorage.getItem('theme') || 'light';
         applyTheme(t);
+    });
+
+    // Gestion du paiement shop - redirection vers LigdiCash
+    document.addEventListener('submit', function (e) {
+        const form = e.target;
+        if (form.action && form.action.includes('/api/payment-process')) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.payment_url) {
+                    window.location.href = data.payment_url;
+                } else {
+                    alert('Erreur: ' + (data.error || data.details?.description || 'Paiement impossible'));
+                }
+            })
+            .catch(() => alert('Erreur de connexion au serveur de paiement'));
+        }
     });
 })();

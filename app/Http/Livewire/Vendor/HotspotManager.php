@@ -10,6 +10,7 @@ class HotspotManager extends Component
 {
     public string $hotspotName = '';
     public string $hotspotDescription = '';
+    public string $mikrotikUrl = '';
     public ?int $editingHotspot = null;
     public bool $showDeleteModal = false;
     public ?int $deleteHotspotId = null;
@@ -31,12 +32,14 @@ class HotspotManager extends Component
             $this->validate([
                 'hotspotName' => 'required|string|max:150',
                 'hotspotDescription' => 'nullable|string|max:500',
+                'mikrotikUrl' => 'nullable|string|max:255',
             ]);
 
             Hotspot::create([
                 'vendeur_id' => auth()->id(),
                 'name' => $this->hotspotName,
                 'description' => $this->hotspotDescription ?: null,
+                'mikrotik_url' => $this->mikrotikUrl ?: null,
                 'statut' => 'actif',
             ]);
 
@@ -56,6 +59,7 @@ class HotspotManager extends Component
             $this->editingHotspot = $id;
             $this->hotspotName = $hotspot->name;
             $this->hotspotDescription = $hotspot->description ?? '';
+            $this->mikrotikUrl = $hotspot->mikrotik_url ?? '';
             $this->showForm = true;
         }
     }
@@ -66,6 +70,7 @@ class HotspotManager extends Component
             $this->validate([
                 'hotspotName' => 'required|string|max:150',
                 'hotspotDescription' => 'nullable|string|max:500',
+                'mikrotikUrl' => 'nullable|string|max:255',
             ]);
 
             Hotspot::where('id', $this->editingHotspot)
@@ -73,6 +78,7 @@ class HotspotManager extends Component
                 ->update([
                     'name' => $this->hotspotName,
                     'description' => $this->hotspotDescription ?: null,
+                    'mikrotik_url' => $this->mikrotikUrl ?: null,
                 ]);
 
             $this->resetForm();
@@ -140,6 +146,7 @@ class HotspotManager extends Component
         $this->editingHotspot = null;
         $this->hotspotName = '';
         $this->hotspotDescription = '';
+        $this->mikrotikUrl = '';
         $this->showForm = false;
     }
 

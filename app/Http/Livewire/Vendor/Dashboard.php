@@ -5,10 +5,14 @@ namespace App\Http\Livewire\Vendor;
 use App\Models\Ticket;
 use App\Models\Transaction;
 use App\Models\Withdrawal;
+use App\Services\LigdiCashService;
+use App\Services\TicketService;
 use Livewire\Component;
+use App\Http\Livewire\Vendor\Concerns\ChecksPendingPayments;
 
 class Dashboard extends Component
 {
+    use ChecksPendingPayments;
     public int $totalVendus = 0;
     public int $totalDispo = 0;
     public float $totalRevenus = 0;
@@ -17,6 +21,7 @@ class Dashboard extends Component
     public float $commissionPct = 0;
     public float $soldeDisponible = 0;
     public float $soldeNet = 0;
+    public array $stuckTransactions = [];
     public array $recentSales = [];
     public array $chartLabels = [];
     public array $chartData = [];
@@ -44,7 +49,17 @@ class Dashboard extends Component
         $this->soldeDisponible = max(0, $this->totalRevenus - $this->dejaRetire);
         $this->soldeNet = $this->soldeDisponible * (1 - $this->commissionPct / 100);
 
+        $this->stuckTransactions = Transaction::where('vendeur_id', $vendeur->id)
+            ->where('statut', 'completed')
+            ->whereNull('ticket_id')
+            ->orderByDesc('date_creation')
+            ->limit(20)
+            ->select('id', 'statut', 'phone_number', 'montant', 'date_creation', 'token', 'ticket_id')
+            ->get()
+            ->toArray();
+
         $this->recentSales = Transaction::where('transactions.vendeur_id', $vendeur->id)
+            ->where('transactions.statut', 'completed')
             ->leftJoin('ticket', 'transactions.ticket_id', '=', 'ticket.id')
             ->select('transactions.*', 'ticket.user', 'ticket.forfait')
             ->orderByDesc('transactions.date_creation')
@@ -214,6 +229,19 @@ class Dashboard extends Component
             $this->retraitsEvolution[] = $ret;
             $this->soldeEvolution[] = max(0, $cumulRevenus - $cumulRetraits);
         }
+    }
+
+    public function refreshStuck(): void
+    {
+        $vendeur = auth()->user();
+        $this->stuckTransactions = Transaction::where('vendeur_id', $vendeur->id)
+            ->where('statut', 'completed')
+            ->whereNull('ticket_id')
+            ->orderByDesc('date_creation')
+            ->limit(20)
+            ->select('id', 'statut', 'phone_number', 'montant', 'date_creation', 'token', 'ticket_id')
+            ->get()
+            ->toArray();
     }
 
     public function render()

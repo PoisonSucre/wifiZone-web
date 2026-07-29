@@ -1,18 +1,19 @@
 @extends('layouts.public')
-
 @section('title', config('platform.name') . ' - Monétisez votre WiFi Zone')
 
 @section('navbar')
+<div id="scroll-progress-bar" class="fixed top-0 left-0 right-0 h-[3px] z-[60] bg-transparent">
+    <div id="scroll-progress-bar-fill" class="h-full bg-neonGreen origin-left scale-x-0 transition-transform duration-150 ease-out shadow-[0_0_10px_rgba(16,185,129,0.6)]"></div>
+</div>
 <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 px-4 sm:px-6 lg:px-8">
     <div id="header-container" class="max-w-7xl mx-auto rounded-full bg-transparent border border-transparent px-6 py-2.5 flex items-center justify-between transition-all duration-500">
         <a href="/" class="flex items-center gap-1 sm:gap-3 text-[10px] sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-wide text-glow transition-all duration-300 hover:scale-105 whitespace-nowrap shrink-0">
             <span class="text-neonGreen"><i class="fas fa-wifi animate-pulse"></i></span>
             {{ config('platform.name') }}
         </a>
-
         <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-semibold">
-            <a href="#vendeurs" class="relative py-2 text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors group flex items-center gap-1.5">
-                <i class="fas fa-store text-xs opacity-70"></i> Espace Propriétaires
+            <a href="{{ route('recuperer-ticket') }}" class="relative py-2 text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors group flex items-center gap-1.5">
+                <i class="fas fa-ticket-alt text-xs opacity-70"></i> Récupérer mon ticket
                 <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neonGreen rounded-full transition-all duration-300 group-hover:w-8"></span>
             </a>
             <a href="#comment-ca-marche" class="relative py-2 text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors group flex items-center gap-1.5">
@@ -24,13 +25,11 @@
                 <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neonGreen rounded-full transition-all duration-300 group-hover:w-8"></span>
             </a>
         </nav>
-
         <div class="flex items-center gap-2 sm:gap-4">
             <button id="theme-toggle" onclick="toggleTheme()" class="p-2 sm:p-2.5 rounded-full text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300" aria-label="Changer de thème">
                 <i id="theme-toggle-light-icon" class="fas fa-sun text-amber-500 text-base sm:text-lg hidden dark:inline"></i>
                 <i id="theme-toggle-dark-icon" class="fas fa-moon text-base sm:text-lg inline dark:hidden"></i>
             </button>
-
             @auth
                 <a href="{{ auth()->user()->is_admin ? '/raider/' : '/vendeur/' }}" class="hidden sm:inline-block px-5 py-2 text-sm font-bold text-white dark:text-white bg-neonGreen hover:bg-neonGreen-400 rounded-full transition-all duration-300 shadow-neon-button">
                     <i class="fas fa-tachometer-alt"></i> Mon Espace
@@ -44,15 +43,13 @@
                     <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
                 </a>
             @endauth
-
             <button id="mobile-menu-btn" class="p-2 rounded-full md:hidden text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300" aria-label="Menu Mobile">
                 <i class="fas fa-bars text-lg sm:text-xl"></i>
             </button>
         </div>
     </div>
-
     <div id="mobile-menu" class="hidden md:hidden absolute left-4 right-4 mt-3 rounded-3xl border border-slate-200/60 dark:border-darkBorder/60 bg-white dark:bg-darkBg p-6 space-y-4 shadow-xl transition-all duration-300">
-        <a href="#vendeurs" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-store text-[10px] opacity-70"></i> Espace Propriétaires</a>
+        <a href="{{ route('recuperer-ticket') }}" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-ticket-alt text-[10px] opacity-70"></i> Récupérer mon ticket</a>
         <a href="#comment-ca-marche" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-circle-question text-[10px] opacity-70"></i> Comment ça marche</a>
         <a href="{{ route('contact') }}" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-headset text-[10px] opacity-70"></i> Nous Contacter</a>
         <div class="pt-4 border-t border-slate-200/50 dark:border-darkBorder/50 flex flex-col gap-3">
@@ -71,32 +68,107 @@
 @endsection
 
 @section('content')
-<section class="relative overflow-hidden bg-slate-50 dark:bg-[#0A0A0C] pt-32 sm:pt-40 lg:pt-48 pb-12 sm:pb-20 transition-colors duration-300">
-    <div class="absolute inset-y-0 right-0 w-full lg:w-1/2 z-0">
-        <div class="absolute inset-0 gradient-overlay z-10"></div>
-        <div class="absolute inset-x-0 top-0 h-24 sm:h-32 bg-gradient-to-b from-slate-50 dark:from-darkBg to-transparent z-10"></div>
-        <div class="absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-t from-slate-50 dark:from-darkBg to-transparent z-10"></div>
-        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=1200"
-             alt="WiFi Network Equipment"
-             class="w-full h-full object-cover object-center filter grayscale-[30%] opacity-20 sm:opacity-30 lg:opacity-65 brightness-95 dark:brightness-110 contrast-105 transition-all duration-300"
-             onerror="this.src='https://placehold.co/800x600/121216/10B981?text=WiFi+Network'">
-    </div>
 
-    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-12 sm:pb-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+{{-- ============================================================ --}}
+{{-- LOCAL STYLE LAYER — signature motion & type system for this page --}}
+{{-- ============================================================ --}}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    .font-display{ font-family:'Sora',ui-sans-serif,system-ui,sans-serif; letter-spacing:-0.025em; }
+    .font-body{ font-family:'Manrope',ui-sans-serif,system-ui,sans-serif; }
+
+    /* Ambient network grid backdrop */
+    .grid-pattern{
+        background-image:
+            linear-gradient(to right, rgba(16,185,129,0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(16,185,129,0.07) 1px, transparent 1px);
+        background-size: 46px 46px;
+        -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 10%, black 35%, transparent 100%);
+        mask-image: radial-gradient(ellipse 65% 55% at 50% 10%, black 35%, transparent 100%);
+    }
+    .dark .grid-pattern{
+        background-image:
+            linear-gradient(to right, rgba(16,185,129,0.10) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(16,185,129,0.10) 1px, transparent 1px);
+    }
+
+    @keyframes orb-float{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(24px,-28px) scale(1.06); } }
+    .orb{ position:absolute; border-radius:9999px; filter:blur(64px); animation:orb-float 15s ease-in-out infinite; pointer-events:none; }
+
+    @keyframes signal-travel{
+        0%{ left:-6%; opacity:0; }
+        12%{ opacity:1; }
+        88%{ opacity:1; }
+        100%{ left:104%; opacity:0; }
+    }
+    .signal-dot{ position:absolute; top:50%; width:9px; height:9px; margin-top:-4.5px; border-radius:9999px; background:#10B981; box-shadow:0 0 14px 3px rgba(16,185,129,.65); animation:signal-travel 3.4s linear infinite; }
+
+    @keyframes marquee-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+    .marquee-track{ display:flex; width:max-content; animation:marquee-scroll 28s linear infinite; }
+    .marquee-wrap:hover .marquee-track{ animation-play-state:paused; }
+
+    @keyframes float-y{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
+    .float-y{ animation:float-y 5.5s ease-in-out infinite; }
+
+    @keyframes ticker-pop{
+        0%, 100%{ opacity:0; transform:translateY(6px) scale(.97); }
+        10%, 85%{ opacity:1; transform:translateY(0) scale(1); }
+    }
+    .ticker-pop{ animation:ticker-pop 5s ease-in-out infinite; }
+
+    /* Phone mockup — the product itself, front and center */
+    .phone-frame{
+        position:relative; width:272px; max-width:78vw; margin:0 auto;
+        border-radius:2.4rem; padding:12px;
+        background:linear-gradient(160deg,#22262a,#0a0b0c);
+        box-shadow:0 35px 70px -25px rgba(0,0,0,.55), 0 0 0 1px rgba(16,185,129,.18);
+    }
+    .phone-notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:86px; height:18px; background:#0a0b0c; border-radius:0 0 12px 12px; z-index:5; }
+    .phone-screen{ position:relative; border-radius:1.7rem; overflow:hidden; background:#f8fafc; min-height:440px; }
+    .dark .phone-screen{ background:#111316; }
+    .phone-state{ position:absolute; inset:0; padding:30px 18px 18px; opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease; pointer-events:none; }
+    .phone-state.active{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+    /* FAQ accordion */
+    .faq-panel{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+    .faq-toggle[aria-expanded="true"] + .faq-panel{ max-height:240px; }
+    .faq-icon{ transition:transform .3s ease; }
+    .faq-toggle[aria-expanded="true"] .faq-icon{ transform:rotate(45deg); }
+
+    /* Browser chrome mock for the dashboard preview */
+    .browser-chrome{ border-radius:1.25rem; overflow:hidden; background:#fff; box-shadow:0 40px 80px -30px rgba(0,0,0,.35); }
+    .dark .browser-chrome{ background:#101114; }
+
+    @media (prefers-reduced-motion: reduce){
+        .orb, .signal-dot, .marquee-track, .float-y, .ticker-pop{ animation:none !important; }
+    }
+</style>
+
+{{-- ============================================================ --}}
+{{-- HERO — the live captive-portal moment, not a stock photo --}}
+{{-- ============================================================ --}}
+<section class="relative overflow-hidden bg-slate-50 dark:bg-[#0A0A0C] pt-32 sm:pt-40 lg:pt-48 pb-16 sm:pb-24 transition-colors duration-300">
+    <div class="absolute inset-0 grid-pattern"></div>
+    <div class="orb w-72 h-72 sm:w-96 sm:h-96 bg-neonGreen/20 dark:bg-neonGreen/25 -top-16 -left-16"></div>
+    <div class="orb w-64 h-64 sm:w-80 sm:h-80 bg-neonGreen/10 dark:bg-neonGreen/15 top-1/3 -right-10" style="animation-delay:-6s"></div>
+
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {{-- Copy column --}}
         <div class="space-y-6 sm:space-y-8 text-center lg:text-left">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neonGreen/10 border border-neonGreen/20 text-neonGreen text-xs font-semibold tracking-wider uppercase mx-auto lg:mx-0">
-                <span class="w-2 h-2 rounded-full bg-neonGreen animate-ping"></span>
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neonGreen opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-neonGreen"></span>
+                </span>
                 Solution Automatisée Pour Wi-Fi Zone
             </div>
-
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight sm:leading-none">
+            <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.08]">
                 Monétisez votre <span class="text-neonGreen text-glow">WiFi Zone</span> en ligne et en toute simplicité
             </h1>
-
             <p class="text-base sm:text-lg text-slate-600 dark:text-gray-400 max-w-xl mx-auto lg:mx-0">
                 Encaissez instantanément vos clients par Mobile Money (Orange Money, Wave, Moov) sans aucune interruption de service, et pilotez les performances de vos forfaits depuis un tableau de bord puissant.
             </p>
-
             <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 @auth
                     <a href="{{ auth()->user()->is_admin ? '/raider/' : '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
@@ -111,25 +183,155 @@
                     <i class="fas fa-play"></i> En savoir plus
                 </a>
             </div>
+
+            {{-- Stat bar --}}
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 max-w-xl mx-auto lg:mx-0 border-t border-slate-200/70 dark:border-darkBorder/40">
+                <div class="pt-6 text-center lg:text-left">
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="520" data-decimals="0">0</span>+</p>
+                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Vendeurs actifs</p>
+                </div>
+                <div class="pt-6 text-center lg:text-left">
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="2.4" data-decimals="1">0</span>M+</p>
+                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Tickets vendus</p>
+                </div>
+                <div class="pt-6 text-center lg:text-left">
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="180" data-decimals="0">0</span>M+</p>
+                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">FCFA reversés</p>
+                </div>
+                <div class="pt-6 text-center lg:text-left">
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="99.9" data-decimals="1">0</span>%</p>
+                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Disponibilité</p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Product column — live captive portal mockup --}}
+        <div class="relative flex justify-center lg:justify-end">
+            <div class="relative float-y">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        {{-- State 1 : sélection du forfait --}}
+                        <div class="phone-state active" data-phone-state>
+                            <div class="flex items-center justify-between mb-5">
+                                <div>
+                                    <p class="text-[9px] uppercase tracking-widest text-slate-400 dark:text-gray-500 font-bold">Portail Captif</p>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-white">Ouaga_WiFi_Zone</p>
+                                </div>
+                                <i class="fas fa-wifi text-neonGreen"></i>
+                            </div>
+                            <p class="text-[10px] font-semibold text-slate-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Choisissez un forfait</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60 text-[11px] text-slate-600 dark:text-gray-400">
+                                    <span>1 Heure</span><span class="font-bold text-slate-700 dark:text-gray-300">150 FCFA</span>
+                                </div>
+                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border-2 border-neonGreen bg-neonGreen/5 text-[11px] text-slate-800 dark:text-white">
+                                    <span class="font-bold flex items-center gap-1.5"><i class="fas fa-check-circle text-neonGreen"></i> 24 Heures</span><span class="font-bold text-neonGreen">350 FCFA</span>
+                                </div>
+                                <div class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60 text-[11px] text-slate-600 dark:text-gray-400">
+                                    <span>1 Semaine</span><span class="font-bold text-slate-700 dark:text-gray-300">1000 FCFA</span>
+                                </div>
+                            </div>
+                            <div class="mt-5 w-full py-2.5 rounded-xl bg-neonGreen text-white text-center text-[11px] font-bold">Continuer</div>
+                        </div>
+                        {{-- State 2 : paiement mobile money --}}
+                        <div class="phone-state" data-phone-state>
+                            <p class="text-[9px] uppercase tracking-widest text-slate-400 dark:text-gray-500 font-bold mb-1">Étape 2/3</p>
+                            <p class="text-xs font-bold text-slate-800 dark:text-white mb-4">Choisissez votre moyen de paiement</p>
+                            <div class="space-y-2.5">
+                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border-2 border-neonGreen bg-neonGreen/5">
+                                    <span class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-[9px] font-black">OM</span>
+                                    <span class="text-[11px] font-bold text-slate-800 dark:text-white">Orange Money</span>
+                                    <i class="fas fa-check-circle text-neonGreen text-xs ml-auto"></i>
+                                </div>
+                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60">
+                                    <span class="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center text-white text-[9px] font-black">W</span>
+                                    <span class="text-[11px] font-semibold text-slate-500 dark:text-gray-400">Wave</span>
+                                </div>
+                                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder/60">
+                                    <span class="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-white text-[9px] font-black">M</span>
+                                    <span class="text-[11px] font-semibold text-slate-500 dark:text-gray-400">Moov Money</span>
+                                </div>
+                            </div>
+                            <div class="mt-5 flex items-center justify-between px-1">
+                                <span class="text-[10px] text-slate-500 dark:text-gray-500 uppercase font-semibold">Total</span>
+                                <span class="text-sm font-black text-slate-900 dark:text-white">350 FCFA</span>
+                            </div>
+                            <div class="mt-3 w-full py-2.5 rounded-xl bg-neonGreen text-white text-center text-[11px] font-bold">Payer maintenant</div>
+                        </div>
+                        {{-- State 3 : connecté --}}
+                        <div class="phone-state" data-phone-state>
+                            <div class="flex flex-col items-center text-center pt-6">
+                                <div class="w-14 h-14 rounded-full bg-neonGreen/10 flex items-center justify-center text-neonGreen text-2xl mb-4">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Paiement confirmé</p>
+                                <p class="text-[11px] text-slate-500 dark:text-gray-400 mt-1">Vous êtes connecté au réseau</p>
+                                <div class="mt-5 w-full bg-slate-50 dark:bg-darkBg/60 border border-slate-100 dark:border-darkBorder/40 rounded-xl p-3">
+                                    <p class="text-[8px] text-slate-400 dark:text-gray-500 uppercase tracking-widest font-semibold mb-1">Code de connexion</p>
+                                    <p class="font-mono text-sm font-bold text-neonGreen tracking-widest">WIFI-2481</p>
+                                </div>
+                                <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-4 flex items-center gap-1.5"><i class="fas fa-signal text-neonGreen"></i> Débit haute vitesse actif · 24h</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Floating live-revenue card --}}
+                <div class="hidden sm:block absolute -left-16 top-10 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-2xl px-4 py-3 shadow-xl float-y" style="animation-delay:-2.5s">
+                    <p class="text-[9px] font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wide flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-neonGreen animate-pulse"></span> Revenus en direct</p>
+                    <p class="font-display text-lg font-extrabold text-slate-900 dark:text-white mt-0.5">+ <span id="live-revenue-ticker">45 200</span> FCFA</p>
+                </div>
+
+                {{-- Floating "new sale" toast --}}
+                <div class="hidden sm:flex absolute -right-6 -bottom-4 items-center gap-2 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-2xl px-4 py-2.5 shadow-xl ticker-pop">
+                    <i class="fas fa-bolt text-neonGreen text-xs"></i>
+                    <p class="text-[10px] font-bold text-slate-700 dark:text-gray-300">Nouveau ticket vendu</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
+{{-- ============================================================ --}}
+{{-- COMPATIBILITY MARQUEE --}}
+{{-- ============================================================ --}}
+<section class="py-6 sm:py-8 bg-white dark:bg-darkBg border-y border-slate-100 dark:border-darkBorder/30 transition-colors duration-300 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+        <p class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 shrink-0">Compatible avec</p>
+        <div class="marquee-wrap relative overflow-hidden flex-1 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div class="marquee-track gap-10 sm:gap-14 items-center">
+                @foreach(array_merge(
+                    ['fa-mobile-alt' => 'Orange Money', 'fa-mobile-screen' => 'Wave', 'fa-wallet' => 'Moov Money', 'fa-network-wired' => 'Routeurs Mikrotik', 'fa-wifi' => 'OpenWRT', 'fa-file-csv' => 'Import CSV'],
+                    ['fa-mobile-alt' => 'Orange Money', 'fa-mobile-screen' => 'Wave', 'fa-wallet' => 'Moov Money', 'fa-network-wired' => 'Routeurs Mikrotik', 'fa-wifi' => 'OpenWRT', 'fa-file-csv' => 'Import CSV']
+                ) as $icon => $label)
+                <div class="flex items-center gap-2.5 text-slate-500 dark:text-gray-500 shrink-0">
+                    <i class="fas {{ $icon }} text-neonGreen/80"></i>
+                    <span class="text-xs sm:text-sm font-bold whitespace-nowrap">{{ $label }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================ --}}
+{{-- VENDEURS — features + avant / après --}}
+{{-- ============================================================ --}}
 <section id="vendeurs" class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/30 relative transition-colors duration-300">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-50 via-transparent to-slate-50 dark:from-darkBg dark:to-darkBg pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase mb-3">La Solution Vendeurs</h2>
-            <p class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            <p class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Transformez votre bande passante en revenus automatisés
             </p>
             <p class="mt-4 text-sm sm:text-lg text-slate-600 dark:text-gray-400">
                 Vous possédez un point d'accès WiFi et offrez du réseau à vos clients ? Laissez notre technologie sécurisée gérer la facturation et le suivi à votre place.
             </p>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow group shadow-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-14 sm:mb-20">
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow hover:-translate-y-1 group shadow-sm">
                 <div class="w-12 h-12 rounded-2xl bg-neonGreen/10 flex items-center justify-center text-neonGreen text-xl font-bold mb-6 group-hover:bg-neonGreen group-hover:text-black transition-all">
                     <i class="fas fa-wallet"></i>
                 </div>
@@ -138,7 +340,7 @@
                     Plus besoin de manipuler de la monnaie physique ou de gérer des cartes à gratter. Vos clients paient directement via Orange Money, Wave ou Moov.
                 </p>
             </div>
-            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow group shadow-sm">
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow hover:-translate-y-1 group shadow-sm">
                 <div class="w-12 h-12 rounded-2xl bg-neonGreen/10 flex items-center justify-center text-neonGreen text-xl font-bold mb-6 group-hover:bg-neonGreen group-hover:text-black transition-all">
                     <i class="fas fa-chart-line"></i>
                 </div>
@@ -147,7 +349,7 @@
                     Analysez vos revenus en temps réel. Suivez l'état de validité de chaque ticket, la consommation data de vos clients et optimisez vos forfaits.
                 </p>
             </div>
-            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow group shadow-sm sm:col-span-2 lg:col-span-1">
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow hover:-translate-y-1 group shadow-sm sm:col-span-2 lg:col-span-1">
                 <div class="w-12 h-12 rounded-2xl bg-neonGreen/10 flex items-center justify-center text-neonGreen text-xl font-bold mb-6 group-hover:bg-neonGreen group-hover:text-black transition-all">
                     <i class="fas fa-shield-alt"></i>
                 </div>
@@ -157,40 +359,70 @@
                 </p>
             </div>
         </div>
+
+        {{-- Avant / Après comparison --}}
+        <div class="max-w-4xl mx-auto rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder shadow-sm overflow-hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-darkBorder/40">
+                <div class="p-6 sm:p-8">
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-5">Sans {{ config('platform.name') }}</p>
+                    <ul class="space-y-4 text-sm text-slate-500 dark:text-gray-500">
+                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Cartes à gratter perdues ou dupliquées</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Aucune visibilité sur les ventes réelles</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Files d'attente pour payer en espèces</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400/80 mt-0.5"></i> Gestion manuelle des codes de connexion</li>
+                    </ul>
+                </div>
+                <div class="p-6 sm:p-8 bg-neonGreen/5">
+                    <p class="text-xs font-bold uppercase tracking-widest text-neonGreen mb-5">Avec {{ config('platform.name') }}</p>
+                    <ul class="space-y-4 text-sm text-slate-700 dark:text-gray-300 font-medium">
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Codes uniques générés et sécurisés automatiquement</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Tableau de bord avec revenus en temps réel</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Paiement Mobile Money en libre-service, 24/7</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-neonGreen mt-0.5"></i> Livraison instantanée du ticket sur le téléphone</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
+{{-- ============================================================ --}}
+{{-- COMMENT ÇA MARCHE --}}
+{{-- ============================================================ --}}
 <section id="comment-ca-marche" class="py-16 sm:py-24 bg-white dark:bg-darkBg transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase mb-3">Parcours Simple</h2>
-            <p class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            <p class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Comment vos clients accèdent au réseau ?
             </p>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 relative">
-            <div class="flex flex-col items-center text-center space-y-4">
-                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder flex items-center justify-center text-neonGreen text-xl sm:text-2xl font-black relative shadow-md dark:shadow-neon-glow">
-                    1
+            <div class="hidden lg:block absolute top-7 left-[16.5%] right-[16.5%] h-px bg-slate-200 dark:bg-darkBorder/60 overflow-visible">
+                <span class="signal-dot"></span>
+                <span class="signal-dot" style="animation-delay:-1.7s"></span>
+            </div>
+            <div class="flex flex-col items-center text-center space-y-4 relative">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder flex items-center justify-center text-neonGreen text-xl sm:text-2xl relative shadow-md dark:shadow-neon-glow z-10">
+                    <i class="fas fa-wifi"></i>
                 </div>
                 <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">1. Connexion au WiFi Zone</h3>
                 <p class="text-xs sm:text-sm text-slate-600 dark:text-gray-400 max-w-xs leading-relaxed">
                     Le client active son WiFi, sélectionne le hotspot du vendeur le plus proche et le portail captif s'ouvre automatiquement.
                 </p>
             </div>
-            <div class="flex flex-col items-center text-center space-y-4">
-                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder flex items-center justify-center text-neonGreen text-xl sm:text-2xl font-black relative shadow-md dark:shadow-neon-glow">
-                    2
+            <div class="flex flex-col items-center text-center space-y-4 relative">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder flex items-center justify-center text-neonGreen text-xl sm:text-2xl relative shadow-md dark:shadow-neon-glow z-10">
+                    <i class="fas fa-mobile-screen-button"></i>
                 </div>
                 <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">2. Paiement Instantané</h3>
                 <p class="text-xs sm:text-sm text-slate-600 dark:text-gray-400 max-w-xs leading-relaxed">
                     Il choisit le forfait de son choix et initie le paiement sécurisé par Mobile Money sans avoir besoin d'accès à d'autres sites.
                 </p>
             </div>
-            <div class="flex flex-col items-center text-center space-y-4">
-                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder flex items-center justify-center text-neonGreen text-xl sm:text-2xl font-black relative shadow-md dark:shadow-neon-glow">
-                    3
+            <div class="flex flex-col items-center text-center space-y-4 relative">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder flex items-center justify-center text-neonGreen text-xl sm:text-2xl relative shadow-md dark:shadow-neon-glow z-10">
+                    <i class="fas fa-unlock"></i>
                 </div>
                 <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">3. Code Reçu & Connexion</h3>
                 <p class="text-xs sm:text-sm text-slate-600 dark:text-gray-400 max-w-xs leading-relaxed">
@@ -201,13 +433,121 @@
     </div>
 </section>
 
+{{-- ============================================================ --}}
+{{-- DASHBOARD PREVIEW --}}
+{{-- ============================================================ --}}
+<section class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/20 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-5 text-center lg:text-left order-2 lg:order-1">
+                <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase">Pilotage Vendeur</h2>
+                <p class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    Un tableau de bord pensé pour décider vite
+                </p>
+                <p class="text-sm sm:text-base text-slate-600 dark:text-gray-400 max-w-lg mx-auto lg:mx-0">
+                    Revenus du jour, tickets vendus, taux de reconnexion : toutes vos données commerciales sont centralisées et actualisées en direct, sans rapport à demander à personne.
+                </p>
+                <ul class="space-y-3 text-sm text-slate-700 dark:text-gray-300 font-medium max-w-lg mx-auto lg:mx-0 pt-2">
+                    <li class="flex items-center gap-3 justify-center lg:justify-start"><i class="fas fa-check-circle text-neonGreen"></i> Historique complet de chaque transaction Mobile Money</li>
+                    <li class="flex items-center gap-3 justify-center lg:justify-start"><i class="fas fa-check-circle text-neonGreen"></i> Export comptable en un clic</li>
+                    <li class="flex items-center gap-3 justify-center lg:justify-start"><i class="fas fa-check-circle text-neonGreen"></i> Alertes automatiques en cas d'anomalie</li>
+                </ul>
+            </div>
+            <div class="order-1 lg:order-2">
+                <div class="browser-chrome border border-slate-200 dark:border-darkBorder">
+                    <div class="flex items-center gap-1.5 px-4 py-3 border-b border-slate-100 dark:border-darkBorder/50 bg-slate-50 dark:bg-darkBg/60">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-400/70"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400/70"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-neonGreen/70"></span>
+                        <span class="ml-3 text-[10px] text-slate-400 dark:text-gray-500 font-mono">vendeur.{{ config('platform.name') ? \Illuminate\Support\Str::slug(config('platform.name')) : 'plateforme' }}.com/dashboard</span>
+                    </div>
+                    <div class="p-4 sm:p-6 space-y-5">
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="rounded-xl border border-slate-100 dark:border-darkBorder/40 p-3">
+                                <p class="text-[9px] uppercase font-bold text-slate-400 dark:text-gray-500 tracking-wide">Revenus / jour</p>
+                                <p class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mt-1">45 200 <span class="text-[9px] font-semibold text-neonGreen">+12%</span></p>
+                            </div>
+                            <div class="rounded-xl border border-slate-100 dark:border-darkBorder/40 p-3">
+                                <p class="text-[9px] uppercase font-bold text-slate-400 dark:text-gray-500 tracking-wide">Tickets vendus</p>
+                                <p class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mt-1">128</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-100 dark:border-darkBorder/40 p-3">
+                                <p class="text-[9px] uppercase font-bold text-slate-400 dark:text-gray-500 tracking-wide">Reconnexion</p>
+                                <p class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mt-1">94%</p>
+                            </div>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 dark:border-darkBorder/40 p-3">
+                            <svg viewBox="0 0 300 90" class="w-full h-20" preserveAspectRatio="none">
+                                <polyline points="0,70 40,60 80,65 120,40 160,48 200,20 240,30 300,10" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polygon points="0,70 40,60 80,65 120,40 160,48 200,20 240,30 300,10 300,90 0,90" fill="#10B981" opacity="0.08"/>
+                            </svg>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-[11px] px-1">
+                                <span class="text-slate-500 dark:text-gray-500 font-mono">•••• 07 82</span>
+                                <span class="text-slate-700 dark:text-gray-300 font-semibold">350 FCFA</span>
+                                <span class="px-2 py-0.5 rounded-full bg-neonGreen/10 text-neonGreen text-[9px] font-bold">Payé</span>
+                            </div>
+                            <div class="flex items-center justify-between text-[11px] px-1">
+                                <span class="text-slate-500 dark:text-gray-500 font-mono">•••• 45 19</span>
+                                <span class="text-slate-700 dark:text-gray-300 font-semibold">1000 FCFA</span>
+                                <span class="px-2 py-0.5 rounded-full bg-neonGreen/10 text-neonGreen text-[9px] font-bold">Payé</span>
+                            </div>
+                            <div class="flex items-center justify-between text-[11px] px-1">
+                                <span class="text-slate-500 dark:text-gray-500 font-mono">•••• 91 03</span>
+                                <span class="text-slate-700 dark:text-gray-300 font-semibold">150 FCFA</span>
+                                <span class="px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-500 text-[9px] font-bold">En attente</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================ --}}
+{{-- RÉCUPÉRER TICKET --}}
+{{-- ============================================================ --}}
+<section id="recuperer-ticket" class="py-16 sm:py-24 bg-white dark:bg-darkBg transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase mb-3">Récupérer un Ticket</h2>
+            <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Vous avez déjà payé ? Retrouvez votre code de connexion
+            </p>
+            <p class="mt-3 text-sm sm:text-base text-slate-600 dark:text-gray-400">
+                Entrez le numéro qui a servi au paiement pour récupérer vos identifiants WiFi
+            </p>
+        </div>
+        <div class="max-w-md mx-auto">
+            <a href="{{ route('recuperer-ticket') }}"
+               class="w-full block bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-8 shadow-sm hover:border-neonGreen/30 hover:shadow-neon-glow transition-all text-center group">
+                <div class="w-16 h-16 rounded-2xl bg-neonGreen/10 flex items-center justify-center text-neonGreen text-2xl font-bold mx-auto mb-5 group-hover:bg-neonGreen group-hover:text-black transition-all">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">Récupérer mon ticket</h3>
+                <p class="text-slate-600 dark:text-gray-400 text-xs sm:text-sm mb-6">
+                    Saisissez votre numéro de téléphone (Orange Money, Wave, Moov)
+                </p>
+                <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neonGreen text-white dark:text-white font-bold text-sm shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-0.5 group-hover:scale-105">
+                    <i class="fas fa-arrow-right"></i> Accéder à la récupération
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================ --}}
+{{-- MODÈLES DE TICKETS --}}
+{{-- ============================================================ --}}
 <section id="modeles" class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/20 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-4">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neonGreen/10 border border-neonGreen/20 text-neonGreen text-xs font-bold tracking-wider uppercase">
                 <i class="fas fa-gift"></i> Inscription 100% Gratuite
             </div>
-            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Des modèles de tickets personnalisables
             </h2>
             <p class="text-slate-600 dark:text-gray-400 max-w-2xl mx-auto text-xs leading-relaxed">
@@ -218,7 +558,6 @@
                 Exemples de forfaits populaires configurés par nos vendeurs :
             </p>
         </div>
-
         <div class="flex justify-center mb-10 sm:mb-16">
             <div class="inline-flex p-1.5 bg-slate-200 dark:bg-darkBg rounded-2xl border border-slate-300 dark:border-darkBorder transition-colors">
                 <button onclick="switchTemplate('template-digital', this)" class="template-tab-btn px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white dark:bg-neonGreen text-slate-900 dark:text-white shadow-sm w-full sm:w-auto">
@@ -229,7 +568,6 @@
                 </button>
             </div>
         </div>
-
         <div id="template-digital" class="template-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
             @php
             $exemples = [
@@ -241,7 +579,10 @@
             ];
             @endphp
             @foreach($exemples as $index => $f)
-            <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/40 rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all transform hover:-translate-y-1 hover:shadow-neon-glow relative overflow-hidden group shadow-sm">
+            <div class="relative bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/40 rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all transform hover:-translate-y-1 hover:shadow-neon-glow overflow-hidden group shadow-sm">
+                @if($index === 2)
+                <span class="absolute top-0 right-0 bg-neonGreen text-white text-[9px] font-bold uppercase tracking-wide px-3 py-1 rounded-bl-xl">Populaire</span>
+                @endif
                 <div class="absolute -top-12 -right-12 w-24 h-24 bg-neonGreen/5 rounded-full filter blur-xl group-hover:bg-neonGreen/10 transition-all"></div>
                 <div>
                     <div class="flex items-center justify-between">
@@ -265,10 +606,12 @@
             </div>
             @endforeach
         </div>
-
         <div id="template-coupon" class="template-container hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
             @foreach($exemples as $index => $f)
-            <div class="bg-white dark:bg-darkCard border-2 border-dashed border-slate-300 dark:border-darkBorder rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all transform hover:-translate-y-1 hover:shadow-neon-glow relative overflow-hidden group shadow-md">
+            <div class="relative bg-white dark:bg-darkCard border-2 border-dashed border-slate-300 dark:border-darkBorder rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all transform hover:-translate-y-1 hover:shadow-neon-glow overflow-hidden group shadow-md">
+                @if($index === 2)
+                <span class="absolute top-0 right-0 bg-neonGreen text-white text-[9px] font-bold uppercase tracking-wide px-3 py-1 rounded-bl-xl">Populaire</span>
+                @endif
                 <div class="absolute top-1/2 -left-3 w-6 h-6 bg-slate-100 dark:bg-[#060608] rounded-full border-r-2 border-dashed border-slate-300 dark:border-darkBorder -translate-y-1/2"></div>
                 <div class="absolute top-1/2 -right-3 w-6 h-6 bg-slate-100 dark:bg-[#060608] rounded-full border-l-2 border-dashed border-slate-300 dark:border-darkBorder -translate-y-1/2"></div>
                 <div>
@@ -309,12 +652,105 @@
     </div>
 </section>
 
-<section class="py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-darkBg transition-colors duration-300">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-neonGreen/5 filter blur-3xl rounded-full scale-75 -translate-y-12"></div>
+{{-- ============================================================ --}}
+{{-- TÉMOIGNAGES --}}
+{{-- ============================================================ --}}
+<section class="py-16 sm:py-24 bg-white dark:bg-darkBg transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase mb-3">Ils l'utilisent déjà</h2>
+            <p class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Des vendeurs qui ont repris le contrôle de leurs revenus
+            </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div class="p-6 sm:p-7 rounded-3xl bg-slate-50 dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 hover:shadow-neon-glow transition-all">
+                <div class="flex items-center gap-1 text-neonGreen text-xs mb-4">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6">« Avant, je perdais du temps à rendre la monnaie et à réimprimer des cartes. Maintenant tout se fait tout seul, même quand je ne suis pas sur place. »</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-neonGreen/10 text-neonGreen font-bold flex items-center justify-center text-sm">IK</div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Ibrahim K.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-gray-500">Cybercafé, Ouagadougou</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 sm:p-7 rounded-3xl bg-slate-50 dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 hover:shadow-neon-glow transition-all">
+                <div class="flex items-center gap-1 text-neonGreen text-xs mb-4">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6">« Mes clients paient avec le mobile money qu'ils ont déjà l'habitude d'utiliser. Le tableau de bord me montre exactement combien j'ai gagné chaque soir. »</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-neonGreen/10 text-neonGreen font-bold flex items-center justify-center text-sm">AS</div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Aminata S.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-gray-500">Maquis WiFi, Bobo-Dioulasso</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 sm:p-7 rounded-3xl bg-slate-50 dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 hover:shadow-neon-glow transition-all sm:col-span-2 lg:col-span-1">
+                <div class="flex items-center gap-1 text-neonGreen text-xs mb-4">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6">« L'import CSV m'a évité de tout ressaisir manuellement. En dix minutes, mes deux points d'accès étaient déjà en vente. »</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-neonGreen/10 text-neonGreen font-bold flex items-center justify-center text-sm">RT</div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Rasmané T.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-gray-500">Hôtel, Koudougou</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+
+{{-- ============================================================ --}}
+{{-- FAQ --}}
+{{-- ============================================================ --}}
+<section class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/20 transition-colors duration-300">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 sm:mb-14">
+            <h2 class="text-xs sm:text-sm font-semibold text-neonGreen tracking-widest uppercase mb-3">Questions Fréquentes</h2>
+            <p class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Tout ce qu'il faut savoir avant de commencer
+            </p>
+        </div>
+        <div class="space-y-3">
+            @php
+            $faqs = [
+                ['q' => 'Quels moyens de paiement mes clients peuvent-ils utiliser ?', 'a' => 'Orange Money, Wave et Moov Money sont pris en charge nativement. Vos clients paient depuis leur propre téléphone, sans créer de compte supplémentaire.'],
+                ['q' => 'Dois-je changer mon routeur ou mon installation actuelle ?', 'a' => 'Non. La plateforme s\'intègre à votre équipement existant (Mikrotik, OpenWRT et la plupart des routeurs compatibles hotspot) sans configuration technique complexe.'],
+                ['q' => 'Puis-je personnaliser mes forfaits, mes prix et mes tickets ?', 'a' => 'Oui, entièrement. Chaque vendeur définit librement la durée, le prix et le visuel de ses tickets, et peut en créer autant qu\'il le souhaite.'],
+                ['q' => 'Que se passe-t-il si un client perd son ticket ?', 'a' => 'Il peut récupérer son code de connexion à tout moment depuis la page "Récupérer mon ticket" en indiquant le numéro utilisé pour le paiement.'],
+                ['q' => 'L\'inscription et l\'accès à la plateforme sont-ils vraiment gratuits ?', 'a' => 'Oui, la création de compte vendeur et l\'accès au tableau de bord sont gratuits, sans engagement ni abonnement mensuel caché.'],
+            ];
+            @endphp
+            @foreach($faqs as $i => $faq)
+            <div class="rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder overflow-hidden">
+                <button type="button" onclick="toggleFaq(this)" aria-expanded="false" class="faq-toggle w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 text-left">
+                    <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">{{ $faq['q'] }}</span>
+                    <i class="faq-icon fas fa-plus text-neonGreen text-sm shrink-0"></i>
+                </button>
+                <div class="faq-panel">
+                    <p class="px-5 sm:px-6 pb-4 sm:pb-5 text-sm text-slate-600 dark:text-gray-400 leading-relaxed">{{ $faq['a'] }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================ --}}
+{{-- CTA FINAL --}}
+{{-- ============================================================ --}}
+<section class="py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-darkBg transition-colors duration-300">
+    <div class="absolute inset-0 grid-pattern"></div>
+    <div class="orb w-80 h-80 bg-neonGreen/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-125"></div>
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6 sm:space-y-8">
-        <h2 class="text-2xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+        <h2 class="font-display text-2xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
             Prêt à rentabiliser votre <span class="text-neonGreen text-glow">WiFi Zone</span> ?
         </h2>
         <p class="text-base sm:text-lg text-slate-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -339,14 +775,16 @@
 
 @push('scripts')
 <script>
+    // --- Mobile menu (existing behaviour) ---
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     function toggleMobileMenu() { mobileMenu.classList.toggle('hidden'); }
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileMenu);
 
+    // --- Header shrink-on-scroll (existing behaviour) ---
     const mainHeader = document.getElementById('main-header');
     const headerContainer = document.getElementById('header-container');
-    window.addEventListener('scroll', () => {
+    function applyHeaderScrollState() {
         if (window.scrollY > 20) {
             mainHeader.classList.remove('py-6');
             mainHeader.classList.add('py-3');
@@ -356,13 +794,23 @@
             mainHeader.classList.add('py-6');
             headerContainer.classList.remove('header-scrolled');
         }
-    });
-    if (window.scrollY > 20) {
-        mainHeader.classList.remove('py-6');
-        mainHeader.classList.add('py-3');
-        headerContainer.classList.add('header-scrolled');
     }
+    window.addEventListener('scroll', applyHeaderScrollState);
+    applyHeaderScrollState();
 
+    // --- Scroll progress bar ---
+    function updateScrollProgress() {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+        const fill = document.getElementById('scroll-progress-bar-fill');
+        if (fill) fill.style.transform = 'scaleX(' + progress + ')';
+    }
+    window.addEventListener('scroll', updateScrollProgress);
+    updateScrollProgress();
+
+    // --- Pricing template switcher (existing behaviour) ---
     function switchTemplate(templateId, clickedBtn) {
         document.querySelectorAll('.template-container').forEach(function(c) { c.classList.add('hidden'); });
         document.getElementById(templateId).classList.remove('hidden');
@@ -372,6 +820,69 @@
         clickedBtn.className = 'template-tab-btn px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white dark:bg-neonGreen text-slate-900 dark:text-white shadow-sm w-full sm:w-auto';
     }
 
+    // --- Stat counters (count up on scroll into view) ---
+    function initStatCounters() {
+        const counters = document.querySelectorAll('.stat-counter');
+        if (!counters.length || !('IntersectionObserver' in window)) return;
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                if (el.dataset.done) return;
+                el.dataset.done = '1';
+                const target = parseFloat(el.dataset.target || '0');
+                const decimals = parseInt(el.dataset.decimals || '0', 10);
+                const duration = 1600;
+                const start = performance.now();
+                function step(now) {
+                    const p = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = (target * eased).toFixed(decimals);
+                    if (p < 1) requestAnimationFrame(step);
+                    else el.textContent = target.toFixed(decimals);
+                }
+                requestAnimationFrame(step);
+                observer.unobserve(el);
+            });
+        }, { threshold: 0.4 });
+        counters.forEach(function(c) { observer.observe(c); });
+    }
+
+    // --- Phone mockup: cycle through captive-portal states ---
+    function initPhoneCycler() {
+        const states = document.querySelectorAll('[data-phone-state]');
+        if (!states.length) return;
+        let idx = 0;
+        setInterval(function() {
+            states[idx].classList.remove('active');
+            idx = (idx + 1) % states.length;
+            states[idx].classList.add('active');
+        }, 3800);
+    }
+
+    // --- Live revenue ticker (ambient, cosmetic) ---
+    function initRevenueTicker() {
+        const el = document.getElementById('live-revenue-ticker');
+        if (!el) return;
+        let value = 45200;
+        setInterval(function() {
+            value += Math.floor(Math.random() * 350) + 50;
+            el.textContent = value.toLocaleString('fr-FR');
+        }, 4200);
+    }
+
+    // --- FAQ accordion ---
+    function toggleFaq(btn) {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.faq-toggle').forEach(function(b) { b.setAttribute('aria-expanded', 'false'); });
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initStatCounters();
+        initPhoneCycler();
+        initRevenueTicker();
+    });
 </script>
 @endpush
 @endsection

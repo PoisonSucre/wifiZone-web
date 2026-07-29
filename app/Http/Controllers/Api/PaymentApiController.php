@@ -21,10 +21,15 @@ class PaymentApiController extends Controller
 
     public function process(Request $request): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'vendeur_id' => 'required|exists:vendeurs,id',
-            'montant' => 'required|integer|min:1',
+            'montant' => 'required|integer|min:9',
             'forfait' => 'required|string',
+        ]);
+
+        \Illuminate\Support\Facades\Log::info('Payment process validated', [
+            'validated_montant' => $validated['montant'],
+            'request_montant' => $request->montant,
         ]);
 
         $vendeur = Vendeur::active()->findOrFail($request->vendeur_id);
@@ -34,10 +39,11 @@ class PaymentApiController extends Controller
             return response()->json(['error' => 'Forfait non trouvé'], 404);
         }
 
+        $montant = (int) $validated['montant'];
         $transactionId = $this->ligdiCash->generateTransactionId();
 
         $payload = $this->ligdiCash->buildPayload(
-            $forfait->toArray(),
+            array_merge($forfait->toArray(), ['montant' => $montant]),
             $vendeur->id,
             $transactionId
         );
@@ -48,16 +54,16 @@ class PaymentApiController extends Controller
         if (isset($data['response_code']) && $data['response_code'] === '00') {
             Transaction::create([
                 'vendeur_id' => $vendeur->id,
-                'token' => $data['data']['invoice_token'] ?? null,
+                'token' => $data['token'] ?? null,
                 'transaction_id' => $transactionId,
-                'montant' => $forfait->montant,
+                'montant' => $montant,
                 'statut' => 'pending',
             ]);
 
             return response()->json([
                 'success' => true,
-                'payment_url' => $data['data']['payment_url'] ?? null,
-                'invoice_token' => $data['data']['invoice_token'] ?? null,
+                'payment_url' => $data['response_text'] ?? null,
+                'invoice_token' => $data['token'] ?? null,
             ]);
         }
 

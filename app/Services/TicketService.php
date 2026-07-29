@@ -26,6 +26,7 @@ class TicketService
             $ticket->update([
                 'status' => 'vendu',
                 'token' => $token,
+                'date_creation' => now(),
             ]);
 
             return $ticket;

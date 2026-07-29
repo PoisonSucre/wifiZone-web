@@ -67,6 +67,8 @@
 
     $chartLabels      = $chartLabels      ?? [];
     $chartDatasets    = $chartDatasets    ?? [];
+    $stuckTransactions = $stuckTransactions ?? [];
+    $stuckCount = count($stuckTransactions);
     $recentSales      = $recentSales      ?? [];
     $dispoParForfait  = $dispoParForfait  ?? [];
 
@@ -143,6 +145,44 @@
             </div>
         </div>
     </div>
+
+    {{-- ALERTE TRANSACTIONS BLOQUÉES --}}
+    @if($checkMessage)
+    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="flex items-center gap-3 p-3 rounded-2xl {{ $checkSuccess ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20' : 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20' }}">
+        <div class="w-8 h-8 shrink-0 rounded-lg {{ $checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500' }} flex items-center justify-center text-xs">
+            <i class="fas {{ $checkSuccess ? 'fa-check-circle' : 'fa-exclamation-circle' }}"></i>
+        </div>
+        <p class="text-sm font-bold {{ $checkSuccess ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400' }}">{{ $checkMessage }}</p>
+        <button @click="show = false" class="ml-auto w-6 h-6 shrink-0 rounded-lg {{ $checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500' }} hover:opacity-70 transition-all flex items-center justify-center">
+            <i class="fas fa-times text-[9px]"></i>
+        </button>
+    </div>
+    @endif
+
+    {{-- ALERTE TICKETS MANQUANTS --}}
+    @if($stuckCount > 0)
+    <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+         class="flex items-start gap-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
+        <div class="w-10 h-10 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-500 text-sm">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+            <p class="text-sm font-extrabold text-amber-700 dark:text-amber-400">{{ $stuckCount }} transaction(s) confirmée(s) sans ticket attribué</p>
+            <p class="text-xs text-amber-600/70 dark:text-amber-400/70 mt-0.5">Ces clients ont payé mais n'ont pas reçu leur ticket.</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+            <a href="{{ route('vendor.alertes') }}"
+               class="px-3 py-1.5 rounded-lg text-xs font-extrabold bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-all flex items-center gap-1.5">
+                <i class="fas fa-external-link-alt text-[10px]"></i>
+                Voir
+            </a>
+            <button @click="show = false" class="w-7 h-7 shrink-0 rounded-lg flex items-center justify-center bg-amber-100 dark:bg-amber-500/20 text-amber-500 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-all">
+                <i class="fas fa-times text-[10px]"></i>
+            </button>
+        </div>
+    </div>
+    @endif
 
     {{-- CONTENU RÉEL --}}
     <div x-show="loaded"

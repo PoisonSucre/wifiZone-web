@@ -19,11 +19,8 @@
      class="space-y-4 sm:space-y-5 pb-2">
 
     {{-- SKELETON --}}
-    <div x-show="!loaded"
-         x-transition:leave="transition ease-out duration-300"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="space-y-4 sm:space-y-5 animate-pulse">
+    <template x-if="!loaded">
+        <div class="space-y-4 sm:space-y-5 animate-pulse">
         
         {{-- Flash Messages Placeholder --}}
         <div class="h-12"></div>
@@ -45,7 +42,7 @@
                 @endfor
             </div>
         </div>
-    </div>
+    </template>
 
     {{-- CONTENU RÉEL --}}
     <div x-show="loaded" x-cloak
@@ -123,11 +120,6 @@
                                 </div>
                             </div>
                             <div class="flex flex-col items-end gap-2">
-                                <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider
-                                             {{ $hasSolde ? 'bg-neonGreen/15 text-neonGreen' : 'bg-white/10 text-white/40' }}">
-                                    <span class="w-1.5 h-1.5 rounded-full {{ $hasSolde ? 'bg-neonGreen animate-pulse' : 'bg-white/30' }}"></span>
-                                    {{ $hasSolde ? 'Actif' : 'Inactif' }}
-                                </span>
                                 <div class="flex items-center gap-1.5">
                                     <button type="button" @click="cardFlipped = true"
                                             aria-label="Voir le détail des gains"
@@ -137,10 +129,10 @@
                                     <button type="button"
                                             @click="{{ $hasSolde ? 'retraitOpen = true' : '' }}"
                                             {{ $hasSolde ? '' : 'disabled' }}
-                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold shadow-md transition-all
-                                                   {{ $hasSolde
-                                                        ? 'bg-neonGreen hover:bg-neonGreen-600 text-black hover:-translate-y-0.5 shadow-neonGreen/20'
-                                                        : 'bg-white/10 text-white/30 cursor-not-allowed' }}">
+class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold shadow-md transition-all
+                                                    {{ $hasSolde
+                                                         ? 'bg-neonGreen hover:bg-neonGreen-600 text-white hover:-translate-y-0.5 shadow-neonGreen/20'
+                                                         : 'bg-white/10 text-white/30 cursor-not-allowed' }}">
                                         <i class="fas fa-paper-plane text-[9px]"></i> Retirer
                                     </button>
                                 </div>
@@ -164,9 +156,8 @@
                                 <p class="text-xs sm:text-sm font-bold text-white/85 truncate max-w-[130px] sm:max-w-[160px]">{{ $cardHolder }}</p>
                             </div>
                             <div class="flex flex-col items-end gap-1.5">
-                                <div class="flex items-center">
-                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-neonGreen/90 mix-blend-screen"></div>
-                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/80 -ml-3 mix-blend-screen"></div>
+                                <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-white/70">
+                                    <i class="fas fa-user-tie text-sm"></i>
                                 </div>
                                 <p class="text-[8px] font-bold text-white/30 uppercase tracking-[0.15em]">Wifi Pour Tous</p>
                             </div>
@@ -210,7 +201,7 @@
                                 @click="{{ $hasSolde ? 'cardFlipped = false; retraitOpen = true' : '' }}"
                                 {{ $hasSolde ? '' : 'disabled' }}
                                 class="mt-3 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-bold transition-all
-                                       {{ $hasSolde ? 'bg-neonGreen hover:bg-neonGreen-600 text-black' : 'bg-white/10 text-white/30 cursor-not-allowed' }}">
+                                       {{ $hasSolde ? 'bg-neonGreen hover:bg-neonGreen-600 text-white' : 'bg-white/10 text-white/30 cursor-not-allowed' }}">
                             <i class="fas fa-paper-plane text-[10px]"></i> Demander un retrait
                         </button>
                     </div>
@@ -358,7 +349,7 @@
                             @error('phoneNumber') <p class="text-red-500 text-[11px] mt-1 font-bold">{{ $message }}</p> @enderror
                         </div>
                         <div class="flex items-center gap-2 pt-1">
-                            <button type="submit" class="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-black text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
+                            <button type="submit" class="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
                                 <i class="fas fa-paper-plane text-[10px]"></i> Envoyer la demande
                             </button>
                             <button type="button" @click="retraitOpen = false" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder text-[11px] font-bold text-slate-500 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-darkBg transition-colors">

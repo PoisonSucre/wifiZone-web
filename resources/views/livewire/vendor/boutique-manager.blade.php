@@ -3,6 +3,7 @@
     $nbForfaits = $forfaits->count();
     $nbActifs = $forfaits->where('actif', true)->count();
     $shopUrl = $vendeur->shopUrl();
+    $shopLink = $hotspotId ? $shopUrl . '?hotspot=' . $hotspotId : $shopUrl;
 @endphp
 
 <div x-data="{ loaded: false, apparenceOpen: true, forfaitsOpen: true }" x-cloak
@@ -174,7 +175,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
             {{-- APPARENCE + FORFAITS --}}
-            <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
+            <x-card padding="p-0" class="shadow-sm">
                 <div class="flex items-center justify-between gap-2.5 px-4 py-3 border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/50 dark:bg-darkBg/30 cursor-pointer select-none"
                      @click="apparenceOpen = !apparenceOpen">
                     <div class="flex items-center gap-2.5">
@@ -228,7 +229,7 @@
                             </div>
                         </div>
                         <button type="submit" wire:loading.attr="disabled"
-                                class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neonGreen hover:bg-neonGreen-600 disabled:opacity-50 disabled:cursor-not-allowed text-black text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
+                                class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neonGreen hover:bg-neonGreen-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
                             <i wire:loading.remove wire:target="updateShop" class="fas fa-save text-[10px]"></i>
                             <i wire:loading wire:target="updateShop" class="fas fa-spinner fa-spin text-[10px]"></i>
                             Enregistrer
@@ -292,117 +293,91 @@
                         </div>
 
                         <div class="border-t border-slate-100 dark:border-darkBorder/40 pt-4">
-                            <div class="flex items-center gap-2 mb-3">
-                                <div class="w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black {{ $editingForfait ? 'bg-amber-500/10 text-amber-500' : 'bg-neonGreen/10 text-neonGreen' }}">
-                                    <i class="fas fa-{{ $editingForfait ? 'edit' : 'plus' }}"></i>
-                                </div>
-                                <h4 class="text-xs font-bold text-slate-900 dark:text-white">{{ $editingForfait ? 'Modifier un forfait' : 'Ajouter un forfait' }}</h4>
-                            </div>
-                            <form wire:submit.prevent="{{ $editingForfait ? 'updateForfait' : 'addForfait' }}" class="space-y-3">
-                                <div class="grid grid-cols-3 gap-2">
-                                    <input type="text" wire:model="forfaitLabel" required placeholder="Label"
-                                           class="col-span-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all duration-200">
-                                    <input type="number" wire:model="forfaitMontant" required placeholder="Montant" min="1"
-                                           class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all duration-200">
-                                    <input type="number" wire:model="forfaitDuree" required placeholder="Minutes" min="1"
-                                           class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all duration-200">
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <button type="submit" wire:loading.attr="disabled"
-                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 disabled:opacity-50 disabled:cursor-not-allowed text-black text-[11px] font-bold transition-all shadow-sm">
-                                        <i wire:loading.remove wire:target="addForfait, updateForfait" class="fas fa-{{ $editingForfait ? 'save' : 'plus' }} text-[10px]"></i>
-                                        <i wire:loading wire:target="addForfait, updateForfait" class="fas fa-spinner fa-spin text-[10px]"></i>
-                                        {{ $editingForfait ? 'Modifier' : 'Ajouter' }}
-                                    </button>
-                                    @if($editingForfait)
-                                        <button type="button" wire:click="cancelEdit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-slate-600 dark:text-gray-400 text-[11px] font-bold transition-all">
-                                            <i class="fas fa-times text-[10px]"></i> Annuler
-                                        </button>
-                                    @endif
-                                </div>
-                            </form>
+                            <button type="button" wire:click="openAddForfaitModal"
+                                    class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
+                                <i class="fas fa-plus text-[10px]"></i> Ajouter un forfait
+                            </button>
                         </div>
                     </div>
-                </div>
+                </x-card>
 
             {{-- APERÇU TEMPLATE --}}
-            <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
-                <div class="flex items-center gap-2.5 px-4 py-3 border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/50 dark:bg-darkBg/30">
-                    <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500">
-                        <i class="fas fa-eye text-xs"></i>
-                    </div>
-                    <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Aperçu du portail</h3>
-                </div>
+            <x-card padding="p-0" class="shadow-sm">
+                <x-slot:header>
+                    <x-section-header icon="eye" color="purple">Aperçu du portail</x-section-header>
+                </x-slot:header>
                 <div class="p-2 sm:p-3 max-h-[650px] overflow-y-auto rounded-xl border border-slate-200/80 dark:border-darkBorder">
                     @php
                         $pv = clone $vendeur;
                         $pv->couleur = $couleur;
                         $pv->couleur_top = $couleurTop;
-                        $previewLogoPath = session('preview_logo');
+                        $pKey = fn ($k) => $hotspotId ? "preview_{$k}_{$hotspotId}" : "preview_{$k}";
+                        $previewLogoPath = session($pKey('logo'));
                         $pv->logo = $previewLogoPath ?? $vendeur->logo;
                         $pv->nom_portail = $nomPortail ?: $vendeur->nom_portail;
                         $pv->message_bienvenue = $messageBienvenue ?: $vendeur->message_bienvenue;
                     @endphp
                     @include('shop.template.preview', ['vendeur' => $pv, 'forfaits' => $forfaits, 'embed' => true])
                 </div>
-            </div>
+            </x-card>
         </div>
 
         {{-- LIEN DU PORTAIL (full width) --}}
-        <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
-            <div class="flex items-center gap-2.5 px-4 py-3 border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/50 dark:bg-darkBg/30">
-                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
-                    <i class="fas fa-link text-xs"></i>
-                </div>
-                <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Lien du portail</h3>
-            </div>
+        <x-card padding="p-0" class="shadow-sm">
+            <x-slot:header>
+                <x-section-header icon="link" color="amber">Lien du portail</x-section-header>
+            </x-slot:header>
             <div class="p-4">
                 <p class="text-[11px] text-slate-400 dark:text-gray-500 mb-3">Partagez ce lien aux clients connectés à votre WiFi :</p>
                 <div class="flex items-center gap-2 mb-4">
-                    <input type="text" value="{{ $shopUrl }}" readonly id="shopLink"
+                    <input type="text" value="{{ $shopLink }}" readonly id="shopLink"
                            class="flex-1 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs font-mono text-slate-600 dark:text-gray-400 truncate focus:outline-none">
                     <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('shopLink').value);this.innerHTML='<i class=\'fas fa-check\'></i>';setTimeout(()=>this.innerHTML='<i class=\'fas fa-copy\'></i>',1500)"
-                            class="w-10 h-10 shrink-0 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-black flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                            class="w-10 h-10 shrink-0 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white flex items-center justify-center transition-all shadow-sm hover:shadow-md">
                         <i class="fas fa-copy text-xs"></i>
                     </button>
                 </div>
-                <a href="{{ route('vendor.boutique.download') }}"
+                <a href="{{ route('vendor.boutique.download') }}{{ $hotspotId ? '?hotspot=' . $hotspotId : '' }}"
                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-sm hover:shadow-md">
                     <i class="fas fa-download text-[10px]"></i> Télécharger le pack MikroTik
                 </a>
             </div>
-        </div>
+        </x-card>
     </div>
 
+    {{-- MODAL FORFAIT (AJOUT / MODIFICATION) --}}
+    <x-modal :show="$showForfaitModal" onClose="cancelEdit"
+             :icon="$editingForfait ? 'edit' : 'plus'" :iconBg="$editingForfait ? 'amber' : 'green'"
+             :title="$editingForfait ? 'Modifier le forfait' : 'Nouveau forfait'"
+             :subtitle="$editingForfait ? 'Modifiez les informations ci-dessous.' : 'Remplissez les informations ci-dessous.'">
+        <form wire:submit.prevent="{{ $editingForfait ? 'updateForfait' : 'addForfait' }}" class="space-y-4">
+            <x-input-text label="Libellé" model="forfaitLabel" required placeholder="Ex: 1 Heure" />
+            <div class="grid grid-cols-2 gap-3">
+                <x-input-text label="Montant ({{ $currency }})" type="number" model="forfaitMontant" required placeholder="150" :min="1" />
+                <x-input-text label="Durée (minutes)" type="number" model="forfaitDuree" required placeholder="60" :min="1" />
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+                <button type="submit" wire:loading.attr="disabled"
+                        class="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold transition-all shadow-sm">
+                    <i wire:loading.remove wire:target="addForfait, updateForfait" class="fas fa-{{ $editingForfait ? 'save' : 'plus' }} text-[10px]"></i>
+                    <i wire:loading wire:target="addForfait, updateForfait" class="fas fa-spinner fa-spin text-[10px]"></i>
+                    {{ $editingForfait ? 'Enregistrer' : 'Ajouter' }}
+                </button>
+                <x-btn-secondary wire:click="cancelEdit">Annuler</x-btn-secondary>
+            </div>
+        </form>
+    </x-modal>
+
     {{-- MODAL SUPPRESSION --}}
-    @if($showDeleteModal)
-    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-         wire:click="$set('showDeleteModal', false)"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100">
-        <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-2xl p-6 max-w-sm w-full"
-             onclick="event.stopPropagation()"
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100">
-            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 dark:bg-red-500/10 text-red-500 mx-auto mb-4">
-                <i class="fas fa-trash"></i>
-            </div>
-            <h3 class="text-base font-extrabold text-slate-900 dark:text-white text-center mb-1">Supprimer le forfait</h3>
-            <p class="text-xs text-slate-500 dark:text-gray-400 text-center mb-5">Voulez-vous vraiment supprimer ce forfait ? Cette action est irréversible.</p>
-            <div class="flex items-center gap-2">
-                <button wire:click="$set('showDeleteModal', false)" class="flex-1 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs font-bold text-slate-600 dark:text-gray-400 transition-all">
-                    Annuler
-                </button>
-                <button wire:click="deleteForfait" wire:loading.attr="disabled"
-                        class="flex-1 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold transition-all shadow-sm">
-                    <i wire:loading.remove wire:target="deleteForfait" class="fas fa-trash text-[10px]"></i>
-                    <i wire:loading wire:target="deleteForfait" class="fas fa-spinner fa-spin text-[10px]"></i>
-                    Supprimer
-                </button>
-            </div>
+    <x-modal :show="$showDeleteModal" onClose="$set('showDeleteModal', false)" icon="trash" iconBg="red" title="Supprimer le forfait" subtitle="Voulez-vous vraiment supprimer ce forfait ? Cette action est irréversible.">
+        <div class="flex items-center gap-2">
+            <x-btn-secondary wire:click="$set('showDeleteModal', false)">Annuler</x-btn-secondary>
+            <button wire:click="deleteForfait" wire:loading.attr="disabled"
+                    class="flex-1 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold transition-all shadow-sm">
+                <i wire:loading.remove wire:target="deleteForfait" class="fas fa-trash text-[10px]"></i>
+                <i wire:loading wire:target="deleteForfait" class="fas fa-spinner fa-spin text-[10px]"></i>
+                Supprimer
+            </button>
         </div>
-    </div>
-    @endif
+    </x-modal>
 </div>

@@ -21,6 +21,7 @@ class LigdiCashService
     public function createInvoice(array $data): array
     {
         $response = Http::withHeaders([
+            'Apikey' => $this->apiKey,
             'Authorization' => "Bearer {$this->apiToken}",
             'Content-Type' => 'application/json',
         ])->timeout(15)->post("{$this->baseUrl}/create", $data);
@@ -38,6 +39,7 @@ class LigdiCashService
     public function confirmPayment(string $invoiceToken): array
     {
         $response = Http::withHeaders([
+            'Apikey' => $this->apiKey,
             'Authorization' => "Bearer {$this->apiToken}",
         ])->timeout(15)->get("{$this->baseUrl}/confirm", [
             'invoiceToken' => $invoiceToken,
@@ -57,26 +59,39 @@ class LigdiCashService
     {
         $baseUrl = config('platform.urls.base');
 
+        $montant = max((int)($forfait['montant'] ?? 0), 9);
+
         return [
-            'items' => [[
-                'name' => "WiFi - {$forfait['label']}",
-                'description' => "Accès WiFi {$forfait['label']}",
-                'quantity' => 1,
-                'unit_price' => $forfait['montant'],
-                'total_price' => $forfait['montant'],
-            ]],
-            'custom_data' => [
-                'transaction_id' => $transactionId,
-                'vendeur_id' => $vendeurId,
-            ],
-            'invoice' => [
-                'description' => "Accès WiFi {$forfait['label']}",
-            ],
-            'callback_url' => "{$baseUrl}/api/payment-callback",
-            'return_url' => "{$baseUrl}/merci?invoiceToken={token}&vendeur_id={$vendeurId}",
-            'cancel_url' => "{$baseUrl}/annule?token={token}&vendeur_id={$vendeurId}",
-            'client' => [
-                'email' => '',
+            'commande' => [
+                'invoice' => [
+                    'items' => [[
+                        'name' => "WiFi - {$forfait['label']}",
+                        'description' => "Accès WiFi {$forfait['label']}",
+                        'quantity' => 1,
+                        'unit_price' => $montant,
+                        'total_price' => $montant,
+                    ]],
+                    'total_amount' => $montant,
+                    'devise' => config('platform.currency', 'XOF'),
+                    'description' => "Accès WiFi {$forfait['label']}",
+                    'customer' => '',
+                    'customer_firstname' => '',
+                    'customer_lastname' => '',
+                    'customer_email' => '',
+                ],
+                'store' => [
+                    'name' => config('platform.name', 'Wifi Pour Tous'),
+                    'website_url' => config('platform.urls.base', 'http://localhost:8000'),
+                ],
+                'actions' => [
+                    'cancel_url' => "{$baseUrl}/annule?token={token}&vendeur_id={$vendeurId}",
+                    'return_url' => "{$baseUrl}/merci?invoiceToken={token}&vendeur_id={$vendeurId}",
+                    'callback_url' => "{$baseUrl}/api/payment-callback",
+                ],
+                'custom_data' => [
+                    'transaction_id' => $transactionId,
+                    'vendeur_id' => $vendeurId,
+                ],
             ],
         ];
     }

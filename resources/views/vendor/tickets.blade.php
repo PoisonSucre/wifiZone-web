@@ -27,7 +27,7 @@
                 <i class="fas fa-wifi text-[10px]"></i> Choisir un hotspot
             </a>
         @endif
-        <a href="{{ route('vendor.import') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neonGreen hover:bg-neonGreen-600 text-black text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
+        <a href="{{ route('vendor.import') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
             <i class="fas fa-plus text-[10px]"></i> Ajouter
         </a>
     </div>

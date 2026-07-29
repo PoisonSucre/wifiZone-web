@@ -30,13 +30,13 @@
     </div>
 
     {{-- CONTENU RÉEL --}}
-    <div x-show="loaded"
+    <div x-data="{ loaded: false, fileName: '' }"
+         x-init="$nextTick(() => loaded = true)"
+         x-show="loaded"
          x-transition:enter="transition ease-out duration-500"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
-         class="space-y-4 sm:space-y-5"
-
-         x-data="{ importMode: 'without_password', loading: false, importResult: null, importSuccess: false, fileName: '' }">
+         class="space-y-4 sm:space-y-5">
 
         {{-- FORMULAIRE D'IMPORT --}}
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
@@ -53,18 +53,18 @@
                     <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-2 block">Mode d'importation</label>
                     <div class="grid grid-cols-2 p-1.5 gap-1 bg-slate-100/80 dark:bg-darkBg/80 rounded-xl border border-slate-200/60 dark:border-darkBorder/50 relative">
                         <div class="absolute top-1.5 bottom-1.5 rounded-lg bg-white dark:bg-darkCard shadow-sm transition-all duration-300 ease-out border border-slate-100 dark:border-darkBorder/50"
-                             :class="importMode === 'without_password' ? 'left-1.5 w-[calc(50%-6px)]' : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'"></div>
-                        <label @click="importMode = 'without_password'"
+                             :class="$wire.importMode === 'without_password' ? 'left-1.5 w-[calc(50%-6px)]' : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'"></div>
+                        <label wire:click="$set('importMode', 'without_password')"
                                class="relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold cursor-pointer transition-all duration-200 select-none z-10"
-                               :class="importMode === 'without_password' ? 'text-neonGreen' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'">
-                            <input type="radio" x-model="importMode" value="without_password" class="sr-only">
+                               :class="$wire.importMode === 'without_password' ? 'text-neonGreen' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'">
+                            <input type="radio" value="without_password" class="sr-only" {{ $importMode === 'without_password' ? 'checked' : '' }}>
                             <i class="fas fa-ticket text-sm"></i>
                             Tickets
                         </label>
-                        <label @click="importMode = 'with_password'"
+                        <label wire:click="$set('importMode', 'with_password')"
                                class="relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold cursor-pointer transition-all duration-200 select-none z-10"
-                               :class="importMode === 'with_password' ? 'text-neonGreen' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'">
-                            <input type="radio" x-model="importMode" value="with_password" class="sr-only">
+                               :class="$wire.importMode === 'with_password' ? 'text-neonGreen' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'">
+                            <input type="radio" value="with_password" class="sr-only" {{ $importMode === 'with_password' ? 'checked' : '' }}>
                             <i class="fas fa-users text-sm"></i>
                             Membres
                         </label>
@@ -77,7 +77,8 @@
                         <i class="fas fa-file-code text-neonGreen text-[10px]"></i>
                         Format CSV attendu
                     </p>
-                    <div x-show="importMode === 'with_password'" x-transition class="space-y-2">
+                    @if($importMode === 'with_password')
+                    <div class="space-y-2">
                         <div class="flex items-center gap-2">
                             <code class="font-mono text-xs px-3 py-2 rounded-lg bg-slate-100 dark:bg-darkBorder/50 text-neonGreen font-bold border border-neonGreen/10">user;password;forfait;montant</code>
                             <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">4 colonnes</span>
@@ -87,7 +88,8 @@
                             Importez les codes et mots de passe générés dans Mikhmon.
                         </p>
                     </div>
-                    <div x-show="importMode === 'without_password'" x-transition class="space-y-2">
+                    @else
+                    <div class="space-y-2">
                         <div class="flex items-center gap-2">
                             <code class="font-mono text-xs px-3 py-2 rounded-lg bg-slate-100 dark:bg-darkBorder/50 text-neonGreen font-bold border border-neonGreen/10">user;forfait;montant</code>
                             <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">3 colonnes</span>
@@ -97,12 +99,13 @@
                             Le mot de passe sera attribué automatiquement par la plateforme.
                         </p>
                     </div>
+                    @endif
                     <div class="flex flex-wrap gap-2 mt-3">
-                        <a :href="'/vendeur/template?format=csv&mode=' + importMode"
+                        <a href="{{ route('vendor.template') }}?format=csv&mode={{ $importMode }}"
                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neonGreen/20 bg-neonGreen/5 text-neonGreen text-[11px] font-bold hover:bg-neonGreen/10 transition-all">
                             <i class="fas fa-download text-[10px]"></i> Template CSV
                         </a>
-                        <a :href="'/vendeur/template?format=excel&mode=' + importMode"
+                        <a href="{{ route('vendor.template') }}?format=excel&mode={{ $importMode }}"
                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/5 text-blue-500 text-[11px] font-bold hover:bg-blue-500/10 transition-all">
                             <i class="fas fa-download text-[10px]"></i> Template Excel
                         </a>
@@ -113,16 +116,18 @@
                 <div>
                     <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-2 block">Fichier</label>
                     <div class="relative">
-                        <input type="file"
-                               @change="fileName = $event.target.files[0]?.name || ''"
+                        <input type="file" wire:model="importFile"
                                accept=".csv,.xlsx,.xls"
+                               @change="fileName = $event.target.files[0]?.name || ''"
                                class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-sm text-slate-900 dark:text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-neonGreen/10 file:text-neonGreen focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all duration-200">
-                        <div x-show="fileName" x-transition
-                             class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[10px] font-bold text-neonGreen bg-neonGreen/10 px-2 py-1 rounded-lg">
+                        @if($importFile)
+                        <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[10px] font-bold text-neonGreen bg-neonGreen/10 px-2 py-1 rounded-lg">
                             <i class="fas fa-check text-[8px]"></i>
-                            <span x-text="fileName" class="max-w-[100px] truncate"></span>
+                            <span class="max-w-[100px] truncate">{{ $importFile->getClientOriginalName() }}</span>
                         </div>
+                        @endif
                     </div>
+                    @error('importFile') <p class="text-[10px] text-red-500 mt-1 font-bold">{{ $message }}</p> @enderror
                     <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-1.5">
                         <i class="fas fa-info-circle mr-1"></i>
                         Formats acceptés : .CSV, .XLSX, .XLS — max 5 Mo
@@ -131,30 +136,27 @@
 
                 {{-- BOUTON IMPORT --}}
                 <div class="flex items-center gap-3">
-                    <button @click="loading = true; setTimeout(() => { loading = false; importSuccess = true; importResult = 'Tickets importés avec succès !' }, 2000)"
-                            :disabled="loading"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-black text-[11px] font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span x-show="!loading"><i class="fas fa-upload text-[10px]"></i> Importer</span>
-                        <span x-show="loading" class="flex items-center gap-2">
+                    <button wire:click="importFile" wire:loading.attr="disabled"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span wire:loading.remove><i class="fas fa-upload text-[10px]"></i> Importer</span>
+                        <span wire:loading class="flex items-center gap-2">
                             <i class="fas fa-circle-notch fa-spin text-[10px]"></i> Import en cours...
                         </span>
                     </button>
                 </div>
 
                 {{-- RÉSULTAT --}}
-                <div x-show="importResult"
-                     x-transition:enter="transition ease-out duration-300"
+                @if($importResult)
+                <div x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="opacity-0 translate-y-2"
                      x-transition:enter-end="opacity-100 translate-y-0"
-                     class="p-3 rounded-xl text-xs font-bold border"
-                     :class="importSuccess
-                         ? 'bg-emerald-50 dark:bg-neonGreen/10 border-emerald-200 dark:border-neonGreen/20 text-emerald-700 dark:text-neonGreen'
-                         : 'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400'">
+                     class="p-3 rounded-xl text-xs font-bold border {{ $importSuccess ? 'bg-emerald-50 dark:bg-neonGreen/10 border-emerald-200 dark:border-neonGreen/20 text-emerald-700 dark:text-neonGreen' : 'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400' }}">
                     <div class="flex items-center gap-2">
-                        <i :class="importSuccess ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'" class="text-sm"></i>
-                        <span x-text="importResult"></span>
+                        <i class="fas {{ $importSuccess ? 'fa-check-circle' : 'fa-exclamation-circle' }} text-sm"></i>
+                        <span>{{ $importResult }}</span>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
 

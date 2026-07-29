@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="theme-color" content="{{ $vendeur->couleur ?? '#1ca04e' }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 @endif
     <style>
@@ -235,6 +236,7 @@ body {
             </button>
         </div>
 
+        @if(!($hideLogin ?? false))
         <div class="box">
             <button class="small-button" onclick="window.location='{{ url('/recuperer-ticket') }}'">
                 <i class="fas fa-qrcode"></i> Scannez le Qrcode ici
@@ -255,6 +257,7 @@ body {
             </div>
             <button class="button" type="submit">Valider</button>
         </form>
+        @endif
 
         <table class="table" border="0" cellspacing="2" cellpadding="3">
             <span class="pub">Acheter nos tickets avec :</span>
@@ -304,11 +307,39 @@ body {
     </div>
 
 @if(!($embed ?? false))
+    @if(!($hideLogin ?? false))
     <script>
         function togglePasswordVisibility() {
             var f = document.querySelector(".password");
             f.type = f.type === "password" ? "text" : "password";
         }
+    </script>
+    @endif
+    <script>
+        document.addEventListener('submit', function(e) {
+            var form = e.target;
+            if (form.action && form.action.indexOf('/api/payment-process') !== -1) {
+                e.preventDefault();
+                var formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                    }
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.success && data.payment_url) {
+                        window.location.href = data.payment_url;
+                    } else {
+                        alert('Erreur: ' + (data.error || (data.details && data.details.description) || 'Paiement impossible'));
+                    }
+                })
+                .catch(function() { alert('Erreur de connexion au serveur de paiement'); });
+            }
+        });
     </script>
 </body>
 </html>
