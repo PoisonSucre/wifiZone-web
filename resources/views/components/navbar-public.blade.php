@@ -12,10 +12,12 @@
                 <i class="fas fa-ticket-alt text-xs opacity-70"></i> Récupérer mon ticket
                 <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neonGreen rounded-full transition-all duration-300 group-hover:w-8"></span>
             </a>
+            @hasSection('showAnchor')
             <a href="#comment-ca-marche" class="relative py-2 text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors group flex items-center gap-1.5">
                 <i class="fas fa-circle-question text-xs opacity-70"></i> Comment ça marche
                 <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neonGreen rounded-full transition-all duration-300 group-hover:w-8"></span>
             </a>
+            @endif
             <a href="{{ route('contact') }}" class="relative py-2 text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors group flex items-center gap-1.5">
                 <i class="fas fa-headset text-xs opacity-70"></i> Nous Contacter
                 <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neonGreen rounded-full transition-all duration-300 group-hover:w-8"></span>
@@ -27,7 +29,7 @@
                 <i id="theme-toggle-dark-icon" class="fas fa-moon text-base sm:text-lg inline dark:hidden"></i>
             </button>
             @auth
-                <a href="{{ auth()->user()->is_admin ? '/raider/' : '/vendeur/' }}" class="hidden sm:inline-block px-5 py-2 text-sm font-bold text-white dark:text-white bg-neonGreen hover:bg-neonGreen-400 rounded-full transition-all duration-300 shadow-neon-button">
+                <a href="{{ '/vendeur/' }}" class="hidden sm:inline-block px-5 py-2 text-sm font-bold text-white dark:text-white bg-neonGreen hover:bg-neonGreen-400 rounded-full transition-all duration-300 shadow-neon-button">
                     <i class="fas fa-tachometer-alt"></i> Mon Espace
                 </a>
             @else
@@ -46,11 +48,13 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden absolute left-4 right-4 mt-3 rounded-3xl border border-slate-200/60 dark:border-darkBorder/60 bg-white dark:bg-darkBg p-6 space-y-4 shadow-xl transition-all duration-300">
         <a href="{{ route('recuperer-ticket') }}" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-ticket-alt text-[10px] opacity-70"></i> Récupérer mon ticket</a>
+        @hasSection('showAnchor')
         <a href="#comment-ca-marche" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-circle-question text-[10px] opacity-70"></i> Comment ça marche</a>
+        @endif
         <a href="{{ route('contact') }}" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-headset text-[10px] opacity-70"></i> Nous Contacter</a>
         <div class="pt-4 border-t border-slate-200/50 dark:border-darkBorder/50 flex flex-col gap-3">
             @auth
-                <a href="{{ auth()->user()->is_admin ? '/raider/' : '/vendeur/' }}" class="w-full text-center py-2.5 text-xs font-bold text-white bg-neonGreen rounded-full hover:bg-neonGreen-400 transition-colors">
+                <a href="{{ '/vendeur/' }}" class="w-full text-center py-2.5 text-xs font-bold text-white bg-neonGreen rounded-full hover:bg-neonGreen-400 transition-colors">
                     <i class="fas fa-tachometer-alt"></i> Mon Espace
                 </a>
             @else

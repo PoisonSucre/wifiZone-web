@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Vendor;
 
+use App\Models\Admin;
 use App\Models\Setting;
-use App\Models\Vendeur;
 use App\Models\Withdrawal;
 use App\Notifications\WithdrawalRequestedNotification;
 use Illuminate\Support\Facades\DB;
@@ -62,8 +62,7 @@ class RetraitManager extends Component
         }
 
         try {
-            $adminEmail = Setting::get('admin_email', Vendeur::where('is_admin', true)->value('email'));
-            $admin = Vendeur::where('email', $adminEmail)->where('is_admin', true)->first();
+            $admin = Admin::first();
             if ($admin) {
                 $vendeur = auth()->user();
                 $withdrawal = $vendeur->withdrawals()->latest()->first();

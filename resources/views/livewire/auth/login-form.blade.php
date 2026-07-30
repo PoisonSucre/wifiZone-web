@@ -30,13 +30,6 @@
             @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div class="flex items-center justify-between">
-            <div></div>
-            <a href="{{ route('vendor.forgot-password') }}" class="text-xs font-bold text-slate-500 dark:text-gray-400 hover:text-neonGreen dark:hover:text-neonGreen transition-colors">
-                Mot de passe oublié ?
-            </a>
-        </div>
-
         <button type="submit" wire:loading.attr="disabled" class="w-full bg-neonGreen hover:bg-neonGreen-400 text-white font-extrabold py-4 px-6 rounded-2xl shadow-neon-button transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3 text-sm">
             <span wire:loading.remove wire:target="login" class="flex items-center gap-3">
                 <i class="fas fa-sign-in-alt"></i> Se connecter

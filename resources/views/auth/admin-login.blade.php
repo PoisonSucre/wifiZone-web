@@ -4,10 +4,10 @@
 @section('content')
 <div class="max-w-md w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-10 shadow-xl transition-all duration-300 hover:border-neonGreen/30 hover:shadow-neon-glow">
     <div class="text-center mb-8">
-        <a href="/" class="inline-flex items-center gap-3 text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-wide text-glow mb-2">
+        <div class="inline-flex items-center gap-3 text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-wide text-glow mb-2">
             <span class="text-neonGreen"><i class="fas fa-shield-alt"></i></span>
-            Admin - {{ config('platform.name') }}
-        </a>
+            Admin
+        </div>
         <p class="text-sm text-slate-500 dark:text-gray-400">Accès à l'administration</p>
     </div>
 
@@ -54,8 +54,8 @@
     </form>
 
     <div class="mt-4 pt-4 border-t border-slate-100 dark:border-darkBorder/40 text-center">
-        <a href="{{ route('vendor.login') }}" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-            <i class="fas fa-arrow-left"></i> Retour
+        <a href="/" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+            <i class="fas fa-home"></i> Retour à l'accueil
         </a>
     </div>
 </div>

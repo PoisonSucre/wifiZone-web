@@ -74,7 +74,7 @@ class VendeurManager extends Component
         $vendeur->update(['statut' => 'actif']);
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'activate_vendor',
             'target_type' => 'vendeur',
             'target_id' => $id,
@@ -97,7 +97,7 @@ class VendeurManager extends Component
         $vendeur->update(['statut' => 'suspendu']);
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'suspend_vendor',
             'target_type' => 'vendeur',
             'target_id' => $id,
@@ -117,14 +117,10 @@ class VendeurManager extends Component
     public function delete(int $id): void
     {
         $vendeur = Vendeur::find($id);
-        if ($vendeur && $vendeur->is_admin) {
-            session()->flash('error', 'Impossible de supprimer un compte administrateur.');
-            return;
-        }
         Vendeur::where('id', $id)->delete();
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'delete_vendor',
             'target_type' => 'vendeur',
             'target_id' => $id,
@@ -158,7 +154,7 @@ class VendeurManager extends Component
         ]);
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'create_vendor',
             'target_type' => 'vendeur',
             'target_id' => $vendeur->id,
@@ -184,7 +180,7 @@ class VendeurManager extends Component
         Vendeur::where('id', $this->editingCommissionId)->update(['commission_pct' => $this->editingCommissionValue]);
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'update_commission',
             'target_type' => 'vendeur',
             'target_id' => $this->editingCommissionId,
@@ -198,8 +194,7 @@ class VendeurManager extends Component
 
     public function render()
     {
-        $query = Vendeur::where('is_admin', false)
-            ->withCount([
+        $query = Vendeur::withCount([
                 'tickets as nb_vendus' => fn($q) => $q->where('status', 'vendu'),
                 'tickets as nb_dispo' => fn($q) => $q->where('status', 'disponible'),
             ])

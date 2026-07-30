@@ -17,13 +17,6 @@ class EnsureVendeurIsActive
 
         $vendeur = Auth::user();
 
-        if ($vendeur->is_admin) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect()->route('admin.dashboard');
-        }
-
         if ($vendeur->statut === 'en_attente') {
             session(['pending_vendor_email' => $vendeur->email]);
             return redirect()->route('vendor.pending');

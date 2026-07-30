@@ -3,7 +3,7 @@
 @section('title', 'Récupérer un Ticket - ' . config('platform.name'))
 
 @section('navbar')
-    @include('partials.navbar')
+    <x-navbar-public />
 @endsection
 
 @section('content')

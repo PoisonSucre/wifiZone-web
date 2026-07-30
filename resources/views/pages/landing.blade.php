@@ -1,8 +1,10 @@
 @extends('layouts.public')
 @section('title', config('platform.name') . ' - Monétisez votre WiFi Zone')
 
+@section('showAnchor', true)
+
 @section('navbar')
-    @include('partials.navbar')
+    <x-navbar-public />
 @endsection
 
 @section('content')
@@ -108,7 +110,7 @@
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 @auth
-                    <a href="{{ auth()->user()->is_admin ? '/raider/' : '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+                    <a href="{{ '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                         <i class="fas fa-tachometer-alt"></i> Mon Tableau de bord
                     </a>
                 @else
@@ -662,7 +664,7 @@
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             @auth
-                <a href="{{ auth()->user()->is_admin ? '/raider/' : '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+                <a href="{{ '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                     <i class="fas fa-tachometer-alt"></i> Mon Tableau de bord
                 </a>
             @else

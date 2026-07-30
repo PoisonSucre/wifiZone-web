@@ -30,7 +30,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectUsersTo(fn () => route('vendor.dashboard'));
-        $middleware->redirectGuestsTo(fn () => route('vendor.login'));
+        $middleware->redirectGuestsTo(fn (Request $request) =>
+            $request->is('raider/*') || $request->is('raider/login')
+                ? route('admin.login')
+                : route('vendor.login')
+        );
 
         // $middleware->statefulApi(); // Sanctum non installe
 

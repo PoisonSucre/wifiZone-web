@@ -1,7 +1,7 @@
 @extends('layouts.public')
 @section('title', config('platform.name') . ' - Installation WifiZone')
 @section('navbar')
-    @include('partials.navbar')
+    <x-navbar-public />
 @endsection
 @section('content')
 
@@ -43,25 +43,24 @@
 <div class="min-h-screen bg-slate-50 dark:bg-[#0A0A0C] pt-32" x-data="{ selectedPack: null }">
     {{-- Packs & helpers --}}
     @php
+    $packNom = \App\Models\Setting::get('pack_nom', 'Pack WiFi Zone');
+    $packSousTitre = \App\Models\Setting::get('pack_sous_titre', 'La solution clé en main pour votre hotspot');
+    $packPrix = \App\Models\Setting::get('pack_prix', '120 000');
+    $packPrixNote = \App\Models\Setting::get('pack_prix_note', 'FCFA');
+    $packEquipementsRaw = \App\Models\Setting::get('pack_equipements', "Antenne (Tenda)\nMikrotik\nCablages");
+    $packServicesRaw = \App\Models\Setting::get('pack_services', "Installation & configuration complète\nConfiguration portail captif\nTest de couverture & optimisation\nFormation vendeur 1h\nSupport technique 30 jours\nTickets personnalisé");
+    $packImage = \App\Models\Setting::get('pack_image', 'Wifizone.png');
+    $packActif = \App\Models\Setting::get('pack_actif', '1') === '1';
+    $whatsappActif = \App\Models\Setting::get('whatsapp_actif', '1') === '1';
+
     $pack = [
         'id' => 'wifizone',
-        'nom' => 'Pack WiFi Zone',
-        'sousTitre' => 'La solution clé en main pour votre hotspot',
-        'prix' => '120 000',
-        'prixNote' => 'FCFA',
-        'equipements' => [
-            'Antenne (Tenda)',
-            'Mikrotik',
-            'Cablages',
-        ],
-        'services' => [
-            'Installation & configuration complète',
-            'Configuration portail captif',
-            'Test de couverture & optimisation',
-            'Formation vendeur 1h',
-            'Support technique 30 jours',
-            'Tickets personnalisé',
-        ],
+        'nom' => $packNom,
+        'sousTitre' => $packSousTitre,
+        'prix' => $packPrix,
+        'prixNote' => $packPrixNote,
+        'equipements' => array_map('trim', array_filter(explode("\n", $packEquipementsRaw))),
+        'services' => array_map('trim', array_filter(explode("\n", $packServicesRaw))),
         'couleur' => '#10B981',
         'garantie' => '1 an',
         'support' => '30 jours',
@@ -136,7 +135,8 @@
             {{-- Copy column --}}
             <div class="text-center lg:text-right">
                 <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.08] mb-6">
-                    Nous installons votre <span class="text-neonGreen text-glow">WiFi Zone</span> clé en main
+                    Nous installons votre<br>
+                    <span class="text-neonGreen text-glow whitespace-nowrap">WiFi Zone</span><span class="whitespace-nowrap"> clé en main</span>
                 </h1>
                 <p class="text-base sm:text-lg text-slate-600 dark:text-gray-400 max-w-xl mx-auto lg:mx-0 lg:ml-auto mb-8">
                     Matériel professionnel, configuration experte, formation incluse. Vous lancez votre activité, on s'occupe de la technique.
@@ -144,9 +144,6 @@
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-end gap-4">
                     <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-6 py-4 text-base rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                         <i class="fas fa-headset"></i> Demander un devis
-                    </a>
-                    <a href="#packs" class="inline-flex items-center justify-center gap-2 bg-white dark:bg-darkCard/80 hover:bg-slate-100 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white font-bold px-6 py-4 text-base rounded-full transition-all shadow-sm">
-                        <i class="fas fa-box-open"></i> Voir nos packs
                     </a>
                 </div>
             </div>
@@ -168,6 +165,7 @@
     {{-- ============================================================ --}}
     {{-- PACKS --}}
     {{-- ============================================================ --}}
+    @if($packActif)
     <section id="packs" class="py-16 sm:py-24 bg-white dark:bg-darkBg transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
@@ -238,7 +236,7 @@
                 </div>
 
                 <div class="relative flex justify-center">
-                    <img src="{{ asset('Wifizone.png') }}" alt="WiFi Zone" class="w-full h-full object-cover rounded-3xl shadow-2xl ring-1 ring-black/5">
+                    <img src="{{ asset($packImage) }}" alt="{{ $packNom }}" class="w-full h-full object-cover rounded-3xl shadow-2xl ring-1 ring-black/5">
                     <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-neonGreen/60 to-transparent pointer-events-none rounded-b-3xl"></div>
                 </div>
             </div>
@@ -246,6 +244,7 @@
 
         </div>
     </section>
+    @endif
 
     {{-- ============================================================ --}}
     {{-- PROCESSUS --}}
@@ -312,9 +311,15 @@
                         );
                         $whatsappMsg = urlencode($message);
                     @endphp
+                    @if($whatsappActif)
                     <a href="https://wa.me/{{ $waNumber }}?text={{ $whatsappMsg }}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-white text-neonGreen font-bold px-8 py-4 text-base rounded-full hover:bg-slate-100 transition-all transform hover:-translate-y-0.5 shadow-xl">
                         <i class="fab fa-whatsapp"></i> Demander mon étude gratuite
                     </a>
+                    @else
+                    <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 bg-white text-neonGreen font-bold px-8 py-4 text-base rounded-full hover:bg-slate-100 transition-all transform hover:-translate-y-0.5 shadow-xl">
+                        <i class="fas fa-headset"></i> Demander un devis
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>

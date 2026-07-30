@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Admin;
 use App\Models\Vendeur;
 
 return [
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => 'vendor',
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -18,6 +19,10 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'vendor' => [
+            'driver' => 'session',
+            'provider' => 'vendeurs',
+        ],
     ],
 
     'providers' => [
@@ -27,7 +32,7 @@ return [
         ],
         'admins' => [
             'driver' => 'eloquent',
-            'model' => Vendeur::class,
+            'model' => Admin::class,
         ],
     ],
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Admin;
 use App\Models\Setting;
-use App\Models\Vendeur;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,6 +13,7 @@ class ParametreManager extends Component
     public string $plateformeDevise = 'XOF';
     public float $commissionPct = 10;
     public string $adminEmail = '';
+    public string $adminCurrentPass = '';
     public string $adminNewPass = '';
     public string $adminConfirmPass = '';
 
@@ -22,7 +23,7 @@ class ParametreManager extends Component
         $this->plateformeNom = $settings['plateforme_nom'] ?? config('platform.name');
         $this->plateformeDevise = $settings['plateforme_devise'] ?? config('platform.currency');
         $this->commissionPct = (float) ($settings['commission_pct'] ?? config('platform.commission_pct'));
-        $this->adminEmail = Vendeur::where('is_admin', true)->value('email') ?? '';
+        $this->adminEmail = Admin::value('email') ?? '';
     }
 
     public function updatePlatform(): void
@@ -41,17 +42,29 @@ class ParametreManager extends Component
 
     public function updateSecurity(): void
     {
-        $this->validate([
+        $rules = [
             'adminNewPass' => 'nullable|string|min:8',
             'adminConfirmPass' => 'nullable|string|same:adminNewPass',
-        ]);
+        ];
 
         if ($this->adminNewPass) {
-            Vendeur::where('is_admin', true)->update([
+            $rules['adminCurrentPass'] = 'required|string';
+        }
+
+        $this->validate($rules);
+
+        if ($this->adminNewPass) {
+            if (!Hash::check($this->adminCurrentPass, auth('admin')->user()->password)) {
+                $this->addError('adminCurrentPass', 'Le mot de passe actuel est incorrect.');
+                return;
+            }
+
+            Admin::where('id', auth('admin')->id())->update([
                 'password' => Hash::make($this->adminNewPass),
             ]);
         }
 
+        $this->adminCurrentPass = '';
         $this->adminNewPass = '';
         $this->adminConfirmPass = '';
         session()->flash('success', 'Mot de passe administrateur mis à jour.');

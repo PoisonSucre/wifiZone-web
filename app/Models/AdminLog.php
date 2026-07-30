@@ -22,6 +22,6 @@ class AdminLog extends Model
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(Vendeur::class, 'admin_id');
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }

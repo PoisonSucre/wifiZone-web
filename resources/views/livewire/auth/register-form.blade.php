@@ -15,7 +15,7 @@
     </div>
 
     <form class="space-y-5">
-        <div x-show="$wire.step === 1" class="space-y-4">
+        <div x-show="$wire.step === 1" x-cloak class="space-y-4">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400 mb-2">Prénom</label>
                 <input type="text" wire:model="prenom" required
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div x-show="$wire.step === 2" class="space-y-4">
+        <div x-show="$wire.step === 2" x-cloak class="space-y-4">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400 mb-2">Email</label>
                 <div class="relative">
@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <div x-show="$wire.step === 3" class="space-y-4" x-data="{ showPassword: false }">
+        <div x-show="$wire.step === 3" x-cloak class="space-y-4" x-data="{ showPassword: false }">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400 mb-2">Mot de Passe</label>
                 <div class="relative">

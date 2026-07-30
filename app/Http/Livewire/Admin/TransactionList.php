@@ -26,7 +26,7 @@ class TransactionList extends Component
         }
 
         $transactions = $query->orderByDesc('date_creation')->paginate(50);
-        $vendeurs = Vendeur::where('is_admin', false)->select('id', 'nom', 'prenom')->orderBy('nom')->get();
+        $vendeurs = Vendeur::select('id', 'nom', 'prenom')->orderBy('nom')->get();
 
         return view('livewire.admin.transaction-list', compact('transactions', 'vendeurs'));
     }

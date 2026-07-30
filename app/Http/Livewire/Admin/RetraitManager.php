@@ -83,7 +83,7 @@ class RetraitManager extends Component
         ]);
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'reject_withdrawal',
             'target_type' => 'withdrawal',
             'target_id' => $withdrawal->id,
@@ -111,7 +111,7 @@ class RetraitManager extends Component
         ]);
 
         AdminLog::create([
-            'admin_id' => auth()->id(),
+            'admin_id' => auth('admin')->id(),
             'action' => 'pay_withdrawal',
             'target_type' => 'withdrawal',
             'target_id' => $withdrawal->id,

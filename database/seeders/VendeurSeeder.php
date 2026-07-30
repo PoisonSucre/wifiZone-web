@@ -10,28 +10,11 @@ class VendeurSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminPassword = \Illuminate\Support\Str::password(12);
-        Vendeur::updateOrCreate(
-            ['email' => 'admin@wifipourtous.com'],
-            [
-                'nom' => 'Admin',
-                'prenom' => 'Raider',
-                'is_admin' => true,
-                'telephone' => '+22600000000',
-                'password' => bcrypt($adminPassword),
-                'statut' => 'actif',
-                'commission_pct' => 10.00,
-            ]
-        );
-        $this->command->warn("Admin credentials: admin@wifipourtous.com / {$adminPassword}");
-        $this->command->info('You can also run: php artisan admin:create to set a custom password');
-
         Vendeur::updateOrCreate(
             ['email' => 'amadou@test.com'],
             [
                 'nom' => 'Diallo',
                 'prenom' => 'Amadou',
-                'is_admin' => false,
                 'telephone' => '+22607123456',
                 'password' => 'password',
                 'statut' => 'actif',
@@ -44,7 +27,6 @@ class VendeurSeeder extends Seeder
             [
                 'nom' => 'Ouédraogo',
                 'prenom' => 'Fatima',
-                'is_admin' => false,
                 'telephone' => '+22607987654',
                 'password' => 'password',
                 'statut' => 'actif',
@@ -57,7 +39,6 @@ class VendeurSeeder extends Seeder
             [
                 'nom' => 'Kaboré',
                 'prenom' => 'Ibrahim',
-                'is_admin' => false,
                 'telephone' => '+22607555123',
                 'password' => 'password',
                 'statut' => 'actif',
@@ -65,13 +46,11 @@ class VendeurSeeder extends Seeder
             ]
         );
 
-        // En attente
         Vendeur::updateOrCreate(
             ['email' => 'aissatou@test.com'],
             [
                 'nom' => 'Sawadogo',
                 'prenom' => 'Aissatou',
-                'is_admin' => false,
                 'telephone' => '+22607111222',
                 'password' => 'password',
                 'statut' => 'en_attente',
@@ -84,7 +63,6 @@ class VendeurSeeder extends Seeder
             [
                 'nom' => 'Compaoré',
                 'prenom' => 'Moussa',
-                'is_admin' => false,
                 'telephone' => '+22607333444',
                 'password' => 'password',
                 'statut' => 'en_attente',
@@ -97,7 +75,6 @@ class VendeurSeeder extends Seeder
             [
                 'nom' => 'Hamed',
                 'prenom' => 'Rani',
-                'is_admin' => false,
                 'telephone' => '+22607777888',
                 'password' => 'password',
                 'statut' => 'actif',
@@ -106,13 +83,11 @@ class VendeurSeeder extends Seeder
             ]
         );
 
-        // Suspendu
         Vendeur::updateOrCreate(
             ['email' => 'salimata@test.com'],
             [
                 'nom' => 'Touré',
                 'prenom' => 'Salimata',
-                'is_admin' => false,
                 'telephone' => '+22607555666',
                 'password' => 'password',
                 'statut' => 'suspendu',

@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('vendeurs', function (Blueprint $table) {
             $table->index('statut', 'idx_vendeurs_statut');
-            $table->index('is_admin', 'idx_vendeurs_is_admin');
             $table->index('date_inscription', 'idx_vendeurs_date_inscription');
         });
 
@@ -49,7 +48,6 @@ return new class extends Migration
     {
         Schema::table('vendeurs', function (Blueprint $table) {
             $table->dropIndex('idx_vendeurs_statut');
-            $table->dropIndex('idx_vendeurs_is_admin');
             $table->dropIndex('idx_vendeurs_date_inscription');
         });
 

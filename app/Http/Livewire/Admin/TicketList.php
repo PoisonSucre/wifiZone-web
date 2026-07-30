@@ -35,7 +35,7 @@ class TicketList extends Component
         }
 
         $tickets = $query->orderByDesc('id')->paginate(50);
-        $vendeurs = Vendeur::where('is_admin', false)->select('id', 'nom', 'prenom')->orderBy('nom')->get();
+        $vendeurs = Vendeur::select('id', 'nom', 'prenom')->orderBy('nom')->get();
 
         return view('livewire.admin.ticket-list', compact('tickets', 'vendeurs'));
     }

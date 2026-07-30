@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vendeur;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,18 +25,15 @@ class AdminAuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $vendeur = Vendeur::where('email', $request->email)->where('is_admin', true)->first();
+        $admin = Admin::where('email', $request->email)->first();
 
-        if (!$vendeur || !Hash::check($request->password, $vendeur->password)) {
+        if (!$admin || !Hash::check($request->password, $admin->password)) {
             return back()->withErrors(['email' => 'Identifiants administrateur incorrects.'])->withInput($request->only('email'));
         }
 
-        if ($vendeur->statut === 'suspendu') {
-            return back()->withErrors(['email' => 'Votre compte administrateur est suspendu.'])->withInput($request->only('email'));
-        }
+        Auth::guard('admin')->login($admin);
 
-        Auth::guard('admin')->login($vendeur);
-        $vendeur->update(['last_login' => now()]);
+        $request->session()->regenerate();
 
         $request->session()->regenerate();
 

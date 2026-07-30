@@ -15,14 +15,6 @@ class EnsureAdmin
             return redirect()->route('admin.login');
         }
 
-        $user = Auth::guard('admin')->user();
-        if (!$user || !$user->is_admin) {
-            Auth::guard('admin')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect()->route('admin.login');
-        }
-
         return $next($request);
     }
 }

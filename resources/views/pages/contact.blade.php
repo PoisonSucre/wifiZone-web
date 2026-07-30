@@ -3,25 +3,7 @@
 @section('title', 'Contact - ' . config('platform.name'))
 
 @section('navbar')
-<header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 px-4 sm:px-6 lg:px-8">
-    <div id="header-container" class="max-w-7xl mx-auto rounded-full bg-transparent border border-transparent px-6 py-2.5 flex items-center justify-between transition-all duration-500">
-        <a href="/" class="flex items-center gap-1 sm:gap-3 text-[10px] sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-wide text-glow transition-all duration-300 hover:scale-105 whitespace-nowrap shrink-0">
-            <span class="text-neonGreen"><i class="fas fa-wifi animate-pulse"></i></span>
-            {{ config('platform.name') }}
-        </a>
-        <div class="flex items-center gap-2 sm:gap-4">
-            <button id="theme-toggle" onclick="toggleTheme()" class="p-2 sm:p-2.5 rounded-full text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300" aria-label="Changer de thème">
-                <i id="theme-toggle-light-icon" class="fas fa-sun text-amber-500 text-base sm:text-lg hidden dark:inline"></i>
-                <i id="theme-toggle-dark-icon" class="fas fa-moon text-base sm:text-lg inline dark:hidden"></i>
-            </button>
-            <a href="{{ route('vendor.login') }}" class="hidden sm:inline-block px-4 py-2 text-sm font-semibold text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white transition-colors duration-300">Connexion</a>
-            <a href="{{ route('vendor.register') }}" class="relative overflow-hidden bg-neonGreen hover:bg-neonGreen-400 text-white dark:text-white font-bold text-xs sm:text-sm px-4 sm:px-6 py-2.5 rounded-full hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] shadow-neon-button transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 group">
-                <span>S'inscrire</span>
-                <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
-            </a>
-        </div>
-    </div>
-</header>
+    <x-navbar-public />
 @endsection
 
 @section('content')
@@ -54,7 +36,7 @@
                         <div>
                             <h3 class="font-bold text-slate-900 dark:text-white mb-1">WhatsApp</h3>
                             <p class="text-sm text-slate-500 dark:text-gray-400">Disponible du lundi au samedi</p>
-                            <a href="tel:+22566635958" class="text-neonGreen font-semibold text-sm hover:underline">66-63-59-58</a>
+                            <a href="tel:+22573525432" class="text-neonGreen font-semibold text-sm hover:underline">73-52-54-32</a>
                             <span class="text-slate-400 dark:text-gray-500 text-sm mx-1">/</span>
                             <a href="tel:+22564658644" class="text-neonGreen font-semibold text-sm hover:underline">64-65-86-44</a>
                         </div>

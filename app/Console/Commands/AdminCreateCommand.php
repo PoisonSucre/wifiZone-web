@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Vendeur;
+use App\Models\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -33,16 +33,12 @@ class AdminCreateCommand extends Command
             return 1;
         }
 
-        $admin = Vendeur::updateOrCreate(
+        $admin = Admin::updateOrCreate(
             ['email' => $email],
             [
                 'nom' => 'Admin',
                 'prenom' => 'Raider',
-                'is_admin' => true,
-                'telephone' => '+22600000000',
                 'password' => Hash::make($password),
-                'statut' => 'actif',
-                'commission_pct' => 10.00,
             ]
         );
 

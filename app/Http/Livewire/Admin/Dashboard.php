@@ -39,10 +39,10 @@ class Dashboard extends Component
 
     public function mount(): void
     {
-        $this->totalVendeurs = Vendeur::where('is_admin', false)->count();
-        $this->vendeursActifs = Vendeur::active()->where('is_admin', false)->count();
-        $this->vendeursSuspendus = Vendeur::where('statut', 'suspendu')->where('is_admin', false)->count();
-        $this->vendeursEnAttente = Vendeur::pending()->where('is_admin', false)->count();
+        $this->totalVendeurs = Vendeur::count();
+        $this->vendeursActifs = Vendeur::active()->count();
+        $this->vendeursSuspendus = Vendeur::where('statut', 'suspendu')->count();
+        $this->vendeursEnAttente = Vendeur::pending()->count();
         $this->totalTickets = Ticket::count();
         $this->ticketsVendus = Ticket::sold()->count();
         $this->totalRevenus = Transaction::completed()->sum('montant') ?? 0;
@@ -53,8 +53,7 @@ class Dashboard extends Component
         $this->nbRetraitsEnCours = $pending->count();
         $this->montantRetraitsEnCours = $pending->sum('montant_net') ?? 0;
 
-        $this->derniersVendeurs = Vendeur::where('is_admin', false)
-            ->orderByDesc('date_inscription')->limit(5)->get()->map(function ($vendeur) {
+        $this->derniersVendeurs = Vendeur::orderByDesc('date_inscription')->limit(5)->get()->map(function ($vendeur) {
                 return $vendeur->makeHidden(['password', 'remember_token'])->toArray();
             })->toArray();
 
@@ -72,17 +71,15 @@ class Dashboard extends Component
         $startDate = now()->subDays(6)->startOfDay();
 
         // Vendeurs — 1 grouped query
-        $vendeursBefore = Vendeur::where('is_admin', false)
+        $vendeursBefore = Vendeur::where('date_inscription', '<', $startDate)->count();
+        $vendeursActifsBefore = Vendeur::where('statut', 'actif')
             ->where('date_inscription', '<', $startDate)->count();
-        $vendeursActifsBefore = Vendeur::where('is_admin', false)->where('statut', 'actif')
+        $vendeursSuspendusBefore = Vendeur::where('statut', 'suspendu')
             ->where('date_inscription', '<', $startDate)->count();
-        $vendeursSuspendusBefore = Vendeur::where('is_admin', false)->where('statut', 'suspendu')
-            ->where('date_inscription', '<', $startDate)->count();
-        $vendeursAttenteBefore = Vendeur::where('is_admin', false)->where('statut', 'en_attente')
+        $vendeursAttenteBefore = Vendeur::where('statut', 'en_attente')
             ->where('date_inscription', '<', $startDate)->count();
 
-        $vendeursDaily = Vendeur::where('is_admin', false)
-            ->where('date_inscription', '>=', $startDate)
+        $vendeursDaily = Vendeur::where('date_inscription', '>=', $startDate)
             ->selectRaw('DATE(date_inscription) as date')
             ->selectRaw("COUNT(*) as total")
             ->selectRaw("COUNT(CASE WHEN statut = 'actif' THEN 1 END) as actifs")
