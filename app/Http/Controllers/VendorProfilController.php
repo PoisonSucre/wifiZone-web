@@ -19,7 +19,7 @@ class VendorProfilController extends Controller
                 'telephone' => 'required|string|max:20',
                 'adresse' => 'nullable|string|max:255',
                 'ville' => 'nullable|string|max:100',
-                'new_password' => 'nullable|string|min:6',
+                'new_password' => 'nullable|string|min:8',
                 'confirm_password' => 'nullable|string|same:new_password',
             ]);
 

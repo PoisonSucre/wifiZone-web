@@ -19,7 +19,6 @@ class Vendeur extends Authenticatable
         'prenom',
         'email',
         'email_verified_at',
-        'is_admin',
         'telephone',
         'password',
         'adresse',
@@ -32,6 +31,10 @@ class Vendeur extends Authenticatable
         'logo',
         'message_bienvenue',
         'card_number',
+    ];
+
+    protected $guarded = [
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -103,10 +106,15 @@ class Vendeur extends Authenticatable
     public static function generateCardNumber(): string
     {
         do {
-            $number = substr(str_shuffle("0123456789"), 0, 4) . '-' . 
-                      substr(str_shuffle("0123456789"), 0, 4) . '-' . 
-                      substr(str_shuffle("0123456789"), 0, 4) . '-' . 
-                      substr(str_shuffle("0123456789"), 0, 4);
+            $groups = [];
+            for ($g = 0; $g < 4; $g++) {
+                $group = '';
+                for ($i = 0; $i < 4; $i++) {
+                    $group .= random_int(0, 9);
+                }
+                $groups[] = $group;
+            }
+            $number = implode('-', $groups);
         } while (self::where('card_number', $number)->exists());
 
         return $number;

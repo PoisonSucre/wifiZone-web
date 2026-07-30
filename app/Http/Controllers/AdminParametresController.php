@@ -30,7 +30,7 @@ class AdminParametresController extends Controller
             if ($action === 'update_security') {
                 $request->validate([
                     'admin_email' => 'required|email',
-                    'admin_new_pass' => 'nullable|string|min:6',
+                    'admin_new_pass' => 'nullable|string|min:8',
                     'admin_confirm_pass' => 'nullable|string|same:admin_new_pass',
                 ]);
 

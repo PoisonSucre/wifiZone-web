@@ -16,12 +16,9 @@ class InstallationPage extends Component
             'prix' => '299 000',
             'prixNote' => 'FCFA',
             'equipements' => [
-                'Routeur MikroTik hAP ax2 (WiFi 6)',
-                'Antenne secteur 120° 16dBi',
-                'Câble Ethernet extérieur 30m',
-                'Boîtier étanche IP66',
-                'Alimentation PoE + injecteur',
-                'Fixations murales/poteau',
+                'Antenne (Tenda)',
+                'Mikrotik',
+                'Cablages',
             ],
             'services' => [
                 'Installation & configuration complète',
@@ -29,6 +26,7 @@ class InstallationPage extends Component
                 'Test de couverture & optimisation',
                 'Formation vendeur 1h',
                 'Support technique 30 jours',
+                'Tickets personnalisé',
             ],
             'couleur' => '#10B981',
             'populaire' => false,

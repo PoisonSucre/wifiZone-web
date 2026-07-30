@@ -77,10 +77,21 @@ class PageController extends Controller
         if ($transaction && $transaction->ticket) {
             $ticket = $transaction->ticket->load('vendeur');
             $message = 'success';
+            session(['recupered_ticket_id' => $ticket->id]);
         } else {
             $message = 'not_found';
+            session()->forget('recupered_ticket_id');
         }
 
         return view('pages.recuperer-ticket', compact('token', 'phone', 'ticket', 'message'));
+    }
+
+    public function ticketPassword(Request $request, Ticket $ticket)
+    {
+        if (session('recupered_ticket_id') !== $ticket->id) {
+            abort(403);
+        }
+
+        return response()->json(['password' => $ticket->password]);
     }
 }

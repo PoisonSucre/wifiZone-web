@@ -43,7 +43,7 @@ class ParametreManager extends Component
     {
         $this->validate([
             'adminEmail' => 'required|email',
-            'adminNewPass' => 'nullable|string|min:6',
+            'adminNewPass' => 'nullable|string|min:8',
             'adminConfirmPass' => 'nullable|string|same:adminNewPass',
         ]);
 

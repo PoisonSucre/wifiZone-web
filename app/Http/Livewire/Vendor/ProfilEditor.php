@@ -36,7 +36,7 @@ class ProfilEditor extends Component
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
             'telephone' => 'required|string|max:20',
-            'newPassword' => 'nullable|string|min:6',
+            'newPassword' => 'nullable|string|min:8',
             'confirmPassword' => 'nullable|string|same:newPassword',
         ]);
 

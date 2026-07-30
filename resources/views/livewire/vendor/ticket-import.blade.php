@@ -71,6 +71,19 @@
                     </div>
                 </div>
 
+                {{-- HOTSPOT --}}
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-2 block">Hotspot cible</label>
+                    <select wire:model="hotspotId"
+                            class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all">
+                        <option value="0" disabled>Sélectionnez un hotspot</option>
+                        @foreach($hotspots as $hs)
+                            <option value="{{ $hs->id }}">{{ $hs->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('hotspotId') <p class="text-[10px] text-red-500 mt-1 font-bold">{{ $message }}</p> @enderror
+                </div>
+
                 {{-- FORMAT CSV --}}
                 <div class="p-4 rounded-xl bg-slate-50/80 dark:bg-darkBg/40 border border-slate-100 dark:border-darkBorder/30">
                     <p class="text-xs font-bold text-slate-700 dark:text-white mb-2 flex items-center gap-2">

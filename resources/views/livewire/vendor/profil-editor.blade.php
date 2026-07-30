@@ -120,7 +120,7 @@
                     <form wire:submit.prevent="save" class="space-y-3">
                         <div>
                             <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 block">Nouveau mot de passe</label>
-                            <input type="password" wire:model.live="newPassword" placeholder="Min. 6 caractères"
+                            <input type="password" wire:model.live="newPassword" placeholder="66 12 34 56"
                                    class="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all duration-200">
                             @error('newPassword') <p class="text-red-500 text-[11px] mt-1 font-bold">{{ $message }}</p> @enderror
                         </div>

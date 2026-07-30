@@ -113,7 +113,7 @@ class VendeurManager extends Component
             'newPrenom' => 'required|string|max:100',
             'newEmail' => 'required|email|unique:vendeurs,email',
             'newTelephone' => 'required|string|max:20',
-            'newPassword' => 'required|string|min:6',
+            'newPassword' => 'required|string|min:8',
             'newCommission' => 'nullable|numeric|min:0|max:100',
         ]);
 

@@ -10,7 +10,14 @@
                        placeholder="votre@email.com"
                        class="block w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-darkBorder rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-neonGreen focus:ring-2 focus:ring-neonGreen/10 transition-all text-sm">
             </div>
-            @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         <div x-data="{ showPassword: false }">
@@ -27,12 +34,19 @@
                     <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
                 </button>
             </div>
-            @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         <div class="flex items-center justify-between">
             <div></div>
-            <a href="{{ route('vendor.forgot-password') }}" class="text-xs font-bold text-slate-500 dark:text-gray-400 hover:text-neonGreen dark:hover:text-neonGreen transition-colors">
+            <a href="<?php echo e(route('vendor.forgot-password')); ?>" class="text-xs font-bold text-slate-500 dark:text-gray-400 hover:text-neonGreen dark:hover:text-neonGreen transition-colors">
                 Mot de passe oublié ?
             </a>
         </div>
@@ -47,3 +61,4 @@
         </button>
     </form>
 </div>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/livewire/auth/login-form.blade.php ENDPATH**/ ?>

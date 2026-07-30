@@ -19,22 +19,24 @@ Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 Route::get('/installation', [PageController::class, 'installation'])->name('installation');
 Route::get('/merci', [PageController::class, 'merci'])->name('merci');
 Route::get('/annule', [PageController::class, 'annule'])->name('annule');
-Route::match(['get', 'post'], '/recuperer-ticket', [PageController::class, 'recupererTicket'])->name('recuperer-ticket');
-Route::post('/payment/init', [PaymentInitController::class, 'init'])->name('payment.init');
+Route::get('/recuperer-ticket', [PageController::class, 'recupererTicket'])->name('recuperer-ticket');
+Route::post('/recuperer-ticket', [PageController::class, 'recupererTicket'])->middleware('throttle:5,1');
+Route::get('/recuperer-ticket/password/{ticket}', [PageController::class, 'ticketPassword'])->name('recuperer-ticket.password')->middleware('throttle:10,1');
+Route::post('/payment/init', [PaymentInitController::class, 'init'])->name('payment.init')->middleware('throttle:10,60');
 
 // --- Auth (Vendeur) ---
 Route::middleware('guest')->group(function () {
     Route::get('/auth/login', [AuthController::class, 'showLogin'])->name('vendor.login');
     Route::post('/auth/login', [AuthController::class, 'login'])->name('vendor.login.post')->middleware('throttle:5,1');
     Route::get('/auth/register', [AuthController::class, 'showRegister'])->name('vendor.register');
-    Route::post('/auth/register', [AuthController::class, 'register'])->name('vendor.register.post');
+    Route::post('/auth/register', [AuthController::class, 'register'])->name('vendor.register.post')->middleware('throttle:3,60');
     Route::get('/login', fn () => redirect()->route('vendor.login'))->name('login');
     Route::get('/register', fn () => redirect()->route('vendor.register'))->name('register');
 
     Route::get('/auth/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('vendor.forgot-password');
-    Route::post('/auth/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('vendor.forgot-password.post');
+    Route::post('/auth/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('vendor.forgot-password.post')->middleware('throttle:3,60');
     Route::get('/auth/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('vendor.reset-password');
-    Route::post('/auth/reset-password', [ForgotPasswordController::class, 'reset'])->name('vendor.reset-password.post');
+    Route::post('/auth/reset-password', [ForgotPasswordController::class, 'reset'])->name('vendor.reset-password.post')->middleware('throttle:3,60');
 });
 Route::post('/auth/logout', [AuthController::class, 'logout'])->name('vendor.logout')->middleware('auth');
 

@@ -71,7 +71,7 @@ class AdminVendeursController extends Controller
             'prenom' => 'required|string|max:100',
             'email' => 'required|email|unique:vendeurs,email',
             'telephone' => 'required|string|max:20',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:8',
             'commission_pct' => 'nullable|numeric|min:0|max:100',
         ]);
 

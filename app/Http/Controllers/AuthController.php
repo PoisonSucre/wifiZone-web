@@ -75,7 +75,7 @@ class AuthController extends Controller
             'telephone' => 'required|string|max:20',
             'adresse' => 'nullable|string|max:255',
             'ville' => 'nullable|string|max:100',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $vendeur = Vendeur::create([

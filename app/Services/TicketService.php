@@ -7,6 +7,7 @@ use App\Models\ImportBatch;
 use App\Models\Ticket;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class TicketService
 {
@@ -33,10 +34,12 @@ class TicketService
         });
     }
 
-    public function importFromCsv(int $vendeurId, UploadedFile $file, string $mode = 'with_password', ?int $hotspotId = null): array
+    public function importFromCsv(int $vendeurId, UploadedFile $file, string $mode = 'with_password', int $hotspotId = 0): array
     {
-        $content = file_get_contents($file->getRealPath());
-        $lines = array_filter(explode("\n", $content));
+        $ext = strtolower($file->getClientOriginalExtension());
+        $isExcel = in_array($ext, ['xlsx', 'xls']);
+
+        $rows = $isExcel ? $this->readExcelRows($file) : $this->readCsvRows($file);
 
         $existingUsers = Ticket::where('vendeur_id', $vendeurId)
             ->pluck('user')
@@ -48,83 +51,105 @@ class TicketService
         $missingPassword = 0;
         $maxPerImport = 500;
 
-        foreach ($lines as $i => $line) {
-            if ($i === 0) continue;
-            if ($created >= $maxPerImport) break;
+        return DB::transaction(function () use ($vendeurId, $hotspotId, $rows, $existingUsers, $vendorForfaits, $mode, $maxPerImport, $file, $ext, &$created, &$skipped, &$missingPassword) {
+            $existingSet = array_flip($existingUsers);
 
-            $parts = str_getcsv($line, ';');
+            foreach ($rows as $i => $parts) {
+                if ($created >= $maxPerImport) break;
 
-            if ($mode === 'without_password') {
-                if (count($parts) < 2) continue;
+                if ($mode === 'without_password') {
+                    if (count($parts) < 2) continue;
 
-                $user = trim($parts[0] ?? '');
-                $forfaitLabel = trim($parts[1] ?? 'Standard');
-                $montant = (int) ($parts[2] ?? 150);
+                    $user = trim($parts[0] ?? '');
+                    $forfaitLabel = trim($parts[1] ?? 'Standard');
+                    $montant = (int) ($parts[2] ?? 150);
 
-                $pass = bin2hex(random_bytes(6));
-            } else {
-                if (count($parts) < 2) continue;
+                    $pass = bin2hex(random_bytes(6));
+                } else {
+                    if (count($parts) < 2) continue;
 
-                $user = trim($parts[0] ?? '');
-                $pass = trim($parts[1] ?? '');
-                $forfaitLabel = trim($parts[2] ?? 'Standard');
-                $montant = (int) ($parts[3] ?? 150);
+                    $user = trim($parts[0] ?? '');
+                    $pass = trim($parts[1] ?? '');
+                    $forfaitLabel = trim($parts[2] ?? 'Standard');
+                    $montant = (int) ($parts[3] ?? 150);
+
+                    if (empty($user)) continue;
+
+                    if (empty($pass)) {
+                        $missingPassword++;
+                        continue;
+                    }
+                }
 
                 if (empty($user)) continue;
 
-                if (empty($pass)) {
-                    $missingPassword++;
+                if (isset($existingSet[$user])) {
+                    $skipped++;
                     continue;
                 }
+
+                $forfait = $vendorForfaits->firstWhere('label', $forfaitLabel);
+                if ($forfait) {
+                    $montant = $forfait->montant;
+                    $forfaitLabel = $forfait->label;
+                }
+
+                Ticket::create([
+                    'vendeur_id' => $vendeurId,
+                    'hotspot_id' => $hotspotId ?: null,
+                    'user' => $user,
+                    'password' => $pass,
+                    'forfait' => $forfaitLabel,
+                    'montant' => $montant,
+                    'source' => 'import',
+                ]);
+
+                $existingSet[$user] = true;
+                $created++;
             }
 
-            if (empty($user)) continue;
-
-            if (in_array($user, $existingUsers)) {
-                $skipped++;
-                continue;
-            }
-
-            $forfait = $vendorForfaits->firstWhere('label', $forfaitLabel);
-            if ($forfait) {
-                $montant = $forfait->montant;
-                $forfaitLabel = $forfait->label;
-            }
-
-            Ticket::create([
+            ImportBatch::create([
                 'vendeur_id' => $vendeurId,
-                'hotspot_id' => $hotspotId,
-                'user' => $user,
-                'password' => $pass,
-                'forfait' => $forfaitLabel,
-                'montant' => $montant,
-                'source' => 'import',
+                'filename' => $file->getClientOriginalName(),
+                'format_file' => $isExcel ? 'excel' : 'csv',
+                'total_tickets' => $created,
+                'statut' => $created > 0 ? 'success' : 'error',
             ]);
 
-            $existingUsers[] = $user;
-            $created++;
+            $message = "{$created} tickets importés, {$skipped} doublons ignorés";
+            if ($missingPassword > 0) {
+                $message .= ", {$missingPassword} ignorés (mot de passe manquant)";
+            }
+            $message .= ".";
+
+            return compact('created', 'skipped', 'missing_password', 'message');
+        });
+    }
+
+    private function readCsvRows(UploadedFile $file): array
+    {
+        $content = file_get_contents($file->getRealPath());
+        $lines = array_filter(explode("\n", $content), fn($l) => trim($l) !== '');
+
+        $firstLine = reset($lines);
+        $delimiter = substr_count($firstLine, ';') >= substr_count($firstLine, ',') ? ';' : ',';
+
+        $rows = [];
+        foreach ($lines as $i => $line) {
+            if ($i === 0) continue;
+            $rows[] = str_getcsv($line, $delimiter);
         }
 
-        ImportBatch::create([
-            'vendeur_id' => $vendeurId,
-            'filename' => $file->getClientOriginalName(),
-            'format_file' => 'csv',
-            'total_tickets' => $created,
-            'statut' => $created > 0 ? 'success' : 'error',
-        ]);
+        return $rows;
+    }
 
-        $message = "{$created} tickets importés, {$skipped} doublons ignorés";
-        if ($missingPassword > 0) {
-            $message .= ", {$missingPassword} ignorés (mot de passe manquant)";
-        }
-        $message .= ".";
+    private function readExcelRows(UploadedFile $file): array
+    {
+        $spreadsheet = IOFactory::load($file->getRealPath());
+        $worksheet = $spreadsheet->getActiveSheet();
+        $data = $worksheet->toArray();
 
-        return [
-            'created' => $created,
-            'skipped' => $skipped,
-            'missing_password' => $missingPassword,
-            'message' => $message,
-        ];
+        return array_slice($data, 1);
     }
 
     public function generateBatch(int $vendeurId, array $params): int

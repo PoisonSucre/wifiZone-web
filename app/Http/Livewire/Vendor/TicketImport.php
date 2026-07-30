@@ -18,7 +18,7 @@ class TicketImport extends Component
     public $importFile = null;
     public ?string $importResult = null;
     public bool $importSuccess = false;
-    public ?int $hotspotId = null;
+    public int $hotspotId = 0;
 
     public function mount(): void
     {
@@ -35,14 +35,14 @@ class TicketImport extends Component
         $this->validate([
             'importFile' => 'required|file|max:5120|mimes:csv,xlsx,xls',
             'importMode' => 'required|in:with_password,without_password',
-            'hotspotId' => ['nullable', Rule::exists('hotspots', 'id')->where('vendeur_id', $vendeur->id)],
+            'hotspotId' => ['required', Rule::exists('hotspots', 'id')->where('vendeur_id', $vendeur->id)],
         ]);
 
         $result = app(TicketService::class)->importFromCsv(
             $vendeur->id,
             $this->importFile,
             $this->importMode,
-            $this->hotspotId ?: null
+            $this->hotspotId
         );
 
         $this->importSuccess = $result['created'] > 0;

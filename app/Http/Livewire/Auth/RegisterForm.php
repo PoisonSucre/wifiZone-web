@@ -58,7 +58,7 @@ class RegisterForm extends Component
             'prenom' => 'required|string|max:100',
             'email' => 'required|email:rfc,dns|unique:vendeurs,email',
             'telephone' => 'required|string|max:20',
-            'password' => 'required|string|min:6|same:passwordConfirmation',
+            'password' => 'required|string|min:8|same:passwordConfirmation',
         ]);
 
         try {
