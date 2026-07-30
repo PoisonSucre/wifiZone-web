@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Vendor;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Hash;
 
 class ProfilEditor extends Component
 {
@@ -14,6 +15,7 @@ class ProfilEditor extends Component
     public string $email = '';
     public string $newPassword = '';
     public string $confirmPassword = '';
+    public string $currentPassword = '';
 
     public bool $saved = false;
 
@@ -32,15 +34,29 @@ class ProfilEditor extends Component
     {
         $this->saved = false;
 
-        $this->validate([
+        $rules = [
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
             'telephone' => 'required|string|max:20',
             'newPassword' => 'nullable|string|min:8',
             'confirmPassword' => 'nullable|string|same:newPassword',
-        ]);
+        ];
+
+        if ($this->newPassword) {
+            $rules['currentPassword'] = 'required|string';
+        }
+
+        $this->validate($rules);
 
         $vendeur = auth()->user();
+
+        if ($this->newPassword) {
+            if (!Hash::check($this->currentPassword, $vendeur->password)) {
+                $this->addError('currentPassword', 'Le mot de passe actuel est incorrect.');
+                return;
+            }
+        }
+
         $data = [
             'nom' => $this->nom,
             'prenom' => $this->prenom,
@@ -55,6 +71,7 @@ class ProfilEditor extends Component
         $vendeur->update($data);
         $this->newPassword = '';
         $this->confirmPassword = '';
+        $this->currentPassword = '';
         $this->saved = true;
     }
 

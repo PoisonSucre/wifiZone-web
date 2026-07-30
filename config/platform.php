@@ -11,6 +11,8 @@ return [
         'base_url' => env('LIGDICASH_BASE_URL', 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice'),
     ],
 
+    'api_key' => env('APP_API_KEY'),
+
     'urls' => [
         'base' => env('BASE_URL', 'http://localhost:8000'),
         'callback' => env('CALLBACK_URL'),

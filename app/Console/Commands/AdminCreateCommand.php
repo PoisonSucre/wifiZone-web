@@ -28,8 +28,8 @@ class AdminCreateCommand extends Command
             }
         }
 
-        if (strlen($password) < 6) {
-            $this->error('Password must be at least 6 characters.');
+        if (strlen($password) < 8) {
+            $this->error('Password must be at least 8 characters.');
             return 1;
         }
 

@@ -26,7 +26,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'vendeur.status' => EnsureVendeurIsActive::class,
             'admin' => EnsureAdmin::class,
+            'api.key' => \App\Http\Middleware\EnsureApiKey::class,
         ]);
+
+        $middleware->redirectUsersTo(fn () => route('vendor.dashboard'));
+        $middleware->redirectGuestsTo(fn () => route('vendor.login'));
 
         // $middleware->statefulApi(); // Sanctum non installe
 

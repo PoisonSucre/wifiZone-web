@@ -78,6 +78,7 @@ class PageController extends Controller
             $ticket = $transaction->ticket->load('vendeur');
             $message = 'success';
             session(['recupered_ticket_id' => $ticket->id]);
+            session(['recupered_ticket_expires' => now()->addMinutes(5)->timestamp]);
         } else {
             $message = 'not_found';
             session()->forget('recupered_ticket_id');
@@ -89,6 +90,12 @@ class PageController extends Controller
     public function ticketPassword(Request $request, Ticket $ticket)
     {
         if (session('recupered_ticket_id') !== $ticket->id) {
+            abort(403);
+        }
+
+        $expires = session('recupered_ticket_expires');
+        if (!$expires || now()->timestamp > $expires) {
+            session()->forget(['recupered_ticket_id', 'recupered_ticket_expires']);
             abort(403);
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\AdminLog;
 use App\Models\Vendeur;
 use App\Notifications\VendorActivatedNotification;
 use App\Notifications\VendorSuspendedNotification;
@@ -71,7 +72,16 @@ class VendeurManager extends Component
     {
         $vendeur = Vendeur::findOrFail($id);
         $vendeur->update(['statut' => 'actif']);
-        
+
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'activate_vendor',
+            'target_type' => 'vendeur',
+            'target_id' => $id,
+            'details' => "Vendeur {$vendeur->email} activé",
+            'ip' => request()->ip(),
+        ]);
+
         try {
             $vendeur->notify(new VendorActivatedNotification());
             session()->flash('success', 'Vendeur activé et notifié par email.');
@@ -85,7 +95,16 @@ class VendeurManager extends Component
     {
         $vendeur = Vendeur::findOrFail($id);
         $vendeur->update(['statut' => 'suspendu']);
-        
+
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'suspend_vendor',
+            'target_type' => 'vendeur',
+            'target_id' => $id,
+            'details' => "Vendeur {$vendeur->email} suspendu",
+            'ip' => request()->ip(),
+        ]);
+
         try {
             $vendeur->notify(new VendorSuspendedNotification());
             session()->flash('success', 'Vendeur suspendu et notifié par email.');
@@ -103,6 +122,16 @@ class VendeurManager extends Component
             return;
         }
         Vendeur::where('id', $id)->delete();
+
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'delete_vendor',
+            'target_type' => 'vendeur',
+            'target_id' => $id,
+            'details' => $vendeur ? "Vendeur {$vendeur->email} supprimé" : "Vendeur #{$id} supprimé",
+            'ip' => request()->ip(),
+        ]);
+
         session()->flash('success', 'Vendeur supprimé.');
     }
 
@@ -117,7 +146,7 @@ class VendeurManager extends Component
             'newCommission' => 'nullable|numeric|min:0|max:100',
         ]);
 
-        Vendeur::create([
+        $vendeur = Vendeur::create([
             'nom' => $this->newNom,
             'prenom' => $this->newPrenom,
             'email' => $this->newEmail,
@@ -126,6 +155,15 @@ class VendeurManager extends Component
             'statut' => 'actif',
             'commission_pct' => $this->newCommission ?? config('platform.commission_pct', 10),
             'card_number' => Vendeur::generateCardNumber(),
+        ]);
+
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'create_vendor',
+            'target_type' => 'vendeur',
+            'target_id' => $vendeur->id,
+            'details' => "Vendeur {$vendeur->email} créé par admin",
+            'ip' => request()->ip(),
         ]);
 
         $this->showAddModal = false;
@@ -142,7 +180,18 @@ class VendeurManager extends Component
 
     public function saveCommission(): void
     {
+        $old = Vendeur::find($this->editingCommissionId);
         Vendeur::where('id', $this->editingCommissionId)->update(['commission_pct' => $this->editingCommissionValue]);
+
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'update_commission',
+            'target_type' => 'vendeur',
+            'target_id' => $this->editingCommissionId,
+            'details' => "Commission {$old?->email}: {$old?->commission_pct}% → {$this->editingCommissionValue}%",
+            'ip' => request()->ip(),
+        ]);
+
         $this->editingCommissionId = null;
         session()->flash('success', 'Commission mise à jour.');
     }

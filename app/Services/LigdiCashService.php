@@ -23,6 +23,7 @@ class LigdiCashService
         $response = Http::withHeaders([
             'Apikey' => $this->apiKey,
             'Authorization' => "Bearer {$this->apiToken}",
+            'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ])->timeout(15)->post("{$this->baseUrl}/create", $data);
 
@@ -41,6 +42,7 @@ class LigdiCashService
         $response = Http::withHeaders([
             'Apikey' => $this->apiKey,
             'Authorization' => "Bearer {$this->apiToken}",
+            'Accept' => 'application/json',
         ])->timeout(15)->get("{$this->baseUrl}/confirm", [
             'invoiceToken' => $invoiceToken,
         ]);

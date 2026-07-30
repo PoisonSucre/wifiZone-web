@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\AdminLog;
 use App\Models\Withdrawal;
 use App\Notifications\WithdrawalPaidNotification;
 use App\Notifications\WithdrawalRejectedNotification;
@@ -81,6 +82,15 @@ class RetraitManager extends Component
             'traite_par' => auth()->id() ?? 0,
         ]);
 
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'reject_withdrawal',
+            'target_type' => 'withdrawal',
+            'target_id' => $withdrawal->id,
+            'details' => "Retrait #{$withdrawal->id} rejeté: {$this->rejectReason}",
+            'ip' => request()->ip(),
+        ]);
+
         try {
             $withdrawal->vendeur->notify(new WithdrawalRejectedNotification($withdrawal));
         } catch (\Exception $e) {
@@ -98,6 +108,15 @@ class RetraitManager extends Component
             'statut' => 'paid',
             'date_traitement' => now(),
             'traite_par' => auth()->id() ?? 0,
+        ]);
+
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => 'pay_withdrawal',
+            'target_type' => 'withdrawal',
+            'target_id' => $withdrawal->id,
+            'details' => "Retrait #{$withdrawal->id} payé - {$withdrawal->montant_net} FCFA à {$withdrawal->phone_number}",
+            'ip' => request()->ip(),
         ]);
 
         try {

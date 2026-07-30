@@ -72,10 +72,29 @@ class PaymentApiController extends Controller
 
     public function callback(Request $request): JsonResponse
     {
-        $payload = $request->json()->all();
+        // LigdiCash envoie 2 POSTs : application/x-www-form-urlencoded + application/json
+        // Si c'est le form-urlencoded, on ne le traite pas (déduplication)
+        if (str_contains($request->header('Content-Type', ''), 'application/x-www-form-urlencoded')) {
+            return response('OK');
+        }
 
-        $transactionId = $payload['custom_data']['transaction_id'] ?? null;
-        $vendeurId = $payload['custom_data']['vendeur_id'] ?? null;
+        $payload = $request->json()->all();
+        $customData = $payload['custom_data'] ?? [];
+
+        // LigdiCash renvoie custom_data sous forme de tableau d'objets
+        // avec keyof_customdata / valueof_customdata
+        if (is_array($customData) && isset($customData[0])) {
+            $extracted = [];
+            foreach ($customData as $entry) {
+                if (isset($entry['keyof_customdata'], $entry['valueof_customdata'])) {
+                    $extracted[$entry['keyof_customdata']] = $entry['valueof_customdata'];
+                }
+            }
+            $customData = $extracted;
+        }
+
+        $transactionId = $customData['transaction_id'] ?? null;
+        $vendeurId = $customData['vendeur_id'] ?? null;
 
         if (!$transactionId) {
             Log::warning('Payment callback missing transaction_id', ['payload' => $payload]);

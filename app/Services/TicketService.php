@@ -64,7 +64,7 @@ class TicketService
                     $forfaitLabel = trim($parts[1] ?? 'Standard');
                     $montant = (int) ($parts[2] ?? 150);
 
-                    $pass = bin2hex(random_bytes(6));
+                    $pass = bin2hex(random_bytes(12));
                 } else {
                     if (count($parts) < 2) continue;
 
