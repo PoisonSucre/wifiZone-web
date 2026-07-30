@@ -27,8 +27,7 @@ class EmailVerificationController extends Controller
         $vendeur = Vendeur::findOrFail($id);
 
         if ($vendeur->email_verified_at) {
-            Auth::login($vendeur);
-            return redirect()->route('vendor.dashboard');
+            return redirect()->route('vendor.login')->with('info', 'Votre email est déjà vérifié. Connectez-vous.');
         }
 
         $vendeur->update([
@@ -59,8 +58,7 @@ class EmailVerificationController extends Controller
         }
 
         if ($vendeur->email_verified_at) {
-            Auth::login($vendeur);
-            return redirect()->route('vendor.dashboard');
+            return redirect()->route('vendor.login')->with('info', 'Votre email est déjà vérifié. Connectez-vous.');
         }
 
         $this->sendVerificationEmail($vendeur);

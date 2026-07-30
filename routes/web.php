@@ -95,7 +95,10 @@ Route::middleware(['auth', 'vendeur.status'])->prefix('vendeur')->name('vendor.'
     })->name('preview');
     Route::get('/import', fn () => view('vendor.import'))->name('import');
     Route::get('/hotspot', fn () => view('vendor.hotspot'))->name('hotspot');
-    Route::get('/hotspot/{hotspot}', fn (\App\Models\Hotspot $hotspot) => view('vendor.hotspot-details', ['hotspot' => $hotspot]))->name('hotspot.details');
+    Route::get('/hotspot/{hotspot}', function (\App\Models\Hotspot $hotspot) {
+        abort_if($hotspot->vendeur_id !== auth()->id(), 404);
+        return view('vendor.hotspot-details', ['hotspot' => $hotspot]);
+    })->name('hotspot.details');
     Route::get('/profil', fn () => view('vendor.profil'))->name('profil');
     Route::get('/retraits', fn () => view('vendor.retraits'))->name('retraits');
     Route::get('/template', function (\Illuminate\Http\Request $request) {
@@ -137,6 +140,7 @@ Route::middleware(['auth:admin', 'admin'])->prefix('raider')->name('admin.')->gr
 
 
     Route::get('/parametres', fn () => view('admin.parametres'))->name('parametres');
+    Route::get('/personnalisation', fn () => view('admin.personnalisation'))->name('personnalisation');
     Route::get('/retraits', fn () => view('admin.retraits'))->name('retraits');
     Route::get('/revenus-details', fn () => view('admin.revenus-details'))->name('revenus.details');
 });

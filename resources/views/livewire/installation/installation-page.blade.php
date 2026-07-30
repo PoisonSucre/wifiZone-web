@@ -35,6 +35,9 @@
     @media (prefers-reduced-motion: reduce){
         .iz-radar-ring, .iz-float, .iz-signal-dot{ animation:none !important; }
     }
+
+    .faq-panel{ display:none; overflow:hidden; }
+    .faq-toggle[aria-expanded="true"] + .faq-panel{ display:block; }
 </style>
 
 <div class="min-h-screen bg-slate-50 dark:bg-[#0A0A0C] pt-32" x-data="{ selectedPack: null }">
@@ -122,7 +125,7 @@
                 </div>
 
                 {{-- Badges en bas --}}
-                <div class="flex items-center justify-center">
+                <div class="flex items-center justify-center -mt-6">
                     <div class="hidden sm:flex items-center gap-2.5 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-lg px-4 py-3 shadow-xl shrink-0 iz-float">
                         <i class="fas fa-signal text-neonGreen text-base"></i>
                         <p class="text-xs font-bold text-slate-700 dark:text-gray-300 whitespace-nowrap">Couverture jusqu'à 150m</p>
@@ -176,31 +179,31 @@
                     Matériel garanti, installation comprise, formation incluse. Pas de surprise.
                 </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-14 sm:mb-20 items-center relative">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-14 sm:mb-20 relative">
 
                 <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center z-10 text-neonGreen">
                     <i class="fas fa-long-arrow-alt-right text-3xl drop-shadow-lg"></i>
                 </div>
 
-                <div class="relative rounded-3xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/30 transition-all hover:shadow-neon-glow hover:-translate-y-1 group shadow-sm">
-                    <div class="p-6 sm:p-8">
-                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white text-xl font-bold mb-6 shadow-lg" style="background: {{ $pack['couleur'] }}; box-shadow: 0 12px 24px -8px {{ $pack['couleur'] }}66;">
+                <div class="relative rounded-3xl bg-emerald-600 border border-emerald-500 hover:border-emerald-400 transition-all hover:shadow-neon-glow hover:-translate-y-1 group shadow-sm">
+                    <div class="p-6 sm:p-8 text-white">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-emerald-600 text-xl font-bold mb-6 shadow-lg bg-white">
                             <i class="fas fa-wifi"></i>
                         </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-1">{{ $pack['nom'] }}</h3>
-                        <p class="text-slate-600 dark:text-gray-400 text-sm mb-6">{{ $pack['sousTitre'] }}</p>
+                        <h3 class="text-lg sm:text-xl font-bold text-white mb-1">{{ $pack['nom'] }}</h3>
+                        <p class="text-emerald-100 text-sm mb-6">{{ $pack['sousTitre'] }}</p>
                         <div class="mb-6">
-                            <span class="font-display text-3xl font-extrabold" style="color: {{ $pack['couleur'] }}">{{ $pack['prix'] }}</span>
+                            <span class="font-display text-3xl font-extrabold text-white">{{ $pack['prix'] }}</span>
                             @if($pack['prixNote'])
-                            <span class="text-slate-500 dark:text-gray-500 font-semibold ml-1">{{ $pack['prixNote'] }}</span>
+                            <span class="text-emerald-200 font-semibold ml-1">{{ $pack['prixNote'] }}</span>
                             @endif
                         </div>
-                        <div class="space-y-2.5 mb-6 border-t border-slate-100 dark:border-darkBorder/40 pt-6">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500">Équipements fournis</p>
+                        <div class="space-y-2.5 mb-6 border-t border-emerald-400/40 pt-6">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Équipements fournis</p>
                             <ul class="space-y-1">
                                 @foreach($pack['equipements'] as $equip)
-                                <li class="iz-kit-chip flex items-start gap-2.5 text-sm text-slate-600 dark:text-gray-400 rounded-lg px-1.5 py-1 hover:bg-slate-50 dark:hover:bg-darkBg/40">
-                                    <span class="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5" style="background: {{ $pack['couleur'] }}1A; color: {{ $pack['couleur'] }}">
+                                <li class="iz-kit-chip flex items-start gap-2.5 text-sm text-emerald-50 rounded-lg px-1.5 py-1 hover:bg-white/10">
+                                    <span class="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 bg-white/20 text-white">
                                         <i class="fas {{ installIcon($equip) }} text-[10px]"></i>
                                     </span>
                                     {{ $equip }}
@@ -208,12 +211,12 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="space-y-2.5 border-t border-slate-100 dark:border-darkBorder/40 pt-6">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500">Services inclus</p>
+                        <div class="space-y-2.5 border-t border-emerald-400/40 pt-6">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Services inclus</p>
                             <ul class="space-y-1">
                                 @foreach($pack['services'] as $service)
-                                <li class="iz-kit-chip flex items-start gap-2.5 text-sm text-slate-600 dark:text-gray-400 rounded-lg px-1.5 py-1 hover:bg-slate-50 dark:hover:bg-darkBg/40">
-                                    <span class="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5" style="background: {{ $pack['couleur'] }}1A; color: {{ $pack['couleur'] }}">
+                                <li class="iz-kit-chip flex items-start gap-2.5 text-sm text-emerald-50 rounded-lg px-1.5 py-1 hover:bg-white/10">
+                                    <span class="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 bg-white/20 text-white">
                                         <i class="fas {{ installIcon($service) }} text-[10px]"></i>
                                     </span>
                                     {{ $service }}
@@ -223,7 +226,7 @@
                         </div>
                     </div>
                     <div class="px-6 pb-6">
-                        <button @click="selectedPack = '{{ $pack['id'] }}'" class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all" :class="selectedPack === '{{ $pack['id'] }}' ? 'text-white' : 'text-slate-700 dark:text-gray-300 bg-slate-100 dark:bg-darkBorder/40 hover:bg-slate-200 dark:hover:bg-darkBorder/60'" :style="selectedPack === '{{ $pack['id'] }}' ? 'background: {{ $pack['couleur'] }}' : ''">
+                        <button @click="selectedPack = '{{ $pack['id'] }}'" class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all text-white bg-white/20 hover:bg-white/30">
                             <template x-if="selectedPack === '{{ $pack['id'] }}'">
                                 <span class="inline-flex items-center gap-2"><i class="fas fa-check"></i> Pack sélectionné</span>
                             </template>
@@ -234,8 +237,8 @@
                     </div>
                 </div>
 
-                <div class="relative flex items-center justify-center">
-                    <img src="{{ asset('Wifizone.png') }}" alt="WiFi Zone" class="w-full max-w-md h-auto object-contain rounded-3xl shadow-2xl ring-1 ring-black/5">
+                <div class="relative flex justify-center">
+                    <img src="{{ asset('Wifizone.png') }}" alt="WiFi Zone" class="w-full h-full object-cover rounded-3xl shadow-2xl ring-1 ring-black/5">
                     <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-neonGreen/60 to-transparent pointer-events-none rounded-b-3xl"></div>
                 </div>
             </div>
@@ -298,8 +301,19 @@
                     <p class="text-white/80 text-base sm:text-lg max-w-2xl mx-auto mb-8">
                         Étude gratuite, sans engagement. On s'occupe de tout, vous encaissez.
                     </p>
-                    <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 bg-white text-neonGreen font-bold px-8 py-4 text-base rounded-full hover:bg-slate-100 transition-all transform hover:-translate-y-0.5 shadow-xl">
-                        <i class="fas fa-rocket"></i> Demander mon étude gratuite
+                    @php
+                        $defaultMsg = "Bonjour, je suis intéréssé par le pack {pack_nom} du {pack_prix} {pack_prix_note} sur votre plateforme {platform_name}. Je peux avoir plus d'informations ?";
+                        $template = \App\Models\Setting::get('whatsapp_message', $defaultMsg);
+                        $waNumber = \App\Models\Setting::get('whatsapp_number', '22662261391');
+                        $message = str_replace(
+                            ['{pack_nom}', '{pack_prix}', '{pack_prix_note}', '{platform_name}'],
+                            [$pack['nom'], $pack['prix'], $pack['prixNote'], config('platform.name')],
+                            $template
+                        );
+                        $whatsappMsg = urlencode($message);
+                    @endphp
+                    <a href="https://wa.me/{{ $waNumber }}?text={{ $whatsappMsg }}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-white text-neonGreen font-bold px-8 py-4 text-base rounded-full hover:bg-slate-100 transition-all transform hover:-translate-y-0.5 shadow-xl">
+                        <i class="fab fa-whatsapp"></i> Demander mon étude gratuite
                     </a>
                 </div>
             </div>
@@ -322,10 +336,6 @@
                 $faqs = [
                     ['q' => 'L\'étude de couverture est-elle vraiment gratuite ?', 'a' => 'Oui, totalement gratuite et sans engagement. On se déplace chez vous ou on fait l\'étude à distance selon votre localisation.'],
                     ['q' => 'Combien de temps dure l\'installation ?', 'a' => 'Entre 2h et 4h selon la complexité (fixation, câblage, configuration). On s\'occupe de tout.'],
-                    ['q' => 'Le matériel est-il garanti ?', 'a' => 'Oui : 1 an pour Starter, 2 ans pour Pro, 3 ans pour Entreprise. Échange standard en cas de panne.'],
-                    ['q' => 'Puis-je payer en plusieurs fois ?', 'a' => 'Oui, paiement en 2 ou 3 fois sans frais possible sur les packs Starter et Pro.'],
-                    ['q' => 'Que se passe-t-il si j\'ai un problème technique après ?', 'a' => 'Support inclus : 30 jours (Starter), 1 an (Pro), illimité 24/7 (Entreprise). On intervient à distance ou sur site.'],
-                    ['q' => 'Je suis déjà client, puis-je upgrader mon pack ?', 'a' => 'Bien sûr. On récupère l\'ancien matériel, on installe le nouveau, vous ne payez que la différence.'],
                 ];
                 @endphp
                 @foreach($faqs as $faq)
@@ -360,8 +370,14 @@
     // --- FAQ accordion ---
     function toggleFaq(btn) {
         const expanded = btn.getAttribute('aria-expanded') === 'true';
-        document.querySelectorAll('.faq-toggle').forEach(function(b) { b.setAttribute('aria-expanded', 'false'); });
-        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        document.querySelectorAll('.faq-toggle').forEach(function(b) {
+            b.setAttribute('aria-expanded', 'false');
+            b.querySelector('.faq-icon').className = 'faq-icon fas fa-plus text-neonGreen text-sm shrink-0';
+        });
+        if (!expanded) {
+            btn.setAttribute('aria-expanded', 'true');
+            btn.querySelector('.faq-icon').className = 'faq-icon fas fa-minus text-neonGreen text-sm shrink-0';
+        }
     }
 
     // --- Hero trust stats count-up ---
