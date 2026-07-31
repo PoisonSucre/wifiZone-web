@@ -156,9 +156,16 @@
                 <div class="flex justify-end gap-3 pt-2">
                     <button type="button" wire:click="$set('showAddModal', false)"
                         class="px-4 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-darkBg transition-all">Annuler</button>
-                    <button type="submit"
-                        class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm">
-                        <i class="fas fa-save mr-1"></i>Créer
+                    <button type="submit" wire:loading.attr="disabled"
+                        class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span wire:loading.remove><i class="fas fa-save mr-1"></i>Créer</span>
+                        <span wire:loading class="flex items-center gap-1.5">
+                            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Création...
+                        </span>
                     </button>
                 </div>
             </form>
@@ -189,9 +196,16 @@
                 <div class="flex justify-end gap-3">
                     <button wire:click="$set('editingCommissionId', null)"
                         class="px-4 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-darkBg transition-all">Annuler</button>
-                    <button wire:click="initiateSaveCommission"
-                        class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm">
-                        <i class="fas fa-save mr-1"></i>Enregistrer
+                    <button wire:click="initiateSaveCommission" wire:loading.attr="disabled"
+                        class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span wire:loading.remove><i class="fas fa-save mr-1"></i>Enregistrer</span>
+                        <span wire:loading class="flex items-center gap-1.5">
+                            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Enregistrement...
+                        </span>
                     </button>
                 </div>
             </div>
@@ -212,9 +226,16 @@
                 <div class="flex justify-center gap-3">
                     <button wire:click="closeConfirm"
                         class="px-4 py-2 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-darkBg transition-all">Annuler</button>
-                    <button wire:click="executeConfirm"
-                        class="px-4 py-2 rounded-xl text-white text-xs font-bold transition-all shadow-sm {{ $confirmButtonClass }}">
-                        <i class="fas fa-check-circle mr-1"></i>{{ $confirmButtonText }}
+                    <button wire:click="executeConfirm" wire:loading.attr="disabled"
+                        class="px-4 py-2 rounded-xl text-white text-xs font-bold transition-all shadow-sm {{ $confirmButtonClass }} disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span wire:loading.remove><i class="fas fa-check-circle mr-1"></i>{{ $confirmButtonText }}</span>
+                        <span wire:loading class="flex items-center gap-1.5">
+                            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Traitement...
+                        </span>
                     </button>
                 </div>
             </div>

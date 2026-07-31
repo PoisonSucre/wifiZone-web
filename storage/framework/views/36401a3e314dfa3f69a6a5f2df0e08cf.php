@@ -1,4 +1,4 @@
-<div id="scroll-progress-bar" class="fixed top-0 left-0 right-0 h-[3px] z-[60] bg-transparent">
+<div id="scroll-progress-bar" class="fixed top-0 left-0 right-0 h-[3px] z-40 bg-transparent">
     <div id="scroll-progress-bar-fill" class="h-full bg-neonGreen origin-left scale-x-0 transition-transform duration-150 ease-out shadow-[0_0_10px_rgba(16,185,129,0.6)]"></div>
 </div>
 <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 px-4 sm:px-6 lg:px-8">
@@ -42,27 +42,29 @@
                     <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
                 </a>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            <button id="mobile-menu-btn" class="p-2 rounded-full md:hidden text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300" aria-label="Menu Mobile">
+            <button id="mobile-menu-btn" class="p-2 rounded-full md:hidden text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300 z-50" aria-label="Menu Mobile">
                 <i class="fas fa-bars text-lg sm:text-xl"></i>
             </button>
         </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden absolute left-4 right-4 mt-3 rounded-3xl border border-slate-200/60 dark:border-darkBorder/60 bg-white dark:bg-darkBg p-6 space-y-4 shadow-xl transition-all duration-300">
-        <a href="<?php echo e(route('recuperer-ticket')); ?>" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-ticket-alt text-[10px] opacity-70"></i> Récupérer mon ticket</a>
-        <?php if (! empty(trim($__env->yieldContent('showAnchor')))): ?>
-        <a href="#comment-ca-marche" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-circle-question text-[10px] opacity-70"></i> Comment ça marche</a>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-        <a href="<?php echo e(route('contact')); ?>" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-headset text-[10px] opacity-70"></i> Nous Contacter</a>
-        <div class="pt-4 border-t border-slate-200/50 dark:border-darkBorder/50 flex flex-col gap-3">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
-                <a href="<?php echo e('/vendeur/'); ?>" class="w-full text-center py-2.5 text-xs font-bold text-white bg-neonGreen rounded-full hover:bg-neonGreen-400 transition-colors">
-                    <i class="fas fa-tachometer-alt"></i> Mon Espace
-                </a>
-            <?php else: ?>
-                <a href="<?php echo e(route('vendor.login')); ?>" class="w-full text-center py-2.5 text-xs font-semibold text-slate-700 dark:text-gray-300 border border-slate-200/55 dark:border-darkBorder/55 rounded-full hover:text-slate-950 dark:hover:text-white transition-colors">
-                    Connexion
-                </a>
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()" aria-hidden="true">
+        <div class="absolute left-4 right-4 top-20 rounded-3xl border border-slate-200/60 dark:border-darkBorder/60 bg-white dark:bg-darkBg p-6 space-y-4 shadow-xl max-h-[calc(100vh-6rem)] overflow-y-auto" onclick="event.stopPropagation()">
+            <a href="<?php echo e(route('recuperer-ticket')); ?>" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-ticket-alt text-[10px] opacity-70"></i> Récupérer mon ticket</a>
+            <?php if (! empty(trim($__env->yieldContent('showAnchor')))): ?>
+            <a href="#comment-ca-marche" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-circle-question text-[10px] opacity-70"></i> Comment ça marche</a>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <a href="<?php echo e(route('contact')); ?>" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-headset text-[10px] opacity-70"></i> Nous Contacter</a>
+            <div class="pt-4 border-t border-slate-200/50 dark:border-darkBorder/50 flex flex-col gap-3">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                    <a href="<?php echo e('/vendeur/'); ?>" class="w-full text-center py-2.5 text-xs font-bold text-white bg-neonGreen rounded-full hover:bg-neonGreen-400 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i> Mon Espace
+                    </a>
+                <?php else: ?>
+                    <a href="<?php echo e(route('vendor.login')); ?>" class="w-full text-center py-2.5 text-xs font-semibold text-slate-700 dark:text-gray-300 border border-slate-200/55 dark:border-darkBorder/55 rounded-full hover:text-slate-950 dark:hover:text-white transition-colors">
+                        Connexion
+                    </a>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
         </div>
     </div>
 </header>

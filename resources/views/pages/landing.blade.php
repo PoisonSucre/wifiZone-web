@@ -10,81 +10,6 @@
 @section('content')
 
 {{-- ============================================================ --}}
-{{-- LOCAL STYLE LAYER — signature motion & type system for this page --}}
-{{-- ============================================================ --}}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
-
-    .font-display{ font-family:'Sora',ui-sans-serif,system-ui,sans-serif; letter-spacing:-0.025em; }
-    .font-body{ font-family:'Manrope',ui-sans-serif,system-ui,sans-serif; }
-
-    /* Ambient network grid backdrop */
-    .grid-pattern{
-        background-image:
-            linear-gradient(to right, rgba(16,185,129,0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(16,185,129,0.07) 1px, transparent 1px);
-        background-size: 46px 46px;
-        -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 10%, black 35%, transparent 100%);
-        mask-image: radial-gradient(ellipse 65% 55% at 50% 10%, black 35%, transparent 100%);
-    }
-    .dark .grid-pattern{
-        background-image:
-            linear-gradient(to right, rgba(16,185,129,0.10) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(16,185,129,0.10) 1px, transparent 1px);
-    }
-
-    @keyframes orb-float{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(24px,-28px) scale(1.06); } }
-    .orb{ position:absolute; border-radius:9999px; filter:blur(64px); animation:orb-float 15s ease-in-out infinite; pointer-events:none; }
-
-    @keyframes signal-travel{
-        0%{ left:-6%; opacity:0; }
-        12%{ opacity:1; }
-        88%{ opacity:1; }
-        100%{ left:104%; opacity:0; }
-    }
-    .signal-dot{ position:absolute; top:50%; width:9px; height:9px; margin-top:-4.5px; border-radius:9999px; background:#10B981; box-shadow:0 0 14px 3px rgba(16,185,129,.65); animation:signal-travel 3.4s linear infinite; }
-
-    @keyframes marquee-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-    .marquee-track{ display:flex; width:max-content; animation:marquee-scroll 28s linear infinite; }
-    .marquee-wrap:hover .marquee-track{ animation-play-state:paused; }
-
-    @keyframes float-y{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
-    .float-y{ position:relative; animation:float-y 5.5s ease-in-out infinite; }
-
-    @keyframes ticker-pop{
-        0%, 100%{ opacity:0; transform:translateY(6px) scale(.97); }
-        10%, 85%{ opacity:1; transform:translateY(0) scale(1); }
-    }
-    .ticker-pop{ animation:ticker-pop 5s ease-in-out infinite; }
-
-    /* Phone mockup — the product itself, front and center */
-    .phone-frame{
-        position:relative; width:272px; max-width:78vw; margin:0 auto;
-        border-radius:2.4rem; padding:12px;
-        background:linear-gradient(160deg,#22262a,#0a0b0c);
-        box-shadow:0 35px 70px -25px rgba(0,0,0,.55), 0 0 0 1px rgba(16,185,129,.18);
-    }
-    .phone-notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:86px; height:18px; background:#0a0b0c; border-radius:0 0 12px 12px; z-index:5; }
-    .phone-screen{ position:relative; border-radius:1.7rem; overflow:hidden; background:#f8fafc; min-height:440px; }
-    .phone-state{ position:absolute; inset:0; padding:30px 18px 18px; opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease; pointer-events:none; }
-    .phone-state.active{ opacity:1; transform:translateY(0); pointer-events:auto; }
-
-    /* FAQ accordion */
-    .faq-panel{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
-    .faq-toggle[aria-expanded="true"] + .faq-panel{ max-height:240px; }
-    .faq-icon{ transition:transform .3s ease; }
-    .faq-toggle[aria-expanded="true"] .faq-icon{ transform:rotate(45deg); }
-
-    /* Browser chrome mock for the dashboard preview */
-    .browser-chrome{ border-radius:1.25rem; overflow:hidden; background:#fff; box-shadow:0 40px 80px -30px rgba(0,0,0,.35); }
-    .dark .browser-chrome{ background:#101114; }
-
-    @media (prefers-reduced-motion: reduce){
-        .orb, .signal-dot, .marquee-track, .float-y, .ticker-pop{ animation:none !important; }
-    }
-</style>
-
-{{-- ============================================================ --}}
 {{-- HERO — the live captive-portal moment, not a stock photo --}}
 {{-- ============================================================ --}}
 <section class="relative overflow-hidden bg-slate-50 dark:bg-[#0A0A0C] pt-32 sm:pt-40 lg:pt-48 pb-16 sm:pb-24 transition-colors duration-300">
@@ -125,18 +50,18 @@
             </div>
 
             {{-- Stat bar --}}
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 max-w-xl mx-auto lg:mx-0 border-t border-slate-200/70 dark:border-darkBorder/40">
-                <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="20" data-decimals="0">0</span>+</p>
-                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Vendeurs actifs</p>
+            <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-4 max-w-xl mx-auto lg:mx-0">
+                <div class="pt-4 text-center lg:text-left">
+                    <p class="font-display text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="20" data-decimals="0">0</span>+</p>
+                    <p class="text-[9px] sm:text-[10px] text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-0.5">Vendeurs actifs</p>
                 </div>
-                <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="2" data-decimals="1">0</span>K+</p>
-                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Tickets vendus</p>
+                <div class="pt-4 text-center lg:text-left">
+                    <p class="font-display text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="2" data-decimals="1">0</span>K+</p>
+                    <p class="text-[9px] sm:text-[10px] text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-0.5">Tickets vendus</p>
                 </div>
-                <div class="pt-6 text-center lg:text-left">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="98" data-decimals="0">0</span>%</p>
-                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-1">Disponibilité</p>
+                <div class="pt-4 text-center lg:text-left">
+                    <p class="font-display text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="98" data-decimals="0">0</span>%</p>
+                    <p class="text-[9px] sm:text-[10px] text-slate-500 dark:text-gray-500 font-semibold uppercase tracking-wide mt-0.5">Disponibilité</p>
                 </div>
             </div>
         </div>

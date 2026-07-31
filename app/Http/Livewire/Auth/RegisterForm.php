@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire\Auth;
 
+use App\Mail\VendorRegisteredMail;
 use App\Models\Setting;
 use App\Models\Vendeur;
-use App\Notifications\AdminVendorRegisteredNotification;
-use App\Notifications\VendorRegisteredNotification;
-use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Exception;
+use Livewire\Component;
 
 class RegisterForm extends Component
 {
@@ -82,7 +82,7 @@ class RegisterForm extends Component
         }
 
         try {
-            $vendeur->notify(new VendorRegisteredNotification());
+            Mail::to($vendeur->email)->send(new VendorRegisteredMail($vendeur));
             Log::info('Notification vendeur envoyée', ['to' => $vendeur->email]);
         } catch (Exception $e) {
             Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]);

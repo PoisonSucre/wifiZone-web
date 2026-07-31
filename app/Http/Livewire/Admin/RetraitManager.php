@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Mail\WithdrawalHandledMail;
+use App\Mail\WithdrawalPaidMail;
+use App\Mail\WithdrawalRejectedMail;
 use App\Models\Admin;
 use App\Models\AdminLog;
 use App\Models\Withdrawal;
-use App\Notifications\WithdrawalHandledNotification;
-use App\Notifications\WithdrawalPaidNotification;
-use App\Notifications\WithdrawalRejectedNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -94,10 +95,10 @@ class RetraitManager extends Component
         ]);
 
         try {
-            $withdrawal->vendeur->notify(new WithdrawalRejectedNotification($withdrawal));
+            Mail::to($withdrawal->vendeur->email)->send(new WithdrawalRejectedMail($withdrawal));
             $this->notifyOtherAdmins($withdrawal, 'rejected');
         } catch (\Exception $e) {
-            \Log::error('Erreur notification retrait rejeté', ['error' => $e->getMessage()]);
+            \Log::error('Erreur envoi email retrait rejeté', ['error' => $e->getMessage()]);
         }
 
         $this->closeRejectModal();
@@ -123,10 +124,10 @@ class RetraitManager extends Component
         ]);
 
         try {
-            $withdrawal->vendeur->notify(new WithdrawalPaidNotification($withdrawal));
+            Mail::to($withdrawal->vendeur->email)->send(new WithdrawalPaidMail($withdrawal));
             $this->notifyOtherAdmins($withdrawal, 'paid');
         } catch (\Exception $e) {
-            \Log::error('Erreur notification retrait payé', ['error' => $e->getMessage()]);
+            \Log::error('Erreur envoi email retrait payé', ['error' => $e->getMessage()]);
         }
 
         session()->now('success', 'Retrait marqué comme payé.');
@@ -139,8 +140,15 @@ class RetraitManager extends Component
             return;
         }
 
-        foreach (Admin::where('id', '!=', $acting->id)->get() as $other) {
-            $other->notify(new WithdrawalHandledNotification($withdrawal, $acting, $action));
+        $otherAdmins = Admin::where('id', '!=', $acting->id)->pluck('email');
+        if ($otherAdmins->isNotEmpty()) {
+            try {
+                Mail::to($otherAdmins->first())
+                    ->bcc($otherAdmins->slice(1)->toArray())
+                    ->send(new WithdrawalHandledMail($withdrawal, $acting, $action));
+            } catch (\Exception $e) {
+                \Log::error('Erreur envoi email notification admin', ['error' => $e->getMessage()]);
+            }
         }
     }
 

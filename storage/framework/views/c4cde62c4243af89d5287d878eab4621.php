@@ -60,7 +60,7 @@
     .faq-toggle[aria-expanded="true"] + .faq-panel{ display:block; }
 </style>
 
-<div class="min-h-screen bg-slate-50 dark:bg-[#0A0A0C] pt-32" x-data="{ selectedPack: null }">
+<div class="min-h-screen bg-slate-50 dark:bg-[#0A0A0C] pt-24" x-data="{ selectedPack: null }">
     
     <?php
     $packNom = \App\Models\Setting::get('pack_nom', 'Pack WiFi Zone');
@@ -122,7 +122,7 @@
     
     
     
-    <section class="relative bg-gradient-to-b from-slate-50 to-white dark:from-[#0A0A0C] dark:to-[#111316] min-h-[calc(100vh-8rem)] grid place-items-center">
+    <section class="relative bg-gradient-to-b from-slate-50 to-white dark:from-[#0A0A0C] dark:to-[#111316] min-h-[calc(100vh-6rem)] grid place-items-center">
         <div class="absolute inset-0 overflow-hidden bg-[url('data:image/svg+xml,%3Csvg width=%2246%22 height=%2246%22 viewBox=%220 0 46 46%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M46 0H0v46h46V0z%22 fill=%22none%22/%3E%3Cpath d=%22M46 0H0v46h46V0z%22 fill=%22%2310B981%22 fill-opacity=%220.03%22/%3E%3C/svg%3E')] opacity-50"></div>
         <div class="absolute inset-0 overflow-hidden -webkit-mask-image:[radial-gradient(ellipse_65%25_55%25_at_50%25_10%25,_black_35%25,_transparent_100%25)] mask-image:[radial-gradient(ellipse_65%25_55%25_at_50%25_10%25,_black_35%25,_transparent_100%25)]">
             <div class="orb w-72 h-72 sm:w-96 sm:h-96 bg-neonGreen/20 dark:bg-neonGreen/25 -top-16 -left-16"></div>

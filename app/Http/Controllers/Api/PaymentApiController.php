@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\TransactionCompletedMail;
 use App\Models\Transaction;
 use App\Models\Vendeur;
 use App\Services\LigdiCashService;
@@ -11,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentApiController extends Controller
 {
@@ -135,9 +137,9 @@ class PaymentApiController extends Controller
                 $transaction->update(['commission' => $commission]);
 
                 try {
-                    $vendeur->notify(new \App\Notifications\TransactionCompletedNotification($transaction, $ticket));
+                    Mail::to($vendeur->email)->send(new TransactionCompletedMail($transaction, $ticket));
                 } catch (\Exception $e) {
-                    Log::error('Erreur notification transaction', ['vendeur_id' => $vendeur->id, 'error' => $e->getMessage()]);
+                    Log::error('Erreur envoi email transaction', ['vendeur_id' => $vendeur->id, 'error' => $e->getMessage()]);
                 }
             } else {
                 Log::warning('Payment callback: no available ticket', [

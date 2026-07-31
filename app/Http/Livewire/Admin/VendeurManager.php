@@ -2,10 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Mail\VendorActivatedMail;
+use App\Mail\VendorSuspendedMail;
 use App\Models\AdminLog;
 use App\Models\Vendeur;
-use App\Notifications\VendorActivatedNotification;
-use App\Notifications\VendorSuspendedNotification;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -84,10 +85,10 @@ class VendeurManager extends Component
         ]);
 
         try {
-            $vendeur->notify(new VendorActivatedNotification());
+            Mail::to($vendeur->email)->send(new VendorActivatedMail($vendeur));
             session()->flash('success', 'Vendeur activé et notifié par email.');
         } catch (\Exception $e) {
-            \Log::error('Erreur notification activation', ['email' => $vendeur->email, 'error' => $e->getMessage()]);
+            \Log::error('Erreur envoi email activation', ['email' => $vendeur->email, 'error' => $e->getMessage()]);
             session()->flash('success', 'Vendeur activé, mais erreur lors de l\'envoi de l\'email.');
         }
     }
@@ -107,10 +108,10 @@ class VendeurManager extends Component
         ]);
 
         try {
-            $vendeur->notify(new VendorSuspendedNotification());
+            Mail::to($vendeur->email)->send(new VendorSuspendedMail($vendeur));
             session()->flash('success', 'Vendeur suspendu et notifié par email.');
         } catch (\Exception $e) {
-            \Log::error('Erreur notification suspension', ['email' => $vendeur->email, 'error' => $e->getMessage()]);
+            \Log::error('Erreur envoi email suspension', ['email' => $vendeur->email, 'error' => $e->getMessage()]);
             session()->flash('success', 'Vendeur suspendu, mais erreur lors de l\'envoi de l\'email.');
         }
     }

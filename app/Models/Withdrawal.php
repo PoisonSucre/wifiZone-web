@@ -19,6 +19,7 @@ class Withdrawal extends Model
         'montant_net',
         'statut',
         'phone_number',
+        'operator',
         'note',
         'date_traitement',
         'traite_par',

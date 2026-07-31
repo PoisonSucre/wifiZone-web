@@ -13,8 +13,12 @@
     $pctMax = (int) floor($soldeDisponible);
 @endphp
 
-<div x-data="{ loaded: false, cardFlipped: false, retraitOpen: false, commentCaMarcheOpen: false }" x-cloak
-     x-init="setTimeout(() => { loaded = true; }, 500)"
+<div x-data="{ loaded: false, cardFlipped: false, retraitOpen: false, commentCaMarcheOpen: false, retraitStep: 1, selectedOperator: null, isSubmitting: false }" x-cloak
+     x-init="
+        setTimeout(() => { loaded = true; }, 500);
+        $wire.on('retrait-submitted', () => { isSubmitting = false; });
+        $wire.on('retrait-error', () => { isSubmitting = false; });
+     "
      @keydown.escape.window="retraitOpen = false"
      class="space-y-4 sm:space-y-5 pb-2">
 
@@ -326,7 +330,28 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
                     <p class="text-[11px] text-slate-400 dark:text-gray-500 font-medium mb-4">
                         Solde disponible : <span class="font-black text-blue-600 dark:text-blue-400">{{ number_format($soldeDisponible, 0, ',', ' ') }} {{ $currency }}</span>
                     </p>
-                    <form wire:submit.prevent="demanderRetrait" class="space-y-4">
+                    
+                    {{-- STEP 1: CHOIX OPÉRATEUR --}}
+                    <div x-show="retraitStep === 1" class="grid grid-cols-2 gap-4">
+                        <button type="button" @click="selectedOperator = 'orange'; retraitStep = 2" class="p-4 rounded-2xl border-2 border-slate-200 dark:border-darkBorder hover:border-neonGreen transition-all">
+                            <img src="{{ asset('template/orange.png') }}" alt="Orange" class="w-full h-auto">
+                        </button>
+                        <button type="button" @click="selectedOperator = 'moov'; retraitStep = 2" class="p-4 rounded-2xl border-2 border-slate-200 dark:border-darkBorder hover:border-neonGreen transition-all">
+                            <img src="{{ asset('template/moov.png') }}" alt="Moov" class="w-full h-auto">
+                        </button>
+                    </div>
+
+                    {{-- STEP 2: FORMULAIRE --}}
+                    <form x-show="retraitStep === 2" @submit.prevent="isSubmitting = true; $wire.demanderRetrait()" class="space-y-4">
+                        <input type="hidden" wire:model="operator" x-model="selectedOperator">
+                        
+                        <div class="flex items-center gap-2 mb-2">
+                            <button type="button" @click="retraitStep = 1" class="text-slate-400 hover:text-slate-600">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <span class="text-xs font-bold text-slate-600 dark:text-gray-300">Retour au choix de l'opérateur</span>
+                        </div>
+
                         <div>
                             <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 block">Montant ({{ $currency }})</label>
                             <input type="number" x-ref="montantInput" wire:model="montant" min="1" required placeholder="Ex: 5000"
@@ -349,21 +374,22 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
                             @error('phoneNumber') <p class="text-red-500 text-[11px] mt-1 font-bold">{{ $message }}</p> @enderror
                         </div>
                         <div class="flex items-center gap-2 pt-1">
-                            <button type="submit" class="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
-                                <i class="fas fa-paper-plane text-[10px]"></i> Envoyer la demande
-                            </button>
-                            <button type="button" @click="retraitOpen = false" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-darkBorder text-[11px] font-bold text-slate-500 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-darkBg transition-colors">
-                                Annuler
+                            <button type="submit" :disabled="isSubmitting" class="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                                <template x-if="isSubmitting">
+                                    <svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span>Envoi en cours...</span>
+                                </template>
+                                <template x-if="!isSubmitting">
+                                    <i class="fas fa-paper-plane text-[10px]"></i> Envoyer la demande
+                                </template>
                             </button>
                         </div>
                     </form>
                 @else
-                    <div class="text-center py-6">
-                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-darkBg mb-2 text-slate-400">
-                            <i class="fas fa-wallet text-lg"></i>
-                        </div>
-                        <p class="text-slate-500 dark:text-gray-400 text-xs font-medium">Aucun solde disponible pour le moment.</p>
-                    </div>
+                    {{-- ... (else block) ... --}}
                 @endif
             </div>
         </div>

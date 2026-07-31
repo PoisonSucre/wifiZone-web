@@ -33,6 +33,9 @@
 /* ===== SIDEBAR VENDOR ===== */
 @import './sidebar-vendor.css';
 
+/* ===== LANDING PAGE STYLES ===== */
+@import './landing.css';
+
 
 
 /* ===== TEXT GLOW EFFECT ===== */

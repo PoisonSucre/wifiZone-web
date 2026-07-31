@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VendorRegisteredMail;
 use App\Models\Setting;
 use App\Models\Vendeur;
-use App\Notifications\AdminVendorRegisteredNotification;
-use App\Notifications\VendorRegisteredNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -92,7 +91,7 @@ class AuthController extends Controller
         ]);
 
         try {
-            $vendeur->notify(new VendorRegisteredNotification());
+            Mail::to($vendeur->email)->send(new VendorRegisteredMail($vendeur));
             Log::info('Notification vendeur envoyée', ['to' => $vendeur->email]);
         } catch (\Exception $e) {
             Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
