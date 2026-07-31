@@ -59,6 +59,12 @@ endif;
 unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
+        <div class="text-right -mt-2">
+            <a href="<?php echo e(route('admin.forgot-password')); ?>" class="text-xs font-bold text-slate-400 hover:text-neonGreen transition-colors">
+                <i class="fas fa-lock mr-1"></i> Mot de passe oublié ?
+            </a>
+        </div>
+
         <button type="submit" id="btn-submit" class="w-full bg-neonGreen hover:bg-neonGreen-400 text-white font-extrabold py-4 px-6 rounded-2xl shadow-neon-button transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3 text-sm">
             <span id="btn-label" class="flex items-center gap-3"><i class="fas fa-sign-in-alt"></i> Connexion Admin</span>
             <span id="btn-loading" class="flex items-center gap-3 hidden"><i class="fas fa-spinner fa-spin"></i> Connexion...</span>

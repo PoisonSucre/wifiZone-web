@@ -51,6 +51,10 @@ Route::post('/auth/verify-email/resend', [EmailVerificationController::class, 'r
 Route::middleware('guest:admin')->group(function () {
     Route::get('/raider/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
     Route::post('/raider/login', [AdminAuthController::class, 'login'])->name('admin.login.post')->middleware('throttle:5,1');
+    Route::get('/raider/forgot-password', [AdminAuthController::class, 'showForgotPasswordForm'])->name('admin.forgot-password');
+    Route::post('/raider/forgot-password', [AdminAuthController::class, 'sendSetPasswordEmail'])->name('admin.forgot-password.post')->middleware('throttle:3,60');
+    Route::get('/raider/reset-password/{token}', [AdminAuthController::class, 'showSetPasswordForm'])->name('admin.set-password');
+    Route::post('/raider/reset-password', [AdminAuthController::class, 'setPassword'])->name('admin.set-password.post')->middleware('throttle:3,60');
 });
 Route::post('/raider/logout', [AdminAuthController::class, 'logout'])->name('admin.logout')->middleware('auth:admin');
 

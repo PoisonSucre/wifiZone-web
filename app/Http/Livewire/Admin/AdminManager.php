@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Http\Controllers\AdminAuthController;
 use App\Models\Admin;
 use App\Models\AdminLog;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,8 +16,6 @@ class AdminManager extends Component
     public string $prenom = '';
     public string $nom = '';
     public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
     public bool $showDeleteModal = false;
     public ?int $deletingAdminId = null;
 
@@ -23,7 +23,6 @@ class AdminManager extends Component
         'prenom' => 'required|string|max:100',
         'nom' => 'required|string|max:100',
         'email' => 'required|email|unique:admins,email',
-        'password' => 'required|min:8|confirmed',
     ];
 
     public function addAdmin(): void
@@ -34,7 +33,7 @@ class AdminManager extends Component
             'prenom' => $this->prenom,
             'nom' => $this->nom,
             'email' => $this->email,
-            'password' => $this->password,
+            'password' => Str::random(40),
         ]);
 
         AdminLog::create([
@@ -46,8 +45,10 @@ class AdminManager extends Component
             'ip' => request()->ip(),
         ]);
 
-        $this->reset(['prenom', 'nom', 'email', 'password', 'password_confirmation']);
-        session()->now('success', "Admin {$admin->fullName()} ajouté.");
+        app(AdminAuthController::class)->issuePasswordReset($admin);
+
+        $this->reset(['prenom', 'nom', 'email']);
+        session()->now('success', "Admin {$admin->fullName()} ajouté. Un email lui a été envoyé pour définir son mot de passe.");
     }
 
     public function openDeleteModal(int $id): void
@@ -103,7 +104,8 @@ class AdminManager extends Component
     {
         $admins = Admin::orderBy('id')->paginate(20);
         $totalAdmins = Admin::count();
+        $totalLogs = AdminLog::count();
 
-        return view('livewire.admin.admin-manager', compact('admins', 'totalAdmins'));
+        return view('livewire.admin.admin-manager', compact('admins', 'totalAdmins', 'totalLogs'));
     }
 }

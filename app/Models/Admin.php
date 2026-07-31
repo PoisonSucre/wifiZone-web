@@ -16,6 +16,8 @@ class Admin extends Authenticatable
         'prenom',
         'email',
         'password',
+        'password_reset_token',
+        'password_reset_token_expires_at',
     ];
 
     protected $hidden = [
@@ -27,6 +29,7 @@ class Admin extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'password_reset_token_expires_at' => 'datetime',
         ];
     }
 

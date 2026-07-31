@@ -31,60 +31,30 @@
         'user' => 'utilisateur',
         'import_batch' => "lot d'import",
     ];
-    $dot = [
-        'blue' => 'bg-blue-500/15 border-blue-500/40 text-blue-600 dark:text-blue-400',
-        'green' => 'bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
-        'red' => 'bg-red-500/15 border-red-500/40 text-red-600 dark:text-red-400',
-        'amber' => 'bg-amber-500/15 border-amber-500/40 text-amber-600 dark:text-amber-400',
-        'purple' => 'bg-purple-500/15 border-purple-500/40 text-purple-600 dark:text-purple-400',
-        'slate' => 'bg-slate-500/15 border-slate-500/40 text-slate-600 dark:text-slate-400',
-    ];
-    $badge = [
-        'blue' => 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400',
-        'green' => 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-        'red' => 'bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400',
-        'amber' => 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400',
-        'purple' => 'bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400',
-        'slate' => 'bg-slate-100 dark:bg-slate-500/10 text-slate-600 dark:text-slate-400',
-    ];
-    $accent = [
-        'blue' => 'border-blue-500',
-        'green' => 'border-emerald-500',
-        'red' => 'border-red-500',
-        'amber' => 'border-amber-500',
-        'purple' => 'border-purple-500',
-        'slate' => 'border-slate-400',
-    ];
-    $iconBox = [
-        'blue' => 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
-        'green' => 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-        'red' => 'bg-red-500/10 text-red-600 dark:text-red-400',
-        'amber' => 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
-        'purple' => 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
-        'slate' => 'bg-slate-500/10 text-slate-600 dark:text-slate-400',
-    ];
-    $dotCenter = [
-        'blue' => 'bg-blue-500 border-blue-500',
-        'green' => 'bg-emerald-500 border-emerald-500',
-        'red' => 'bg-red-500 border-red-500',
-        'amber' => 'bg-amber-500 border-amber-500',
-        'purple' => 'bg-purple-500 border-purple-500',
-        'slate' => 'bg-slate-400 border-slate-400',
-    ];
+    $ordered = [];
+    foreach ($meta as $action => $m) {
+        if (($actions[$action]->nb ?? 0) > 0) {
+            $ordered[] = $action;
+        }
+    }
+    foreach ($meta as $action => $m) {
+        if (($actions[$action]->nb ?? 0) == 0) {
+            $ordered[] = $action;
+        }
+    }
     ?>
 
-    <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
-        <div class="flex flex-wrap items-center gap-1.5">
-            <button wire:click="$set('filterAction', '')"
-                class="px-2 py-1 rounded-full text-[10px] font-bold transition-all border <?php echo e($filterAction === '' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30'); ?>">
+    <div class="space-y-1.5">
+        <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap pb-0.5 [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] dark:[scrollbar-color:#2f2f33_transparent]">
+            <button wire:click="$set('filterAction', '')" class="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold transition-all border <?php echo e($filterAction === '' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30'); ?>">
                 <i class="fas fa-list mr-0.5"></i>Tous
             </button>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                <button wire:click="$set('filterAction', '<?php echo e($action); ?>')"
-                    class="px-2 py-1 rounded-full text-[10px] font-bold transition-all border <?php echo e($filterAction === $action ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30'); ?>">
-                    <i class="fas <?php echo e($meta[$action]['icon'] ?? 'fa-circle'); ?> mr-0.5"></i><?php echo e($meta[$action]['label'] ?? $action); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $ordered; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                <?php $m = $meta[$action]; ?>
+                <button wire:click="$set('filterAction', '<?php echo e($action); ?>')" class="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold transition-all border <?php echo e($filterAction === $action ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30'); ?>">
+                    <i class="fas <?php echo e($m['icon'] ?? 'fa-circle'); ?> mr-0.5"></i><?php echo e($m['label'] ?? $action); ?>
 
-                    <span class="opacity-60">(<?php echo e($data->nb); ?>)</span>
+                    <span class="opacity-60">(<?php echo e($actions[$action]->nb ?? 0); ?>)</span>
                 </button>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
@@ -132,9 +102,11 @@
                 $dayLabel = $key === now()->toDateString()
                     ? "Aujourd'hui"
                     : ($key === now()->subDay()->toDateString() ? 'Hier' : $d->translatedFormat('l d F Y'));
-                $m = $meta[$log->action] ?? ['label' => $log->action, 'icon' => 'fa-circle', 'c' => 'slate'];
-                $c = $m['c'];
+                $m = $meta[$log->action] ?? ['label' => $log->action, 'icon' => 'fa-circle'];
                 $side = $loop->odd ? 'left' : 'right';
+                $hue = ($log->id * 47) % 360;
+                $dotStyle = "background-color: hsl({$hue} 80% 50%); border-color: hsl({$hue} 80% 50%)";
+                $iconStyle = "background-color: hsla({$hue} 80% 50% / 0.12); color: hsl({$hue} 75% 45%)";
             ?>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($key !== $currentDay): ?>
                 <?php $currentDay = $key; ?>
@@ -144,28 +116,28 @@
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <div class="relative z-10 flex pb-5 pl-10 sm:pl-0">
-                <span class="absolute top-4 left-[22px] -translate-x-1/2 sm:left-1/2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white dark:bg-darkCard <?php echo e($dotCenter[$c]); ?>"></span>
+                <span class="absolute top-4 left-[22px] -translate-x-1/2 sm:left-1/2 w-2.5 h-2.5 rounded-full border bg-white dark:bg-darkCard" style="<?php echo e($dotStyle); ?>"></span>
                 <div class="w-full <?php echo e($side === 'left' ? 'sm:mr-auto' : 'sm:ml-auto'); ?> sm:w-[calc(50%-28px)]">
                     <?php
                         $who = $log->admin?->fullName() ?? ($log->admin_id ? 'Admin #' . $log->admin_id : 'Un administrateur');
                         $target = $log->target_type ? ($targetFr[$log->target_type] ?? $log->target_type) : null;
                         $sentence = trim($who . ' ' . ($m['verb'] ?? 'a effectué une action')
                             . ($log->target_type && $log->target_id ? ' #' . $log->target_id : '')
-                            . ' à ' . $d->format('d/m/Y H:i'));
+                            . ' à ' . $d->format('d/m/Y H:i:s'));
                     ?>
-                    <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder border-l-4 <?php echo e($accent[$c]); ?> rounded-2xl shadow-sm hover:shadow-md transition-shadow" x-data="{ open: false }">
+                    <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm hover:shadow-md transition-shadow" x-data="{ open: false }">
                         <button type="button" @click="open = !open" class="w-full text-left flex items-center justify-between gap-2 flex-wrap p-3.5 cursor-pointer">
                             <div class="flex items-center gap-2.5 min-w-0">
-                                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 <?php echo e($iconBox[$c]); ?>">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="<?php echo e($iconStyle); ?>">
                                     <i class="fas <?php echo e($m['icon']); ?> text-sm"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold <?php echo e($badge[$c]); ?>"><?php echo e($m['label']); ?></span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold" style="<?php echo e($iconStyle); ?>"><?php echo e($m['label']); ?></span>
                                     <div class="text-xs font-bold text-slate-900 dark:text-white truncate mt-1"><?php echo e($who); ?></div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 shrink-0">
-                                <span class="text-[10px] font-bold text-slate-400 dark:text-gray-500 whitespace-nowrap"><?php echo e($d->format('d/m/Y H:i')); ?></span>
+                                <span class="text-[10px] font-bold text-slate-400 dark:text-gray-500 whitespace-nowrap"><?php echo e($d->format('d/m/Y H:i:s')); ?></span>
                                 <i class="fas fa-chevron-down text-[10px] text-slate-400 dark:text-gray-500 transition-transform duration-200" :class="open && 'rotate-180'"></i>
                             </div>
                         </button>

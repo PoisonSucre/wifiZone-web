@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto px-4 sm:px-6">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-4 sm:space-y-5">
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('success')): ?>
     <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center gap-2 mb-6">
         <i class="fas fa-check-circle"></i><?php echo e(session('success')); ?>

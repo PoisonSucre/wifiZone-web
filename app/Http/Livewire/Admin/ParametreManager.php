@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ParametreManager extends Component
 {
+    public string $activeTab = 'plateforme';
     public string $plateformeNom = '';
     public string $plateformeDevise = 'XOF';
     public float $commissionPct = 10;
