@@ -19,10 +19,10 @@
     @endif
 
     <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl overflow-hidden shadow-sm">
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
             <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/30 dark:bg-transparent">
+                <thead class="sticky top-0 z-10">
+                    <tr class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-white dark:bg-darkCard">
                         <th class="py-2.5 px-3 font-bold">ID</th>
                         <th class="py-2.5 px-3 font-bold">Nom</th>
                         <th class="py-2.5 px-3 font-bold">Email</th>

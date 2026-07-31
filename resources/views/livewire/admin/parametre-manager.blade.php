@@ -5,6 +5,18 @@
     </div>
     @endif
 
+    <div class="flex items-center gap-1 p-1 bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder rounded-2xl w-fit mb-6">
+        <button wire:click="$set('activeTab', 'plateforme')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'plateforme' ? 'bg-white dark:bg-darkCard text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-300' }}">
+            <i class="fas fa-globe"></i> Plateforme
+        </button>
+        <button wire:click="$set('activeTab', 'securite')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'securite' ? 'bg-white dark:bg-darkCard text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-300' }}">
+            <i class="fas fa-shield-alt"></i> Sécurité
+        </button>
+    </div>
+
+    @if($activeTab === 'plateforme')
     <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 sm:p-5 shadow-sm">
         <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-xl bg-neonGreen/10 flex items-center justify-center text-neonGreen">
@@ -40,7 +52,9 @@
             </button>
         </form>
     </div>
+    @endif
 
+    @if($activeTab === 'securite')
     <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 sm:p-5 shadow-sm">
         <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-xl bg-neonGreen/10 flex items-center justify-center text-neonGreen">
@@ -54,9 +68,8 @@
         <form wire:submit.prevent="updateSecurity" class="space-y-4 max-w-lg">
             <div>
                 <label class="block text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5">Email administrateur</label>
-                <input type="email" wire:model="adminEmail" required
-                    class="w-full px-3 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
-                @error('adminEmail') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                <input type="email" value="{{ $adminEmail }}" disabled
+                    class="w-full px-3 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-slate-50 dark:bg-darkBg/50 text-slate-700 dark:text-gray-300 cursor-not-allowed">
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5">Mot de passe actuel</label>
@@ -82,4 +95,5 @@
             </button>
         </form>
     </div>
+    @endif
 </div>
