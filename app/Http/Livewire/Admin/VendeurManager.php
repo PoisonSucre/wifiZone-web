@@ -59,6 +59,7 @@ class VendeurManager extends Component
             'activate' => $this->activate($id),
             'suspend' => $this->suspend($id),
             'delete' => $this->delete($id),
+            'update_commission' => $this->updateCommission(),
             default => null,
         };
     }
@@ -137,7 +138,7 @@ class VendeurManager extends Component
             'newNom' => 'required|string|max:100',
             'newPrenom' => 'required|string|max:100',
             'newEmail' => 'required|email|unique:vendeurs,email',
-            'newTelephone' => 'required|string|max:20',
+            'newTelephone' => 'required|string|regex:/^[0-9\+\s\-]{8,20}$/',
             'newPassword' => 'required|string|min:8',
             'newCommission' => 'nullable|numeric|min:0|max:100',
         ]);
@@ -174,7 +175,19 @@ class VendeurManager extends Component
         $this->editingCommissionValue = $value;
     }
 
-    public function saveCommission(): void
+    public function initiateSaveCommission(): void
+    {
+        $this->validate(['editingCommissionValue' => 'required|numeric|min:0|max:100']);
+        $this->openConfirm(
+            'update_commission',
+            $this->editingCommissionId,
+            "Confirmer la mise à jour de la commission à {$this->editingCommissionValue}% ?",
+            'Mettre à jour',
+            'bg-emerald-600 hover:bg-emerald-700'
+        );
+    }
+
+    public function updateCommission(): void
     {
         $old = Vendeur::find($this->editingCommissionId);
         Vendeur::where('id', $this->editingCommissionId)->update(['commission_pct' => $this->editingCommissionValue]);

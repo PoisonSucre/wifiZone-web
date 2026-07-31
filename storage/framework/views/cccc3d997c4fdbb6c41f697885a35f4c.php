@@ -52,7 +52,7 @@
     </div>
 
     <!-- Logout Confirmation Modal (Alpine.js inline) -->
-    <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click.outside="showLogoutModal = false" @keydown.escape.window="showLogoutModal = false">
+    <div x-show="showLogoutModal" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click.outside="showLogoutModal = false" @keydown.escape.window="showLogoutModal = false">
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-2xl p-6 max-w-sm w-full" onclick="event.stopPropagation()">
             <div class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-500 mx-auto mb-4">
                 <i class="fas fa-sign-out-alt"></i>

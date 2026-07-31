@@ -184,11 +184,12 @@
                     <label class="block text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5">Commission (%)</label>
                     <input type="number" step="0.01" wire:model="editingCommissionValue"
                         class="w-full px-3 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
+                    @error('editingCommissionValue') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                 </div>
                 <div class="flex justify-end gap-3">
                     <button wire:click="$set('editingCommissionId', null)"
                         class="px-4 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-darkBg transition-all">Annuler</button>
-                    <button wire:click="saveCommission"
+                    <button wire:click="initiateSaveCommission"
                         class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm">
                         <i class="fas fa-save mr-1"></i>Enregistrer
                     </button>
