@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\Admin;
+use App\Models\AdminLog;
 use App\Models\Setting;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
@@ -37,6 +38,16 @@ class ParametreManager extends Component
         Setting::set('plateforme_nom', $this->plateformeNom, 'Nom de la plateforme');
         Setting::set('plateforme_devise', $this->plateformeDevise, 'Devise utilisée');
         Setting::set('commission_pct', $this->commissionPct, 'Commission globale (%)');
+
+        AdminLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'update_platform',
+            'target_type' => 'platform',
+            'target_id' => null,
+            'details' => "Plateforme: nom « {$this->plateformeNom} », devise « {$this->plateformeDevise} », commission {$this->commissionPct}%",
+            'ip' => request()->ip(),
+        ]);
+
         session()->flash('success', 'Paramètres plateforme mis à jour.');
     }
 
@@ -61,6 +72,15 @@ class ParametreManager extends Component
 
             Admin::where('id', auth('admin')->id())->update([
                 'password' => Hash::make($this->adminNewPass),
+            ]);
+
+            AdminLog::create([
+                'admin_id' => auth('admin')->id(),
+                'action' => 'update_security',
+                'target_type' => 'admin',
+                'target_id' => auth('admin')->id(),
+                'details' => 'Mot de passe administrateur modifié',
+                'ip' => request()->ip(),
             ]);
         }
 

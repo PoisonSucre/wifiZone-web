@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
-    <title>Vérifiez votre adresse email</title>
+    <title>Retrait approuvé</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -37,7 +37,7 @@
 
     <!-- Preheader (hidden preview text in inbox) -->
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">
-        Plus qu'une étape&nbsp;: confirmez votre adresse email pour activer votre compte <?php echo e(config('platform.name')); ?>.
+        Votre demande de retrait de <?php echo e(number_format($withdrawal->montant_net, 0, ',', ' ')); ?> <?php echo e(config('platform.currency')); ?> a été approuvée.
     </div>
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
         &#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;
@@ -79,8 +79,7 @@
                                     <tr>
                                         <td width="64" height="64" align="center" valign="middle" style="background-color:#e6f7f2;border-radius:50%;">
                                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M3 6.5L11.35 12.7C11.7343 12.9857 12.2657 12.9857 12.65 12.7L21 6.5" stroke="#059669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <rect x="3" y="5" width="18" height="14" rx="2.2" stroke="#059669" stroke-width="1.8"/>
+                                                <path d="M5 12.5L10 17.5L19 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
                                         </td>
                                     </tr>
@@ -88,43 +87,24 @@
                             </div>
 
                             <h1 class="h2-title" style="margin:0 0 14px;color:#0f172a;font-size:21px;font-weight:700;text-align:center;line-height:1.3;">
-                                Confirmez votre adresse email
+                                Retrait approuvé
                             </h1>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
                                 Bonjour <strong style="color:#0f172a;"><?php echo e($vendeur->prenom); ?> <?php echo e($vendeur->nom); ?></strong>,<br>
-                                merci de votre inscription sur <strong><?php echo e(config('platform.name')); ?></strong>. Confirmez votre adresse email pour activer votre compte et accéder à votre tableau de bord.
+                                votre demande de retrait de <strong style="color:#059669;"><?php echo e(number_format($withdrawal->montant_net, 0, ',', ' ')); ?> <?php echo e(config('platform.currency')); ?></strong> a été approuvée. Le versement sera effectué prochainement.
                             </p>
 
                             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 20px;">
                                 <tr>
                                     <td align="center" style="border-radius:10px;background-color:#059669;">
-                                        <a href="<?php echo e($verificationUrl); ?>" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
-                                            Vérifier mon adresse email
+                                        <a href="<?php echo e(url('/vendeur/retraits')); ?>" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
+                                            Voir mes retraits
                                         </a>
                                     </td>
                                 </tr>
                             </table>
 
-                            <p style="margin:0 0 30px;color:#94a3b8;font-size:13px;text-align:center;">
-                                Ce lien de vérification expire dans 30 minutes.
-                            </p>
-
-                        </td>
-                    </tr>
-
-                    <!-- Security notice -->
-                    <tr>
-                        <td style="padding:0 44px 36px;">
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border-radius:10px;">
-                                <tr>
-                                    <td style="padding:16px 20px;">
-                                        <p style="margin:0;color:#94a3b8;font-size:12.5px;line-height:1.6;text-align:center;">
-                                            🔒 Vous n'êtes pas à l'origine de cette inscription&nbsp;? Ignorez simplement cet email, aucun compte ne sera créé.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
                         </td>
                     </tr>
 
@@ -158,4 +138,4 @@
 
 </body>
 </html>
-<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/emails/email-verification.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/emails/withdrawal-approved.blade.php ENDPATH**/ ?>

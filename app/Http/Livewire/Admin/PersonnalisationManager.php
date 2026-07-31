@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\AdminLog;
 use App\Models\Setting;
 use Livewire\Component;
 
@@ -44,12 +45,30 @@ class PersonnalisationManager extends Component
     {
         $this->whatsappActif = !$this->whatsappActif;
         Setting::set('whatsapp_actif', $this->whatsappActif ? '1' : '0', 'Activer/désactiver WhatsApp');
+
+        AdminLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'toggle_whatsapp',
+            'target_type' => 'setting',
+            'target_id' => null,
+            'details' => 'WhatsApp ' . ($this->whatsappActif ? 'activé' : 'désactivé'),
+            'ip' => request()->ip(),
+        ]);
     }
 
     public function togglePack(): void
     {
         $this->packActif = !$this->packActif;
         Setting::set('pack_actif', $this->packActif ? '1' : '0', 'Activer/désactiver le pack');
+
+        AdminLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'toggle_pack',
+            'target_type' => 'setting',
+            'target_id' => null,
+            'details' => 'Pack installation ' . ($this->packActif ? 'activé' : 'désactivé'),
+            'ip' => request()->ip(),
+        ]);
     }
 
     public function save(): void
@@ -84,6 +103,16 @@ class PersonnalisationManager extends Component
         Setting::set('pack_equipements', $this->packEquipements, 'Équipements fournis (un par ligne)');
         Setting::set('pack_services', $this->packServices, 'Services inclus (un par ligne)');
         Setting::set('pack_image', $this->packImage, 'Image du pack');
+
+        AdminLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'update_personalisation',
+            'target_type' => 'setting',
+            'target_id' => null,
+            'details' => "Personnalisation mise à jour (WhatsApp n° {$this->whatsappNumber}, pack « {$this->packNom} »)",
+            'ip' => request()->ip(),
+        ]);
+
         session()->flash('success', 'Paramètres de personnalisation mis à jour.');
     }
 

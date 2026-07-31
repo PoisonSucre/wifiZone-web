@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
-    <title>Vérifiez votre adresse email</title>
+    <title>Votre compte vendeur a été suspendu</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -37,7 +37,7 @@
 
     <!-- Preheader (hidden preview text in inbox) -->
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">
-        Plus qu'une étape&nbsp;: confirmez votre adresse email pour activer votre compte <?php echo e(config('platform.name')); ?>.
+        Votre compte vendeur a été suspendu sur <?php echo e(config('platform.name')); ?>. Contactez notre support pour plus d'informations.
     </div>
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
         &#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;
@@ -51,7 +51,7 @@
 
                     <!-- Header / Brand -->
                     <tr>
-                        <td class="email-header" style="background:linear-gradient(135deg,#0d9488,#059669);padding:32px 40px;text-align:center;">
+                        <td class="email-header" style="background:linear-gradient(135deg,#dc2626,#b91c1c);padding:32px 40px;text-align:center;">
                             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
                                 <tr>
                                     <td style="vertical-align:middle;padding-right:10px;">
@@ -77,10 +77,10 @@
                             <div style="text-align:center;margin-bottom:26px;">
                                 <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                                     <tr>
-                                        <td width="64" height="64" align="center" valign="middle" style="background-color:#e6f7f2;border-radius:50%;">
+                                        <td width="64" height="64" align="center" valign="middle" style="background-color:#fee2e2;border-radius:50%;">
                                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M3 6.5L11.35 12.7C11.7343 12.9857 12.2657 12.9857 12.65 12.7L21 6.5" stroke="#059669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <rect x="3" y="5" width="18" height="14" rx="2.2" stroke="#059669" stroke-width="1.8"/>
+                                                <circle cx="12" cy="12" r="8.5" stroke="#dc2626" stroke-width="1.8"/>
+                                                <path d="M7 7L17 17" stroke="#dc2626" stroke-width="1.8" stroke-linecap="round"/>
                                             </svg>
                                         </td>
                                     </tr>
@@ -88,43 +88,32 @@
                             </div>
 
                             <h1 class="h2-title" style="margin:0 0 14px;color:#0f172a;font-size:21px;font-weight:700;text-align:center;line-height:1.3;">
-                                Confirmez votre adresse email
+                                Compte suspendu
                             </h1>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
                                 Bonjour <strong style="color:#0f172a;"><?php echo e($vendeur->prenom); ?> <?php echo e($vendeur->nom); ?></strong>,<br>
-                                merci de votre inscription sur <strong><?php echo e(config('platform.name')); ?></strong>. Confirmez votre adresse email pour activer votre compte et accéder à votre tableau de bord.
+                                nous vous informons que votre <strong>compte vendeur</strong> a été <strong style="color:#dc2626;">suspendu</strong>.
+                            </p>
+
+                            <p style="margin:0 0 30px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
+                                Durant cette suspension, vous ne pouvez plus accéder à votre tableau de bord ni vendre des tickets. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter notre support.
                             </p>
 
                             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 20px;">
                                 <tr>
-                                    <td align="center" style="border-radius:10px;background-color:#059669;">
-                                        <a href="<?php echo e($verificationUrl); ?>" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
-                                            Vérifier mon adresse email
+                                    <td align="center" style="border-radius:10px;background-color:#dc2626;">
+                                        <a href="<?php echo e(url('/contact')); ?>" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
+                                            Contacter le support
                                         </a>
                                     </td>
                                 </tr>
                             </table>
 
                             <p style="margin:0 0 30px;color:#94a3b8;font-size:13px;text-align:center;">
-                                Ce lien de vérification expire dans 30 minutes.
+                                Nous restons à votre disposition pour toute question.
                             </p>
 
-                        </td>
-                    </tr>
-
-                    <!-- Security notice -->
-                    <tr>
-                        <td style="padding:0 44px 36px;">
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border-radius:10px;">
-                                <tr>
-                                    <td style="padding:16px 20px;">
-                                        <p style="margin:0;color:#94a3b8;font-size:12.5px;line-height:1.6;text-align:center;">
-                                            🔒 Vous n'êtes pas à l'origine de cette inscription&nbsp;? Ignorez simplement cet email, aucun compte ne sera créé.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
                         </td>
                     </tr>
 
@@ -137,7 +126,7 @@
                             </p>
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(config('platform.support_email')): ?>
                             <p style="margin:0 0 12px;color:#94a3b8;font-size:11.5px;">
-                                Besoin d'aide&nbsp;? <a href="mailto:<?php echo e(config('platform.support_email')); ?>" style="color:#059669;text-decoration:none;">Contactez le support</a>
+                                Besoin d'aide&nbsp;? <a href="mailto:<?php echo e(config('platform.support_email')); ?>" style="color:#dc2626;text-decoration:none;">Contactez le support</a>
                             </p>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <p style="margin:0;color:#b6bec9;font-size:11px;">
@@ -158,4 +147,4 @@
 
 </body>
 </html>
-<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/emails/email-verification.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/emails/vendor-suspended.blade.php ENDPATH**/ ?>
