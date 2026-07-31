@@ -45,23 +45,36 @@ class EmailVerificationController extends Controller
 
     public function resend(Request $request)
     {
-        $email = $request->query('email') ?? session('pending_vendor_email');
+        $email = $request->input('email') ?? $request->query('email') ?? session('pending_vendor_email');
 
         if (!$email) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Adresse email introuvable.'], 422);
+            }
             return redirect()->route('vendor.forgot-password');
         }
 
         $vendeur = Vendeur::where('email', $email)->first();
 
         if (!$vendeur) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Aucun compte trouvé avec cette adresse email.'], 404);
+            }
             return redirect()->route('vendor.forgot-password');
         }
 
         if ($vendeur->email_verified_at) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Votre email est déjà vérifié. Connectez-vous.'], 422);
+            }
             return redirect()->route('vendor.login')->with('info', 'Votre email est déjà vérifié. Connectez-vous.');
         }
 
         $this->sendVerificationEmail($vendeur);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Un nouvel email de vérification a été envoyé.']);
+        }
 
         return back()->with('success', 'Un nouvel email de vérification a été envoyé.');
     }
@@ -70,7 +83,7 @@ class EmailVerificationController extends Controller
     {
         $verificationUrl = URL::temporarySignedRoute(
             'vendor.verify',
-            now()->addMinutes(60),
+            now()->addMinutes(30),
             ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
         );
 

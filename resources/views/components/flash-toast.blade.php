@@ -8,7 +8,7 @@
 
 @if($flashSuccess || $flashError || $flashWarning || $flashInfo || $validationErrors)
 <script>
-    document.addEventListener('alpine:init', () => {
+    document.addEventListener('alpine:initialized', () => {
         @if($flashSuccess)
             window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'success', message: @json($flashSuccess) } }));
         @endif

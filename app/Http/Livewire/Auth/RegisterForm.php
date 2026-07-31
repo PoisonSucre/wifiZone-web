@@ -93,7 +93,7 @@ class RegisterForm extends Component
         try {
             $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
                 'vendor.verify',
-                now()->addMinutes(60),
+                now()->addMinutes(30),
                 ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
             );
             \Illuminate\Support\Facades\Mail::to($vendeur->email)->send(

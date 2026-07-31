@@ -1,51 +1,139 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
     <title>Retrait approuvé</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+        table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+        img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+        body { margin:0; padding:0; width:100%!important; height:100%!important; }
+
+        @media only screen and (max-width:600px){
+            .email-wrapper { padding:24px 12px!important; }
+            .email-card { border-radius:12px!important; }
+            .email-padding { padding:28px 22px!important; }
+            .email-header { padding:26px 22px!important; }
+            .email-footer { padding:22px!important; }
+            .cta-button { display:block!important; width:100%!important; box-sizing:border-box; }
+            .h2-title { font-size:19px!important; }
+        }
+    </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f4f7fa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f7fa;padding:40px 20px;">
+<body style="margin:0;padding:0;background-color:#eef1f5;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+
+    <!-- Preheader (hidden preview text in inbox) -->
+    <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">
+        Votre demande de retrait de {{ number_format($withdrawal->montant_net, 0, ',', ' ') }} {{ config('platform.currency') }} a été approuvée.
+    </div>
+    <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
+        &#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;
+    </div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#eef1f5;">
         <tr>
-            <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+            <td class="email-wrapper" align="center" style="padding:48px 20px;">
+
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-card" style="width:600px;max-width:600px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,0.06);">
+
+                    <!-- Header / Brand -->
                     <tr>
-                        <td style="background:linear-gradient(135deg,#10B981,#059669);padding:30px 40px;text-align:center;">
-                            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:800;">
-                                <i class="fas fa-wifi" style="margin-right:8px;"></i> {{ config('platform.name') }}
+                        <td class="email-header" style="background:linear-gradient(135deg,#0d9488,#059669);padding:32px 40px;text-align:center;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+                                <tr>
+                                    <td style="vertical-align:middle;padding-right:10px;">
+                                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+                                            <path d="M12 20.5C12.8284 20.5 13.5 19.8284 13.5 19C13.5 18.1716 12.8284 17.5 12 17.5C11.1716 17.5 10.5 18.1716 10.5 19C10.5 19.8284 11.1716 20.5 12 20.5Z" fill="#ffffff"/>
+                                            <path d="M8.5 15.5C10.5 13.7 13.5 13.7 15.5 15.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                                            <path d="M5.5 11.8C9.2 8.4 14.8 8.4 18.5 11.8" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>
+                                            <path d="M2.5 8.2C7.9 3.4 16.1 3.4 21.5 8.2" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+                                        </svg>
+                                    </td>
+                                    <td style="vertical-align:middle;">
+                                        <span style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:0.2px;">{{ config('platform.name') }}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td class="email-padding" style="padding:44px 44px 36px;">
+
+                            <div style="text-align:center;margin-bottom:26px;">
+                                <table role="presentation" cellpadding="0" cellspacing="0" align="center">
+                                    <tr>
+                                        <td width="64" height="64" align="center" valign="middle" style="background-color:#e6f7f2;border-radius:50%;">
+                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5 12.5L10 17.5L19 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <h1 class="h2-title" style="margin:0 0 14px;color:#0f172a;font-size:21px;font-weight:700;text-align:center;line-height:1.3;">
+                                Retrait approuvé
                             </h1>
+
+                            <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
+                                Bonjour <strong style="color:#0f172a;">{{ $vendeur->prenom }} {{ $vendeur->nom }}</strong>,<br>
+                                votre demande de retrait de <strong style="color:#059669;">{{ number_format($withdrawal->montant_net, 0, ',', ' ') }} {{ config('platform.currency') }}</strong> a été approuvée. Le versement sera effectué prochainement.
+                            </p>
+
+                            <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 20px;">
+                                <tr>
+                                    <td align="center" style="border-radius:10px;background-color:#059669;">
+                                        <a href="{{ url('/vendeur/retraits') }}" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
+                                            Voir mes retraits
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
                         </td>
                     </tr>
+
+                    <!-- Footer -->
                     <tr>
-                        <td style="padding:40px;">
-                            <div style="text-align:center;margin-bottom:30px;">
-                                <div style="width:70px;height:70px;background-color:#d1fae5;border-radius:50%;margin:0 auto 20px;line-height:70px;font-size:30px;">✓</div>
-                            </div>
-                            <h2 style="margin:0 0 15px;color:#1a1a2e;font-size:20px;text-align:center;">Retrait approuvé</h2>
-                            <p style="margin:0 0 20px;color:#555;font-size:15px;line-height:1.7;text-align:center;">
-                                Bonjour <strong>{{ $vendeur->prenom }} {{ $vendeur->nom }}</strong>,
+                        <td class="email-footer" style="background-color:#f8fafc;padding:26px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+                            <p style="margin:0 0 6px;color:#64748b;font-size:12.5px;font-weight:600;">
+                                {{ config('platform.name') }}
                             </p>
-                            <p style="margin:0 0 20px;color:#555;font-size:15px;line-height:1.7;text-align:center;">
-                                Votre demande de retrait de <strong style="color:#10B981;">{{ number_format($withdrawal->montant_net, 0, ',', ' ') }} {{ config('platform.currency') }}</strong> a été approuvée. Le versement sera effectué prochainement.
+                            @if(config('platform.support_email'))
+                            <p style="margin:0 0 12px;color:#94a3b8;font-size:11.5px;">
+                                Besoin d'aide&nbsp;? <a href="mailto:{{ config('platform.support_email') }}" style="color:#059669;text-decoration:none;">Contactez le support</a>
                             </p>
-                            <div style="text-align:center;margin-bottom:20px;">
-                                <a href="{{ url('/vendeur/retraits') }}" style="display:inline-block;background-color:#10B981;color:#ffffff;font-weight:700;font-size:15px;padding:14px 36px;border-radius:50px;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,0.4);">
-                                    Voir mes retraits
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background-color:#f8fafc;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
-                            <p style="margin:0;color:#999;font-size:11px;">
-                                Designed by Raider Corporation &copy; {{ date('Y') }}. Tous droits réservés.
+                            @endif
+                            <p style="margin:0;color:#b6bec9;font-size:11px;">
+                                &copy; {{ date('Y') }} {{ config('platform.name') }} — Tous droits réservés.
                             </p>
                         </td>
                     </tr>
+
                 </table>
+
+                <p style="margin:20px 0 0;color:#a3adba;font-size:11px;text-align:center;">
+                    Cet email a été envoyé automatiquement, merci de ne pas y répondre directement.
+                </p>
+
             </td>
         </tr>
     </table>
+
 </body>
 </html>

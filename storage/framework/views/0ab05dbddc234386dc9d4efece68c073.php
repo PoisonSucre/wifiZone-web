@@ -5,8 +5,10 @@ $links = [
     ['route' => 'admin.transactions',   'label' => 'Transactions',   'icon' => 'fa-exchange-alt',   'url' => '/raider/transactions'],
     ['route' => 'admin.tickets',        'label' => 'Tickets',        'icon' => 'fa-ticket-alt',     'url' => '/raider/tickets'],
     ['route' => 'admin.retraits',       'label' => 'Retraits',       'icon' => 'fa-wallet',         'url' => '/raider/retraits'],
+    ['route' => 'admin.admins',         'label' => 'Admins',         'icon' => 'fa-user-shield',    'url' => '/raider/admins'],
     ['route' => 'admin.personnalisation', 'label' => 'Personnalisation', 'icon' => 'fa-paint-brush',  'url' => '/raider/personnalisation'],
     ['route' => 'admin.parametres',     'label' => 'Paramètres',     'icon' => 'fa-cog',            'url' => '/raider/parametres'],
+    ['route' => 'admin.journalisation', 'label' => 'Journalisation', 'icon' => 'fa-clipboard-list', 'url' => '/raider/journalisation'],
 ];
 $activeRoute = Route::currentRouteName();
 

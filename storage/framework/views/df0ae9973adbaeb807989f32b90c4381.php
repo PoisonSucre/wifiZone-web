@@ -8,7 +8,7 @@
 
 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($flashSuccess || $flashError || $flashWarning || $flashInfo || $validationErrors): ?>
 <script>
-    document.addEventListener('alpine:init', () => {
+    document.addEventListener('alpine:initialized', () => {
         <?php if($flashSuccess): ?>
             window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'success', message: <?php echo json_encode($flashSuccess, 15, 512) ?> } }));
         <?php endif; ?>

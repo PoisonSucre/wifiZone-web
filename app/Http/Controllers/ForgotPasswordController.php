@@ -76,7 +76,7 @@ class ForgotPasswordController extends Controller
             return back()->withErrors(['email' => 'Ce lien de réinitialisation est invalide ou a expiré.']);
         }
 
-        if (Carbon::parse($resetRecord->created_at)->addMinutes(60)->isPast()) {
+        if (Carbon::parse($resetRecord->created_at)->addMinutes(30)->isPast()) {
             DB::table('password_reset_tokens')->where('email', $request->email)->delete();
             return back()->withErrors(['email' => 'Ce lien de réinitialisation a expiré. Demandez un nouveau lien.']);
         }

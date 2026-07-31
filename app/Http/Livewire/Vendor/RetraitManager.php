@@ -57,16 +57,15 @@ class RetraitManager extends Component
         });
 
         if ($error) {
-            session()->flash('error', $error);
+            session()->now('error', $error);
             return;
         }
 
         try {
-            $admin = Admin::first();
-            if ($admin) {
-                $vendeur = auth()->user();
-                $withdrawal = $vendeur->withdrawals()->latest()->first();
-                if ($withdrawal) {
+            $vendeur = auth()->user();
+            $withdrawal = $vendeur->withdrawals()->latest()->first();
+            if ($withdrawal) {
+                foreach (Admin::all() as $admin) {
                     $admin->notify(new WithdrawalRequestedNotification($withdrawal));
                 }
             }
@@ -75,7 +74,7 @@ class RetraitManager extends Component
         }
 
         $this->montant = 0;
-        session()->flash('success', 'Demande de retrait soumise.');
+        session()->now('success', 'Demande de retrait soumise.');
     }
 
     public function render()

@@ -1,7 +1,7 @@
-<?php $__env->startSection('sidebar'); ?> <?php echo $__env->make('components.sidebar-admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?> <?php $__env->stopSection(); ?>
-<?php $__env->startSection('title', 'Dashboard Admin'); ?>
+<?php $__env->startSection('sidebar'); ?> <?php echo $__env->make('components.sidebar-vendor', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?> <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title', 'Dashboard'); ?>
 <?php $__env->startSection('header'); ?>
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-1">
     <div class="flex items-center gap-3">
         <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-neonGreen via-neonGreen/90 to-emerald-400 flex items-center justify-center text-black text-lg shadow-[0_10px_30px_-10px_rgba(0,255,136,0.55)]">
             <i class="fas fa-tachometer-alt"></i>
@@ -13,10 +13,6 @@
         </div>
     </div>
     <div class="flex items-center gap-2 mt-1 sm:mt-0">
-        <a href="<?php echo e(route('admin.revenus.details')); ?>" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800 dark:bg-slate-700 text-white hover:bg-slate-900 text-[11px] font-bold transition-all">
-            <i class="fas fa-chart-line text-[10px]"></i>
-            Détails Revenus
-        </a>
         <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200/60 dark:border-emerald-500/20 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
             <span class="relative flex h-1.5 w-1.5">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -37,14 +33,14 @@
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('admin.dashboard');
+[$__name, $__params] = $__split('vendor.dashboard');
 
 $__keyOuter = $__key ?? null;
 
 $__key = null;
 $__componentSlots = [];
 
-$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-302846773-0', $__key);
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-3082227658-0', $__key);
 
 $__html = app('livewire')->mount($__name, $__params, $__key, $__componentSlots);
 
@@ -61,4 +57,4 @@ unset($__split);
 ?>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/admin/dashboard.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.vendor', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/vendor/dashboard.blade.php ENDPATH**/ ?>

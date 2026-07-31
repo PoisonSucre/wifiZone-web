@@ -37,7 +37,7 @@
                         class="w-full inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                     <i class="fas fa-search"></i>
                     <span id="btnText">Récupérer mon ticket</span>
-                    <i id="btnSpinner" class="fas fa-spinner fa-spin hidden"></i>
+                    <i id="btnSpinner" class="fas fa-spinner fa-spin" style="display:none"></i>
                 </button>
             </form>
             <p class="text-center mt-4 text-xs text-slate-500 dark:text-gray-500">
@@ -113,7 +113,7 @@ function togglePw(btn) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form[action="{{ route(\'recuperer-ticket\') }}"]');
+    const form = document.querySelector('form[action="{{ route("recuperer-ticket") }}"]');
     if (form) {
         form.addEventListener('submit', function() {
             const btn = document.getElementById('recupererBtn');
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (btn && text && spinner) {
                 btn.disabled = true;
                 text.textContent = 'Recherche...';
-                spinner.classList.remove('hidden');
+                spinner.style.display = 'inline-block';
             }
         });
     }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Admin;
 use App\Models\AdminLog;
 use App\Models\Withdrawal;
+use App\Notifications\WithdrawalHandledNotification;
 use App\Notifications\WithdrawalPaidNotification;
 use App\Notifications\WithdrawalRejectedNotification;
 use Illuminate\Support\Carbon;
@@ -79,7 +81,7 @@ class RetraitManager extends Component
             'statut' => 'rejected',
             'note' => $this->rejectReason,
             'date_traitement' => now(),
-            'traite_par' => auth()->id() ?? 0,
+            'traite_par' => auth('admin')->id(),
         ]);
 
         AdminLog::create([
@@ -93,12 +95,13 @@ class RetraitManager extends Component
 
         try {
             $withdrawal->vendeur->notify(new WithdrawalRejectedNotification($withdrawal));
+            $this->notifyOtherAdmins($withdrawal, 'rejected');
         } catch (\Exception $e) {
             \Log::error('Erreur notification retrait rejeté', ['error' => $e->getMessage()]);
         }
 
         $this->closeRejectModal();
-        session()->flash('success', 'Retrait rejeté.');
+        session()->now('success', 'Retrait rejeté.');
     }
 
     public function pay(int $id): void
@@ -107,7 +110,7 @@ class RetraitManager extends Component
         $withdrawal->update([
             'statut' => 'paid',
             'date_traitement' => now(),
-            'traite_par' => auth()->id() ?? 0,
+            'traite_par' => auth('admin')->id(),
         ]);
 
         AdminLog::create([
@@ -121,11 +124,24 @@ class RetraitManager extends Component
 
         try {
             $withdrawal->vendeur->notify(new WithdrawalPaidNotification($withdrawal));
+            $this->notifyOtherAdmins($withdrawal, 'paid');
         } catch (\Exception $e) {
             \Log::error('Erreur notification retrait payé', ['error' => $e->getMessage()]);
         }
 
-        session()->flash('success', 'Retrait marqué comme payé.');
+        session()->now('success', 'Retrait marqué comme payé.');
+    }
+
+    private function notifyOtherAdmins(Withdrawal $withdrawal, string $action): void
+    {
+        $acting = auth('admin')->user();
+        if (! $acting) {
+            return;
+        }
+
+        foreach (Admin::where('id', '!=', $acting->id)->get() as $other) {
+            $other->notify(new WithdrawalHandledNotification($withdrawal, $acting, $action));
+        }
     }
 
     public function render()

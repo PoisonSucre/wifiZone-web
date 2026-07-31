@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
-    <title>Retrait rejeté</title>
+    <title>Retrait traité par <?php echo e($admin->fullName()); ?></title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -37,7 +37,7 @@
 
     <!-- Preheader (hidden preview text in inbox) -->
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">
-        Votre demande de retrait de {{ number_format($withdrawal->montant_net, 0, ',', ' ') }} {{ config('platform.currency') }} a été rejetée.
+        <?php echo e($admin->fullName()); ?> a <?php echo e($action === 'paid' ? 'payé' : 'rejeté'); ?> le retrait #<?php echo e($withdrawal->id); ?> sur <?php echo e(config('platform.name')); ?>.
     </div>
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
         &#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;
@@ -51,7 +51,7 @@
 
                     <!-- Header / Brand -->
                     <tr>
-                        <td class="email-header" style="background:linear-gradient(135deg,#dc2626,#b91c1c);padding:32px 40px;text-align:center;">
+                        <td class="email-header" style="background:<?php echo e($action === 'paid' ? 'linear-gradient(135deg,#0d9488,#059669)' : 'linear-gradient(135deg,#dc2626,#b91c1c)'); ?>;padding:32px 40px;text-align:center;">
                             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
                                 <tr>
                                     <td style="vertical-align:middle;padding-right:10px;">
@@ -63,7 +63,7 @@
                                         </svg>
                                     </td>
                                     <td style="vertical-align:middle;">
-                                        <span style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:0.2px;">{{ config('platform.name') }}</span>
+                                        <span style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:0.2px;"><?php echo e(config('platform.name')); ?></span>
                                     </td>
                                 </tr>
                             </table>
@@ -77,49 +77,65 @@
                             <div style="text-align:center;margin-bottom:26px;">
                                 <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                                     <tr>
-                                        <td width="64" height="64" align="center" valign="middle" style="background-color:#fee2e2;border-radius:50%;">
+                                        <td width="64" height="64" align="center" valign="middle" style="background-color:<?php echo e($action === 'paid' ? '#e6f7f2' : '#fde8e8'); ?>;border-radius:50%;">
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action === 'paid'): ?>
                                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="12" cy="12" r="8.5" stroke="#dc2626" stroke-width="1.8"/>
-                                                <path d="M7 7L17 17" stroke="#dc2626" stroke-width="1.8" stroke-linecap="round"/>
+                                                <path d="M4 12.5L9.5 18L20 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
+                                            <?php else: ?>
+                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7 7L17 17" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M17 7L7 17" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
 
                             <h1 class="h2-title" style="margin:0 0 14px;color:#0f172a;font-size:21px;font-weight:700;text-align:center;line-height:1.3;">
-                                Retrait rejeté
+                                Retrait #<?php echo e($withdrawal->id); ?> <?php echo e($action === 'paid' ? 'payé' : 'rejeté'); ?>
+
                             </h1>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
-                                Bonjour <strong style="color:#0f172a;">{{ $vendeur->prenom }} {{ $vendeur->nom }}</strong>,<br>
-                                malheureusement, votre demande de retrait de <strong style="color:#dc2626;">{{ number_format($withdrawal->montant_net, 0, ',', ' ') }} {{ config('platform.currency') }}</strong> a été rejetée.
+                                <strong style="color:#0f172a;"><?php echo e($admin->fullName()); ?></strong> a traité le retrait de
+                                <strong style="color:#0f172a;"><?php echo e($vendeur->prenom); ?> <?php echo e($vendeur->nom); ?></strong>.
                             </p>
 
-                            @if($withdrawal->note)
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#fef2f2;border:1px solid #fecaca;border-radius:10px;margin-bottom:25px;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#e6f7f2;border:1px solid #a7e3cf;border-radius:10px;margin-bottom:25px;">
                                 <tr>
                                     <td style="padding:18px 22px;">
-                                        <p style="margin:0 0 10px;color:#991b1b;font-size:14px;font-weight:700;">Motif :</p>
-                                        <p style="margin:0;color:#991b1b;font-size:13px;line-height:1.7;">{{ $withdrawal->note }}</p>
+                                        <p style="margin:0 0 10px;color:#065f46;font-size:14px;font-weight:700;">Détails du retrait :</p>
+                                        <p style="margin:0;color:#065f46;font-size:13px;line-height:1.8;">
+                                            Montant brut : <strong><?php echo e(number_format($withdrawal->montant_brut, 0, ',', ' ')); ?> <?php echo e(config('platform.currency')); ?></strong><br>
+                                            Commission (<?php echo e($withdrawal->commission_pct); ?>%) : <strong><?php echo e(number_format($withdrawal->montant_commission, 0, ',', ' ')); ?> <?php echo e(config('platform.currency')); ?></strong><br>
+                                            Montant net : <strong><?php echo e(number_format($withdrawal->montant_net, 0, ',', ' ')); ?> <?php echo e(config('platform.currency')); ?></strong><br>
+                                            Téléphone : <strong><?php echo e($withdrawal->phone_number); ?></strong>
+                                        </p>
                                     </td>
                                 </tr>
                             </table>
-                            @endif
+
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action === 'paid'): ?>
+                            <p style="margin:0 0 20px;color:#475569;font-size:14px;line-height:1.7;text-align:center;">
+                                Ce retrait est déjà payé, aucune action supplémentaire n'est nécessaire.
+                            </p>
+                            <?php else: ?>
+                            <p style="margin:0 0 20px;color:#475569;font-size:14px;line-height:1.7;text-align:center;">
+                                Ce retrait a été rejeté, il est sorti de la file de traitement.
+                            </p>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 20px;">
                                 <tr>
-                                    <td align="center" style="border-radius:10px;background-color:#dc2626;">
-                                        <a href="{{ url('/contact') }}" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
-                                            Contacter le support
+                                    <td align="center" style="border-radius:10px;background-color:<?php echo e($action === 'paid' ? '#059669' : '#dc2626'); ?>;">
+                                        <a href="<?php echo e(url('/raider/retraits')); ?>" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
+                                            Voir les retraits
                                         </a>
                                     </td>
                                 </tr>
                             </table>
-
-                            <p style="margin:0 0 30px;color:#94a3b8;font-size:13px;text-align:center;">
-                                Si vous avez des questions, contactez l'administrateur.
-                            </p>
 
                         </td>
                     </tr>
@@ -128,15 +144,16 @@
                     <tr>
                         <td class="email-footer" style="background-color:#f8fafc;padding:26px 40px;text-align:center;border-top:1px solid #e5e7eb;">
                             <p style="margin:0 0 6px;color:#64748b;font-size:12.5px;font-weight:600;">
-                                {{ config('platform.name') }}
+                                <?php echo e(config('platform.name')); ?>
+
                             </p>
-                            @if(config('platform.support_email'))
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(config('platform.support_email')): ?>
                             <p style="margin:0 0 12px;color:#94a3b8;font-size:11.5px;">
-                                Besoin d'aide&nbsp;? <a href="mailto:{{ config('platform.support_email') }}" style="color:#dc2626;text-decoration:none;">Contactez le support</a>
+                                Besoin d'aide&nbsp;? <a href="mailto:<?php echo e(config('platform.support_email')); ?>" style="color:#059669;text-decoration:none;">Contactez le support</a>
                             </p>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <p style="margin:0;color:#b6bec9;font-size:11px;">
-                                &copy; {{ date('Y') }} {{ config('platform.name') }} — Tous droits réservés.
+                                &copy; <?php echo e(date('Y')); ?> <?php echo e(config('platform.name')); ?> — Tous droits réservés.
                             </p>
                         </td>
                     </tr>
@@ -153,3 +170,4 @@
 
 </body>
 </html>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/emails/withdrawal-handled-admin.blade.php ENDPATH**/ ?>

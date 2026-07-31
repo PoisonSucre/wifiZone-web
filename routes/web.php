@@ -142,5 +142,7 @@ Route::middleware(['auth:admin', 'admin'])->prefix('raider')->name('admin.')->gr
     Route::get('/parametres', fn () => view('admin.parametres'))->name('parametres');
     Route::get('/personnalisation', fn () => view('admin.personnalisation'))->name('personnalisation');
     Route::get('/retraits', fn () => view('admin.retraits'))->name('retraits');
+    Route::get('/admins', fn () => view('admin.admins'))->name('admins');
+    Route::get('/journalisation', fn () => view('admin.journalisation'))->name('journalisation');
     Route::get('/revenus-details', fn () => view('admin.revenus-details'))->name('revenus.details');
 });

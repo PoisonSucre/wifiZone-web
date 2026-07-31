@@ -56,6 +56,10 @@
                            class="block w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-darkBorder rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-neonGreen focus:ring-2 focus:ring-neonGreen/10 transition-all text-sm">
                 </div>
                 @error('telephone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                <p class="mt-1 text-xs text-slate-400 dark:text-gray-500 flex items-center gap-1.5">
+                    <i class="fab fa-whatsapp text-[13px] text-emerald-500"></i>
+                    Indiquez de préférence un numéro WhatsApp
+                </p>
             </div>
         </div>
 

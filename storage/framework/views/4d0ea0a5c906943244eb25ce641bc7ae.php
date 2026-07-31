@@ -1,12 +1,11 @@
-@extends('layouts.auth')
-
-@section('title', 'Vérifiez votre email')
-@section('content')
+<?php $__env->startSection('title', 'Vérifiez votre email'); ?>
+<?php $__env->startSection('content'); ?>
 <div class="max-w-md w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-10 shadow-xl transition-all duration-300">
     <div class="text-center mb-8">
         <a href="/" class="inline-flex items-center gap-3 text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-wide text-glow mb-2">
             <span class="text-neonGreen"><i class="fas fa-wifi animate-pulse"></i></span>
-            {{ config('platform.name') }}
+            <?php echo e(config('platform.name')); ?>
+
         </a>
     </div>
 
@@ -23,9 +22,9 @@
     <div id="resendAlert" class="hidden mb-4 text-sm text-center rounded-2xl p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 font-semibold text-emerald-700 dark:text-emerald-400"></div>
 
     <div class="space-y-3">
-        <form id="resendForm" method="POST" action="{{ route('vendor.verify-email.resend') }}">
-            @csrf
-            <input type="hidden" name="email" value="{{ session('pending_vendor_email', old('email')) }}">
+        <form id="resendForm" method="POST" action="<?php echo e(route('vendor.verify-email.resend')); ?>">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="email" value="<?php echo e(session('pending_vendor_email', old('email'))); ?>">
             <button type="submit" id="resendBtn" class="w-full bg-neonGreen hover:bg-neonGreen-400 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-neon-button transition-all flex items-center justify-center gap-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 <span id="resendLabel" class="flex items-center gap-3">
                     <i class="fas fa-redo"></i> Renvoyer l'email de vérification
@@ -37,9 +36,9 @@
         </form>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('submit', function (e) {
     const form = e.target;
@@ -98,4 +97,6 @@ document.addEventListener('submit', function (e) {
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.auth', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/auth/verify-email.blade.php ENDPATH**/ ?>
