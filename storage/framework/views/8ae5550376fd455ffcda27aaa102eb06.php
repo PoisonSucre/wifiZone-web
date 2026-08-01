@@ -122,21 +122,20 @@
                      <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-white/70">Quota de hotspots</p>
                      <div class="flex items-baseline gap-2 mt-1">
                          <p class="text-2xl font-black tracking-tight"><?php echo e($used); ?> / <?php echo e($limit); ?></p>
-                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($canCreate): ?>
-                             <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neonGreen/20 text-neonGreen text-[11px] font-black uppercase tracking-wider">
-                                 <i class="fas fa-plus text-[9px]"></i> +<?php echo e($remaining); ?> hotspot<?php echo e($remaining > 1 ? 's' : ''); ?>
-
-                             </span>
-                         <?php else: ?>
-                             <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-[11px] font-black uppercase tracking-wider">
-                                 <i class="fas fa-ban text-[9px]"></i> Quota atteint
-                             </span>
-                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($canCreate): ?>
+                              <span class="inline-flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider">
+                                  <span class="font-medium text-white/80"><?php echo e($remaining); ?> Restant<?php echo e($remaining > 1 ? 's' : ''); ?></span>
+                              </span>
+                          <?php else: ?>
+                              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-[11px] font-black uppercase tracking-wider">
+                                  <i class="fas fa-ban text-[9px]"></i> Quota atteint
+                              </span>
+                          <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                      </div>
-                     <div class="relative h-2 rounded-full bg-white/20 mt-3 overflow-hidden">
-                         <div class="h-full rounded-full transition-all duration-700"
-                              style="width: <?php echo e($limit > 0 ? min(($used / $limit) * 100, 100) : ($used > 0 ? 100 : 0)); ?>%; background: <?php echo e($limit > 0 && $used >= $limit ? '#ef4444' : ($limit === 0 && $used > 0 ? '#f59e0b' : '#10B981')); ?>"></div>
-                     </div>
+<div class="relative h-2 rounded-full bg-white/20 mt-3 overflow-hidden">
+                          <div class="h-full rounded-full transition-all duration-700"
+                               style="width: <?php echo e($limit > 0 ? min(($used / $limit) * 100, 100) : ($used > 0 ? 100 : 0)); ?>%; background: <?php echo e($limit > 0 && $used >= $limit ? '#ef4444' : ($limit === 0 && $used > 0 ? '#f59e0b' : '#00ff88')); ?>"></div>
+                      </div>
                      <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasFrozen): ?>
                          <div class="flex flex-wrap gap-2 mt-2">
                              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/30 text-[10px] font-bold uppercase tracking-wider text-amber-200">

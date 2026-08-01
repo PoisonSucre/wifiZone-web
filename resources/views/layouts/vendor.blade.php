@@ -31,12 +31,6 @@
 @endphp
 <div class="vendor-topbar-greeting">
     <i class="fas fa-wifi"></i> Salut {{ $vendeurTopbar->prenom ?? '' }} 👋
-    @if($vendeurTopbar)
-        <span class="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ $headerHotspotCanCreate ? 'bg-neonGreen/20 text-neonGreen' : 'bg-red-500/20 text-red-400' }}">
-            <i class="fas {{ $headerHotspotCanCreate ? 'fa-plus' : 'fa-ban' }} text-[8px]"></i>
-            {{ $headerHotspotCanCreate ? "+{$headerHotspotRemaining} hotspot" . ($headerHotspotRemaining > 1 ? 's' : '') : "Quota atteint" }}
-        </span>
-    @endif
 </div>
                 <div class="vendor-topbar-actions">
                     <button type="button" class="vendor-topbar-icon" onclick="toggleTheme()" aria-label="Basculer le thème">

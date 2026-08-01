@@ -32,13 +32,6 @@
 ?>
 <div class="vendor-topbar-greeting">
     <i class="fas fa-wifi"></i> Salut <?php echo e($vendeurTopbar->prenom ?? ''); ?> 👋
-    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($vendeurTopbar): ?>
-        <span class="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider <?php echo e($headerHotspotCanCreate ? 'bg-neonGreen/20 text-neonGreen' : 'bg-red-500/20 text-red-400'); ?>">
-            <i class="fas <?php echo e($headerHotspotCanCreate ? 'fa-plus' : 'fa-ban'); ?> text-[8px]"></i>
-            <?php echo e($headerHotspotCanCreate ? "+{$headerHotspotRemaining} hotspot" . ($headerHotspotRemaining > 1 ? 's' : '') : "Quota atteint"); ?>
-
-        </span>
-    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
                 <div class="vendor-topbar-actions">
                     <button type="button" class="vendor-topbar-icon" onclick="toggleTheme()" aria-label="Basculer le thème">

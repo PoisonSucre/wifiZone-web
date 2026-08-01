@@ -276,45 +276,6 @@
             </div>
         </div>
 
-        {{-- QUOTA RÉSUMÉ --}}
-        @php
-            $hotspotService = app(\App\Services\HotspotService::class);
-            $vendeur = auth()->user();
-            if ($vendeur) {
-                $hotspotService->freezeExpiredSubscriptions($vendeur);
-            }
-            $quotaUsed = $vendeur ? $hotspotService->usedSlots($vendeur) : 0;
-            $quotaLimit = $vendeur ? $hotspotService->limit($vendeur) : 0;
-            $quotaRemaining = $vendeur ? $hotspotService->remaining($vendeur) : 0;
-            $quotaCanCreate = $vendeur ? $hotspotService->canCreate($vendeur) : true;
-            $quotaPercent = $quotaLimit > 0 ? min(($quotaUsed / $quotaLimit) * 100, 100) : ($quotaUsed > 0 ? 100 : 0);
-            $quotaBarColor = $quotaCanCreate ? 'bg-neonGreen' : 'bg-red-500';
-            $quotaBarBg = $quotaCanCreate ? 'bg-neonGreen/20' : 'bg-red-500/20';
-            $quotaTextColor = $quotaCanCreate ? 'text-neonGreen' : 'text-red-400';
-            $quotaLabel = $quotaCanCreate ? "+{$quotaRemaining} hotspot" . ($quotaRemaining > 1 ? 's' : '') . " restant" . ($quotaRemaining > 1 ? 's' : '') : "Quota atteint";
-            $quotaBadgeColor = $quotaCanCreate ? 'bg-neonGreen/20 text-neonGreen' : 'bg-red-500/20 text-red-400';
-        @endphp
-<div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 flex items-center gap-4">
-             <div class="w-10 h-10 shrink-0 rounded-xl {{ $quotaBarBg }} flex items-center justify-center {{ $quotaTextColor }}">
-                 <i class="fas fa-layer-group text-sm"></i>
-             </div>
-             <div class="flex-1 min-w-0">
-                 <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1">Quota Hotspots</p>
-                 <div class="flex items-center gap-2">
-                     <span class="text-sm font-black text-slate-900 dark:text-white">{{ $quotaUsed }} / {{ $quotaLimit }}</span>
-                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ $quotaBadgeColor }}">
-                         <i class="fas {{ $quotaCanCreate ? 'fa-plus' : 'fa-ban' }} text-[8px]"></i> {{ $quotaLabel }}
-                     </span>
-                 </div>
-                 <div class="relative h-1.5 rounded-full bg-slate-100 dark:bg-darkBorder mt-2 overflow-hidden">
-                     <div class="h-full rounded-full transition-all duration-700 {{ $quotaBarColor }}" style="width: {{ $quotaPercent }}%"></div>
-                 </div>
-             </div>
-             <a href="{{ route('vendor.hotspot') }}" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-neonGreen/10 text-neonGreen hover:bg-neonGreen hover:text-black text-[10px] font-bold transition-all">
-                 <i class="fas fa-cog text-[9px]"></i> Gérer
-             </a>
-         </div>
-
         {{-- GRAPHIQUE --}}
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-5">
             <div class="flex items-center justify-between mb-4">

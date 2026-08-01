@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\HotspotSubscription;
 use App\Models\Transaction;
 use App\Models\Vendeur;
-use Illuminate\Support\Carbon;
 
 class HotspotService
 {
@@ -197,13 +196,7 @@ class HotspotService
             throw new \InvalidArgumentException('Pack de hotspot inconnu.');
         }
 
-        $latest = HotspotSubscription::where('vendeur_id', $vendeur->id)
-            ->where('expires_at', '>', now())
-            ->orderByDesc('expires_at')
-            ->value('expires_at');
-
-        $base = $latest ? Carbon::parse($latest) : now();
-        $expiresAt = $base->copy()->addDays($this->packDurationDays());
+        $expiresAt = now()->addDays($this->packDurationDays());
 
         return HotspotSubscription::create([
             'vendeur_id' => $vendeur->id,
