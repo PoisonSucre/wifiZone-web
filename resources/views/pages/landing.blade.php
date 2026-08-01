@@ -606,29 +606,6 @@
 
 @push('scripts')
 <script>
-    // --- Mobile menu (existing behaviour) ---
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    function toggleMobileMenu() { mobileMenu.classList.toggle('hidden'); }
-    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-
-    // --- Header shrink-on-scroll (existing behaviour) ---
-    const mainHeader = document.getElementById('main-header');
-    const headerContainer = document.getElementById('header-container');
-    function applyHeaderScrollState() {
-        if (window.scrollY > 20) {
-            mainHeader.classList.remove('py-6');
-            mainHeader.classList.add('py-3');
-            headerContainer.classList.add('header-scrolled');
-        } else {
-            mainHeader.classList.remove('py-3');
-            mainHeader.classList.add('py-6');
-            headerContainer.classList.remove('header-scrolled');
-        }
-    }
-    window.addEventListener('scroll', applyHeaderScrollState);
-    applyHeaderScrollState();
-
     // --- Scroll progress bar ---
     function updateScrollProgress() {
         const doc = document.documentElement;

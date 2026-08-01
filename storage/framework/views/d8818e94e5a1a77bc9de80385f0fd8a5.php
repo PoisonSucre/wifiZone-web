@@ -4,3 +4,4 @@
     <i class="fas fa-plus text-[10px]"></i>
     Nouveau Hotspot
 </button>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/components/hotspot-create-button.blade.php ENDPATH**/ ?>

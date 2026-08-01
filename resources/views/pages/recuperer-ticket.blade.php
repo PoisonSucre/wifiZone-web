@@ -7,10 +7,11 @@
 @endsection
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-[#0A0A0C] flex items-center justify-center px-4 py-16">
-    <div class="w-full max-w-md">
-        <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-8 shadow-sm">
-            <div class="text-center mb-8">
+<div class="ticket-page">
+    <div class="ticket-stage">
+        
+        <div class="w-full max-w-md mb-8">
+            <div class="text-center">
                 <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">
                     <i class="fas fa-ticket-alt text-neonGreen mr-2"></i> Récupérer un Ticket
                 </h2>
@@ -19,99 +20,138 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('recuperer-ticket') }}" class="space-y-4">
+            <form method="POST" action="{{ route('recuperer-ticket') }}" class="space-y-4 mt-6">
                 @csrf
                 <div>
-                    <label for="phone" class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
-                        Numéro de téléphone
-                    </label>
                     <div class="relative">
                         <input type="tel" name="phone" id="phone" required
-                               placeholder="Ex: 66 63 59 58 ou +22666635958"
-                               value="{{ $phone ?? '' }}"
-                               class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-darkBorder text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all">
-                        <i class="fas fa-phone absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-500"></i>
+                                placeholder="Ex: 66 63 59 58 ou +22666635958"
+                                value="{{ $phone ?? '' }}"
+                                class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all">
+                        <i class="fas fa-phone absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     </div>
                 </div>
                 <button type="submit" id="recupererBtn"
-                        class="w-full inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+                        class="w-full inline-flex items-center justify-center gap-2 bg-neonGreen text-white font-bold px-4 py-3 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                     <i class="fas fa-search"></i>
                     <span id="btnText">Récupérer mon ticket</span>
                     <i id="btnSpinner" class="fas fa-spinner fa-spin" style="display:none"></i>
                 </button>
             </form>
-            <p class="text-center mt-4 text-xs text-slate-500 dark:text-gray-500">
-                Numéro utilisé lors du paiement (Orange Money, Wave, Moov)
-            </p>
+        </div>
 
-            @if(($message ?? '') === 'success' && ($ticket ?? null))
-            <div class="mt-6 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 animate-fade-in">
-                <p class="text-center text-emerald-700 dark:text-emerald-400 font-bold mb-4 flex items-center justify-center gap-2">
-                    <i class="fas fa-check-circle"></i> Ticket trouvé !
-                </p>
-                <div class="bg-white dark:bg-darkCard/50 rounded-xl p-5 space-y-4">
-                    <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-darkBorder/50">
-                        <span class="text-slate-500 dark:text-gray-400 text-sm">Utilisateur</span>
-                        <span class="font-mono font-bold text-slate-900 dark:text-white text-sm">{{ $ticket->user }}</span>
-                    </div>
-                    <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-darkBorder/50">
-                        <span class="text-slate-500 dark:text-gray-400 text-sm">Mot de passe</span>
-                        <div class="flex items-center gap-2">
-                            <span class="font-mono font-bold text-slate-900 dark:text-white text-sm pw-text" data-ticket-id="{{ $ticket->id }}" id="tkPass">••••••</span>
-                            <button type="button" class="pw-toggle text-neonGreen hover:text-neonGreen-600" onclick="togglePw(this)" aria-label="Afficher le mot de passe">
-                                <i class="fas fa-eye"></i>
-                            </button>
+        @if(($message ?? '') === 'success' && ($ticket ?? null))
+            <div class="ticket-3d" id="ticketCard">
+                <div class="ticket-shadow-layer layer-2"></div>
+                <div class="ticket-shadow-layer layer-1"></div>
+
+                <div class="ticket-paper">
+                    <div class="ticket-grain" aria-hidden="true"></div>
+                    <div class="ticket-sheen" aria-hidden="true"></div>
+                    <div class="ticket-stamp">Retrouvé</div>
+                    <div class="ticket-crease" aria-hidden="true"></div>
+
+                    <div class="ticket-content">
+                            <div class="ticket-top">
+                                <div class="ticket-brand">
+                                    <span class="ticket-brand-icon"><i class="fas fa-wifi"></i></span>
+                                    <span class="ticket-brand-name">{{ config('platform.name') }}</span>
+                                </div>
+                            </div>
+
+                        <div class="ticket-headline">
+                            <h2>Votre Ticket</h2>
                         </div>
-                    </div>
-                    <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-darkBorder/50">
-                        <span class="text-slate-500 dark:text-gray-400 text-sm">Forfait</span>
-                        <span class="font-bold text-slate-900 dark:text-white text-sm">{{ $ticket->forfait }}</span>
-                    </div>
-                    <div class="flex justify-between items-center py-2">
-                        <span class="text-slate-500 dark:text-gray-400 text-sm">Vendeur</span>
-                        <span class="font-bold text-slate-900 dark:text-white text-sm">{{ $ticket->prenom ?? '' }} {{ $ticket->nom ?? '' }}</span>
+
+                        <div class="ticket-perforation" aria-hidden="true"></div>
+
+                        <div class="ticket-body">
+                            <div class="ticket-row">
+                                <span class="ticket-label">Utilisateur</span>
+                                <span class="ticket-value">{{ $ticket->user }}</span>
+                            </div>
+                            <div class="ticket-row">
+                                <span class="ticket-label">Mot de passe</span>
+                                <span class="ticket-value ticket-pw">
+                                    <span class="pw-text" data-ticket-id="{{ $ticket->id }}" id="tkPass">••••••</span>
+                                    <button type="button" class="pw-toggle" aria-label="Afficher le mot de passe">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="ticket-row">
+                                <span class="ticket-label">Forfait</span>
+                                <span class="ticket-value">{{ $ticket->forfait }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-perforation" aria-hidden="true"></div>
+                        <div class="ticket-stub-id">Ticket N° {{ $ticket->id }}</div>
                     </div>
                 </div>
             </div>
-            @elseif(($message ?? '') === 'not_found')
-            <div class="mt-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-5 text-center animate-fade-in">
+            <div class="ticket-ground-shadow" id="groundShadow"></div>
+
+        @elseif(($message ?? '') === 'not_found')
+            <div class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center animate-fade-in">
                 <i class="fas fa-exclamation-circle text-red-500 text-xl mb-2"></i>
-                <p class="text-red-700 dark:text-red-400 font-semibold">Aucun ticket trouvé pour ce numéro.</p>
+                <p class="text-red-700 font-semibold">Aucun ticket trouvé pour ce numéro.</p>
             </div>
-            @elseif(($message ?? '') === 'missing_input')
-            <div class="mt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5 text-center animate-fade-in">
+        @elseif(($message ?? '') === 'missing_input')
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-center animate-fade-in">
                 <i class="fas fa-exclamation-triangle text-amber-500 text-xl mb-2"></i>
-                <p class="text-amber-700 dark:text-amber-400 font-semibold">Veuillez entrer un numéro de téléphone.</p>
+                <p class="text-amber-700 font-semibold">Veuillez entrer un numéro de téléphone.</p>
             </div>
-            @endif
-        </div>
+        @endif
     </div>
 </div>
+
+<style>
+/* --- Styles copiés/adaptés de merci.blade.php --- */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+.ticket-page { --paper: #FBF7EC; --paper-dim: #F2EAD6; --ink: #1A1A2E; --muted: #8C8570; --line: #E3D9BE; --brand: #1CA04E; --brand-dark: #14813D; --shadow: 26, 26, 46; font-family: 'Manrope', sans-serif; }
+.ticket-stage {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 100px 20px 56px; /* Added padding-top to compensate for fixed navbar */
+    background: #FFFFFF;
+}
+.ticket-3d { position: relative; width: 100%; max-width: 380px; margin: 0 auto; transform-style: preserve-3d; }
+.ticket-shadow-layer { position: absolute; inset: 0; background: var(--paper-dim); border-radius: 18px; transform-style: preserve-3d; }
+.layer-1 { transform: translateZ(-14px) translate(6px, 10px) rotate(2deg); opacity: .85; }
+.layer-2 { transform: translateZ(-28px) translate(12px, 20px) rotate(4deg); opacity: .55; }
+.ticket-ground-shadow { width: 70%; max-width: 250px; height: 22px; margin: -6px auto 0; background: radial-gradient(ellipse at center, rgba(26,26,46,.32), transparent 72%); filter: blur(5px); }
+.ticket-paper { position: relative; background: var(--paper); border-radius: 18px; padding: 28px 28px 20px; box-shadow: 0 12px 22px -10px rgba(var(--shadow), .28); overflow: hidden; }
+.ticket-grain { position: absolute; inset: 0; z-index: 0; border-radius: 18px; background-image: radial-gradient(rgba(26,26,46,.05) 1px, transparent 1px); background-size: 3px 3px; pointer-events: none; }
+.ticket-content { position: relative; z-index: 1; }
+.ticket-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ticket-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--ink); }
+.ticket-brand-icon { color: var(--brand); }
+.ticket-status { font-size: .68rem; font-weight: 700; text-transform: uppercase; color: var(--brand-dark); background: rgba(28,160,78,.12); padding: 4px 10px; border-radius: 20px; }
+.ticket-headline h2 { margin: 0 0 14px; font-size: 1.25rem; color: var(--ink); font-weight: 800; }
+.ticket-perforation { position: relative; height: 2px; margin: 18px -28px; background-image: repeating-linear-gradient(to right, var(--line) 0 8px, transparent 8px 18px); }
+.ticket-perforation::before, .ticket-perforation::after { content: ""; position: absolute; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; background: #F3F0E6; box-shadow: inset 0 1px 2px rgba(26,26,46,.25); }
+.ticket-perforation::before { left: -13px; } .ticket-perforation::after { right: -13px; }
+.ticket-body { margin: 2px 0 18px; }
+.ticket-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px dashed var(--line); }
+.ticket-label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
+.ticket-value { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ink); font-size: .92rem; }
+.pw-toggle { background: none; border: none; cursor: pointer; color: var(--brand-dark); font-size: 1rem; }
+.ticket-stub-id { margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: .7rem; text-align: center; color: var(--muted); }
+.ticket-stamp { position: absolute;     top: 24px;
+    right: 16px;
+    z-index: 2; color: var(--brand-dark); border: 3px solid var(--brand-dark); border-radius: 8px; padding: 3px 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .72rem; transform: rotate(-13deg); opacity: .85; }
+</style>
 @endsection
 
 @push('scripts')
 <script>
-function togglePw(btn) {
-    const span = btn.closest('.flex').querySelector('.pw-text');
-    const icon = btn.querySelector('i');
-    if (span.textContent === '••••••') {
-        const ticketId = span.dataset.ticketId;
-        span.textContent = '...';
-        fetch('/recuperer-ticket/password/' + ticketId)
-            .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
-            .then(function(d) {
-                span.textContent = d.password;
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            })
-            .catch(function() {
-                span.textContent = '••••••';
-            });
-    } else {
-        span.textContent = '••••••';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form[action="{{ route("recuperer-ticket") }}"]');
     if (form) {
@@ -126,6 +166,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Password toggle - fixed selector to match new structure
+    document.querySelectorAll('.pw-toggle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const wrapper = this.closest('.ticket-pw');
+            const span = wrapper.querySelector('.pw-text');
+            const icon = this.querySelector('i');
+            const ticketId = span.dataset.ticketId;
+            
+            if (span.textContent === '••••••') {
+                span.textContent = '...';
+                fetch('/recuperer-ticket/password/' + ticketId)
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        span.textContent = d.password;
+                        icon.classList.replace('fa-eye', 'fa-eye-slash');
+                    })
+                    .catch(function(e) {
+                        console.error(e);
+                        span.textContent = '••••••';
+                        alert('Erreur lors de la récupération.');
+                    });
+            } else {
+                span.textContent = '••••••';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    });
 });
 </script>
 @endpush

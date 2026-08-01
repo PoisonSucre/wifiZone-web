@@ -44,47 +44,49 @@
     }
     @endphp
 
-    <div class="space-y-1.5">
-        <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap pb-0.5 [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] dark:[scrollbar-color:#2f2f33_transparent]">
-            <button wire:click="$set('filterAction', '')" class="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold transition-all border {{ $filterAction === '' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30' }}">
-                <i class="fas fa-list mr-0.5"></i>Tous
-            </button>
-            @foreach($ordered as $action)
-                @php $m = $meta[$action]; @endphp
-                <button wire:click="$set('filterAction', '{{ $action }}')" class="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold transition-all border {{ $filterAction === $action ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30' }}">
-                    <i class="fas {{ $m['icon'] ?? 'fa-circle' }} mr-0.5"></i>{{ $m['label'] ?? $action }}
-                    <span class="opacity-60">({{ $actions[$action]->nb ?? 0 }})</span>
+    <div class="sticky top-[72px] sm:top-[76px] z-20 bg-slate-50 dark:bg-darkBg pt-2 pb-3 -mx-4 px-4 sm:-mx-6 sm:px-6 shadow-sm">
+        <div class="space-y-3">
+            <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap pb-0.5 [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] dark:[scrollbar-color:#2f2f33_transparent]">
+                <button wire:click="$set('filterAction', '')" class="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold transition-all border {{ $filterAction === '' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30' }}">
+                    <i class="fas fa-list mr-0.5"></i>Tous
                 </button>
-            @endforeach
-        </div>
+                @foreach($ordered as $action)
+                    @php $m = $meta[$action]; @endphp
+                    <button wire:click="$set('filterAction', '{{ $action }}')" class="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold transition-all border {{ $filterAction === $action ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-emerald-300 dark:hover:border-emerald-500/30' }}">
+                        <i class="fas {{ $m['icon'] ?? 'fa-circle' }} mr-0.5"></i>{{ $m['label'] ?? $action }}
+                        <span class="opacity-60">({{ $actions[$action]->nb ?? 0 }})</span>
+                    </button>
+                @endforeach
+            </div>
 
-        <div class="flex flex-wrap items-center gap-1.5">
-            @php
-                $periods = [
-                    '' => 'Tout',
-                    'today' => 'Aujourd\'hui',
-                    '7' => '7 jours',
-                    '30' => '30 jours',
-                    'month' => 'Ce mois',
-                ];
-            @endphp
-            @foreach($periods as $value => $label)
-                <button wire:click="$set('period', '{{ $value }}')"
-                    class="px-2 py-1 rounded-full text-[10px] font-bold transition-all border {{ $period === $value ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-indigo-300 dark:hover:border-indigo-500/30' }}">
-                    {{ $label }}
-                </button>
-            @endforeach
-            <div class="hidden sm:block w-px h-4 bg-slate-200 dark:bg-darkBorder"></div>
-            <div class="flex items-center gap-1">
-                <input type="date" wire:model="dateFrom"
-                    class="px-1.5 py-1 rounded-md text-[10px] font-bold border bg-white dark:bg-darkCard text-slate-600 dark:text-gray-300 border-slate-200 dark:border-darkBorder outline-none focus:border-indigo-400 dark:focus:border-indigo-500">
-                <span class="text-[9px] font-bold text-slate-400">→</span>
-                <input type="date" wire:model="dateTo"
-                    class="px-1.5 py-1 rounded-md text-[10px] font-bold border bg-white dark:bg-darkCard text-slate-600 dark:text-gray-300 border-slate-200 dark:border-darkBorder outline-none focus:border-indigo-400 dark:focus:border-indigo-500">
-                <button wire:click="clearDates" title="Réinitialiser les dates"
-                    class="px-1.5 py-1 rounded-md text-[10px] font-bold border bg-white dark:bg-darkCard text-slate-500 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-red-300 hover:text-red-500 dark:hover:border-red-500/40 transition-all">
-                    <i class="fas fa-rotate-left"></i>
-                </button>
+            <div class="flex flex-wrap items-center gap-1.5">
+                @php
+                    $periods = [
+                        '' => 'Tout',
+                        'today' => 'Aujourd\'hui',
+                        '7' => '7 jours',
+                        '30' => '30 jours',
+                        'month' => 'Ce mois',
+                    ];
+                @endphp
+                @foreach($periods as $value => $label)
+                    <button wire:click="$set('period', '{{ $value }}')"
+                        class="px-2 py-1 rounded-full text-[10px] font-bold transition-all border {{ $period === $value ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-darkCard text-slate-600 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-indigo-300 dark:hover:border-indigo-500/30' }}">
+                        {{ $label }}
+                    </button>
+                @endforeach
+                <div class="hidden sm:block w-px h-4 bg-slate-200 dark:bg-darkBorder"></div>
+                <div class="flex items-center gap-1">
+                    <input type="date" wire:model="dateFrom"
+                        class="px-1.5 py-1 rounded-md text-[10px] font-bold border bg-white dark:bg-darkCard text-slate-600 dark:text-gray-300 border-slate-200 dark:border-darkBorder outline-none focus:border-indigo-400 dark:focus:border-indigo-500">
+                    <span class="text-[9px] font-bold text-slate-400">→</span>
+                    <input type="date" wire:model="dateTo"
+                        class="px-1.5 py-1 rounded-md text-[10px] font-bold border bg-white dark:bg-darkCard text-slate-600 dark:text-gray-300 border-slate-200 dark:border-darkBorder outline-none focus:border-indigo-400 dark:focus:border-indigo-500">
+                    <button wire:click="clearDates" title="Réinitialiser les dates"
+                        class="px-1.5 py-1 rounded-md text-[10px] font-bold border bg-white dark:bg-darkCard text-slate-500 dark:text-gray-400 border-slate-200 dark:border-darkBorder hover:border-red-300 hover:text-red-500 dark:hover:border-red-500/40 transition-all">
+                        <i class="fas fa-rotate-left"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

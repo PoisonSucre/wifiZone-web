@@ -3,21 +3,34 @@
 <head>
     <script>(function(){var t=localStorage.getItem('theme')||document.cookie.match(/theme=([^;]+)/)?.[1]||'light';if(t==='dark')document.documentElement.classList.add('dark');})();</script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <title><?php echo $__env->yieldContent('title', config('platform.name')); ?></title>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-gray-100 font-sans antialiased transition-colors duration-300 selection:bg-neonGreen selection:text-black">
-    <?php echo $__env->yieldContent('navbar'); ?>
-    <main class="flex-1">
-        <?php if (isset($component)) { $__componentOriginal5194778a3a7b899dcee5619d0610f5cf = $component; } ?>
+<body>
+    <div class="vendor-layout">
+        <?php echo $__env->yieldContent('sidebar'); ?>
+        <main class="vendor-main">
+            <div class="vendor-topbar">
+                <button class="sidebar-toggle" onclick="toggleVendorSidebar()" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="vendor-topbar-brand"><i class="fas fa-wifi"></i> <?php echo e(config('platform.name')); ?></div>
+            </div>
+            <div class="sidebar-overlay" onclick="document.querySelector('.vendor-sidebar').classList.remove('open'); this.classList.remove('active')"></div>
+            <?php if (! empty(trim($__env->yieldContent('header')))): ?>
+                <div class="vendor-header-static">
+                    <?php echo $__env->yieldContent('header'); ?>
+                </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <div class="vendor-content" id="vendor-content">
+                <?php if (isset($component)) { $__componentOriginal5194778a3a7b899dcee5619d0610f5cf = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5194778a3a7b899dcee5619d0610f5cf = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.alert','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('alert'); ?>
@@ -39,30 +52,10 @@
 <?php $component = $__componentOriginal5194778a3a7b899dcee5619d0610f5cf; ?>
 <?php unset($__componentOriginal5194778a3a7b899dcee5619d0610f5cf); ?>
 <?php endif; ?>
-        <?php echo $__env->yieldContent('content'); ?>
-    </main>
-    <?php if (isset($component)) { $__componentOriginal8a8716efb3c62a45938aca52e78e0322 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal8a8716efb3c62a45938aca52e78e0322 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footer','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('footer'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal8a8716efb3c62a45938aca52e78e0322)): ?>
-<?php $attributes = $__attributesOriginal8a8716efb3c62a45938aca52e78e0322; ?>
-<?php unset($__attributesOriginal8a8716efb3c62a45938aca52e78e0322); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal8a8716efb3c62a45938aca52e78e0322)): ?>
-<?php $component = $__componentOriginal8a8716efb3c62a45938aca52e78e0322; ?>
-<?php unset($__componentOriginal8a8716efb3c62a45938aca52e78e0322); ?>
-<?php endif; ?>
+                <?php echo $__env->yieldContent('content'); ?>
+            </div>
+        </main>
+    </div>
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
     <?php
@@ -76,7 +69,7 @@ $__keyOuter = $__key ?? null;
 $__key = null;
 $__componentSlots = [];
 
-$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-3028867788-0', $__key);
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-1405669580-0', $__key);
 
 $__html = app('livewire')->mount($__name, $__params, $__key, $__componentSlots);
 
@@ -116,4 +109,4 @@ unset($__split);
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
-<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/layouts/public.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/layouts/vendor.blade.php ENDPATH**/ ?>

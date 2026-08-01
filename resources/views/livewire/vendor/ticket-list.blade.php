@@ -75,8 +75,8 @@
                         <i class="fas fa-layer-group text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Total</p>
-                        <p class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalDispo + $totalVendus }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Total</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalDispo + $totalVendus }}</p>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                         <i class="fas fa-check-circle text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Disponibles</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Disponibles</p>
                         <p class="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tight leading-none">{{ $totalDispo }}</p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <i class="fas fa-shopping-cart text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Vendus</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Vendus</p>
                         <p class="text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight leading-none">{{ $totalVendus }}</p>
                     </div>
                 </div>
@@ -117,8 +117,8 @@
                         <i class="fas fa-tags text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Forfaits</p>
-                        <p class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $dispoParForfait->count() }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Forfaits</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $dispoParForfait->count() }}</p>
                     </div>
                 </div>
             </div>
@@ -134,9 +134,9 @@
                     <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-neonGreen/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 group overflow-hidden">
                         <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-neonGreen/5 group-hover:bg-neonGreen/10 transition-colors duration-500"></div>
                         <div class="relative p-4 flex flex-col gap-1">
-                            <p class="text-[9px] sm:text-[10px] font-bold text-neonGreen uppercase tracking-widest">Tickets restants</p>
+                            <p class="text-[10px] font-bold text-neonGreen uppercase tracking-widest">Tickets restants</p>
                             <p class="text-[11px] font-semibold text-slate-500 dark:text-gray-400">{{ $f }}</p>
-                            <p class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $row->nb }}</p>
+                            <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $row->nb }}</p>
                         </div>
                     </div>
                 @endforeach
@@ -171,10 +171,63 @@
 
         {{-- TABLE --}}
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
+            <div class="md:hidden divide-y divide-slate-50 dark:divide-darkBorder/20">
+                @forelse($tickets as $ticket)
+                    <div class="p-4 space-y-2.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <div class="w-7 h-7 shrink-0 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center text-blue-500 text-[10px] font-black">
+                                    {{ strtoupper(substr($ticket->user, 0, 2)) }}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white">#{{ $ticket->id }}</p>
+                                    <code class="text-[10px] font-mono text-slate-500 dark:text-gray-400">{{ $ticket->user }}</code>
+                                </div>
+                            </div>
+                            @if($ticket->status === 'disponible')
+                                <span class="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Disponible
+                                </span>
+                            @else
+                                <span class="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vendu
+                                </span>
+                            @endif
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                                {{ $ticket->forfait }}
+                            </span>
+                            <span class="text-sm font-black text-slate-900 dark:text-white">
+                                {{ number_format($ticket->montant, 0, ',', ' ') }} <span class="text-[9px] text-slate-400">{{ $currency }}</span>
+                            </span>
+                        </div>
+                        <div x-data="{ show: false }" class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Mot de passe</span>
+                            <span class="flex items-center gap-1.5 min-w-0">
+                                <span class="font-mono text-[11px] text-slate-600 dark:text-gray-400 truncate"
+                                      x-text="show ? '{{ addslashes($ticket->password ?: '—') }}' : '••••••••'"></span>
+                                <button type="button" @click="show = !show"
+                                        class="text-neonGreen hover:text-neonGreen-600 transition-colors p-0.5 shrink-0">
+                                    <i class="fas text-[10px]" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-8 text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-darkBg mb-2 text-slate-400">
+                            <i class="fas fa-inbox text-lg"></i>
+                        </div>
+                        <p class="text-slate-500 dark:text-gray-400 text-xs font-medium">Aucun ticket trouvé.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/50 dark:bg-darkBg/30">
+                        <tr class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/50 dark:bg-darkBg/30">
                             <th class="py-3 px-4 font-bold">#</th>
                             <th class="py-3 px-4 font-bold">Utilisateur</th>
                             <th class="py-3 px-4 font-bold">Mot de passe</th>

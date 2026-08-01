@@ -1,7 +1,7 @@
 <div id="scroll-progress-bar" class="fixed top-0 left-0 right-0 h-[3px] z-40 bg-transparent">
     <div id="scroll-progress-bar-fill" class="h-full bg-neonGreen origin-left scale-x-0 transition-transform duration-150 ease-out shadow-[0_0_10px_rgba(16,185,129,0.6)]"></div>
 </div>
-<header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 px-4 sm:px-6 lg:px-8">
+<header id="main-header" x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 px-4 sm:px-6 lg:px-8">
     <div id="header-container" class="max-w-7xl mx-auto rounded-full bg-transparent border border-transparent px-6 py-2.5 flex items-center justify-between transition-all duration-500">
         <a href="/" class="flex items-center gap-1 sm:gap-3 text-[10px] sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-wide text-glow transition-all duration-300 hover:scale-105 whitespace-nowrap shrink-0">
             <span class="text-neonGreen"><i class="fas fa-wifi animate-pulse"></i></span>
@@ -41,18 +41,25 @@
                     <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
                 </a>
             @endauth
-            <button id="mobile-menu-btn" class="p-2 rounded-full md:hidden text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300 z-50" aria-label="Menu Mobile">
+            <button id="mobile-menu-btn" @click="mobileMenuOpen = true" class="p-2 rounded-full md:hidden text-slate-600 dark:text-gray-400 hover:bg-slate-100/55 dark:hover:bg-darkBorder/55 transition-all duration-300 z-50" aria-label="Menu Mobile">
                 <i class="fas fa-bars text-lg sm:text-xl"></i>
             </button>
         </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()" aria-hidden="true">
-        <div class="absolute left-4 right-4 top-20 rounded-3xl border border-slate-200/60 dark:border-darkBorder/60 bg-white dark:bg-darkBg p-6 space-y-4 shadow-xl max-h-[calc(100vh-6rem)] overflow-y-auto" onclick="event.stopPropagation()">
-            <a href="{{ route('recuperer-ticket') }}" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-ticket-alt text-[10px] opacity-70"></i> Récupérer mon ticket</a>
+    <div id="mobile-menu" x-show="mobileMenuOpen" x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 bg-black/50 md:hidden" @click="mobileMenuOpen = false" aria-hidden="true">
+        <div class="absolute left-4 right-4 top-20 rounded-3xl border border-slate-200/60 dark:border-darkBorder/60 bg-white dark:bg-darkBg p-6 space-y-4 shadow-xl max-h-[calc(100vh-6rem)] overflow-y-auto" @click.stop>
+            <a href="{{ route('recuperer-ticket') }}" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-ticket-alt text-[10px] opacity-70"></i> Récupérer mon ticket</a>
             @hasSection('showAnchor')
-            <a href="#comment-ca-marche" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-circle-question text-[10px] opacity-70"></i> Comment ça marche</a>
+            <a href="#comment-ca-marche" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-circle-question text-[10px] opacity-70"></i> Comment ça marche</a>
             @endif
-            <a href="{{ route('contact') }}" onclick="toggleMobileMenu()" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-headset text-[10px] opacity-70"></i> Nous Contacter</a>
+            <a href="{{ route('contact') }}" class="block text-slate-700 dark:text-gray-300 hover:text-neonGreen transition-colors text-xs font-semibold flex items-center gap-2"><i class="fas fa-headset text-[10px] opacity-70"></i> Nous Contacter</a>
             <div class="pt-4 border-t border-slate-200/50 dark:border-darkBorder/50 flex flex-col gap-3">
                 @auth
                     <a href="{{ '/vendeur/' }}" class="w-full text-center py-2.5 text-xs font-bold text-white bg-neonGreen rounded-full hover:bg-neonGreen-400 transition-colors">
@@ -67,3 +74,28 @@
         </div>
     </div>
 </header>
+
+@push('scripts')
+@once
+<script>
+    // --- Header shrink + blur-on-scroll (all public pages) ---
+    const _mainHeader = document.getElementById('main-header');
+    const _headerContainer = document.getElementById('header-container');
+    function _applyHeaderScrollState() {
+        if (!_mainHeader || !_headerContainer) return;
+        if (window.scrollY > 20) {
+            _mainHeader.classList.remove('py-6');
+            _mainHeader.classList.add('py-3');
+            _headerContainer.classList.add('header-scrolled');
+        } else {
+            _mainHeader.classList.remove('py-3');
+            _mainHeader.classList.add('py-6');
+            _headerContainer.classList.remove('header-scrolled');
+        }
+    }
+    window.addEventListener('scroll', _applyHeaderScrollState, { passive: true });
+    _applyHeaderScrollState();
+    document.addEventListener('livewire:navigated', _applyHeaderScrollState);
+</script>
+@endonce
+@endpush

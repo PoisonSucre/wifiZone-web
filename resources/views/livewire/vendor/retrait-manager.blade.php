@@ -70,18 +70,18 @@
         @endif
 
         {{-- BANNIÈRE COMMENT ÇA MARCHE --}}
-        <div class="bg-blue-50 dark:bg-blue-900/10 rounded-2xl p-4 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+        <div class="bg-blue-50 dark:bg-blue-900/10 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-10 h-10 shrink-0 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
                     <i class="fas fa-info-circle text-lg"></i>
                 </div>
-                <div>
+                <div class="min-w-0">
                     <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Comment fonctionnent les retraits ?</h4>
                     <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-400">Suivez nos étapes simples pour gérer vos revenus.</p>
                 </div>
             </div>
             <button type="button" @click="commentCaMarcheOpen = true"
-                    class="px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-[11px] font-bold transition-all shadow-sm">
+                    class="shrink-0 px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-[11px] font-bold transition-all shadow-sm">
                 Savoir plus
             </button>
         </div>
@@ -110,7 +110,7 @@
                         {{-- ligne du haut --}}
                         <div class="flex items-start justify-between">
                             <div>
-                                <p class="text-[9px] sm:text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-2.5">Carte Vendeur</p>
+                                <p class="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-2.5">Carte Vendeur</p>
                                 <div class="flex items-center gap-2.5">
                                     {{-- puce EMV --}}
                                     <div class="relative w-9 h-7 rounded-md bg-gradient-to-br from-amber-200 via-yellow-300 to-amber-500 shadow-inner overflow-hidden">
@@ -145,7 +145,7 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
 
                         {{-- solde --}}
                         <div>
-                            <p class="text-[9px] sm:text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-1.5">Solde disponible</p>
+                            <p class="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-1.5">Solde disponible</p>
                             <div class="flex items-baseline gap-2">
                                 <span class="font-mono font-black text-2xl sm:text-3xl text-white tracking-tight tabular-nums leading-none">{{ number_format($soldeDisponible, 0, ',', ' ') }}</span>
                                 <span class="text-xs sm:text-sm font-bold text-white/40">{{ $currency }}</span>
@@ -223,10 +223,74 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
                     </div>
                     <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Historique des retraits</h3>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="md:hidden divide-y divide-slate-50 dark:divide-darkBorder/20">
+                    @forelse($retraits as $retrait)
+                        @php
+                            $statusStyle = match($retrait->statut) {
+                                'pending' => 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400',
+                                'approved' => 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400',
+                                'rejected' => 'bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400',
+                                'paid' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400',
+                                default => 'bg-slate-100 text-slate-700 dark:bg-slate-500/10 dark:text-slate-400',
+                            };
+                        @endphp
+                        <div class="p-4 space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <div class="w-8 h-8 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+                                        <i class="fas fa-paper-plane text-[10px]"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-bold text-slate-900 dark:text-white">
+                                            {{ $retrait->date_creation ? $retrait->date_creation->format('d/m/Y') : '-' }}
+                                        </p>
+                                        <p class="text-[10px] text-slate-400">
+                                            {{ $retrait->date_creation ? $retrait->date_creation->format('H:i') : '' }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold {{ $statusStyle }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ match($retrait->statut) { 'pending' => 'bg-amber-500', 'approved' => 'bg-blue-500', 'rejected' => 'bg-red-500', 'paid' => 'bg-emerald-500', default => 'bg-slate-500' } }}"></span>
+                                    {{ $retrait->statusLabel() }}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between rounded-xl bg-neonGreen/5 border border-neonGreen/15 px-3 py-2.5">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Net reçu</span>
+                                <span class="text-base font-black text-neonGreen tabular-nums leading-none">
+                                    {{ number_format($retrait->montant_net, 0, ',', ' ') }} <span class="text-[10px]">{{ $currency }}</span>
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="rounded-xl bg-slate-50 dark:bg-darkBg/60 border border-slate-100 dark:border-darkBorder/40 px-3 py-2">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Brut</p>
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white tabular-nums">
+                                        {{ number_format($retrait->montant_brut, 0, ',', ' ') }} <span class="text-[9px] text-slate-400">{{ $currency }}</span>
+                                    </p>
+                                </div>
+                                <div class="rounded-xl bg-slate-50 dark:bg-darkBg/60 border border-slate-100 dark:border-darkBorder/40 px-3 py-2">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Commission</p>
+                                    <p class="text-xs font-bold text-red-500 tabular-nums">
+                                        -{{ number_format($retrait->montant_commission, 0, ',', ' ') }} <span class="text-[9px] text-slate-400">{{ $currency }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            @if($retrait->statut === 'rejected' && $retrait->note)
+                                <p class="text-[10px] text-red-500 dark:text-red-400">{{ $retrait->note }}</p>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="p-8 text-center">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-darkBg mb-2 text-slate-400">
+                                <i class="fas fa-inbox text-lg"></i>
+                            </div>
+                            <p class="text-slate-500 dark:text-gray-400 text-xs font-medium">Aucun retrait pour l'instant.</p>
+                        </div>
+                    @endforelse
+                </div>
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/30 dark:bg-transparent">
+                        <tr class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/30 dark:bg-transparent">
                             <th class="py-2 px-4 font-bold">Date</th>
                             <th class="py-2 px-4 font-bold">Brut</th>
                             <th class="py-2 px-4 font-bold">Commission</th>
@@ -265,7 +329,7 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
                                             {{ $retrait->statusLabel() }}
                                         </span>
                                         @if($retrait->statut === 'rejected' && $retrait->note)
-                                            <span class="text-[9px] text-red-500 dark:text-red-400 max-w-[180px] text-right truncate" title="{{ $retrait->note }}">{{ $retrait->note }}</span>
+                                            <span class="text-[10px] text-red-500 dark:text-red-400 max-w-[180px] text-right truncate" title="{{ $retrait->note }}">{{ $retrait->note }}</span>
                                         @endif
                                     </div>
                                 </td>

@@ -149,11 +149,11 @@
     {{-- ALERTE TRANSACTIONS BLOQUÉES --}}
     @if($checkMessage)
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-         class="flex items-center gap-3 p-3 rounded-2xl {{ $checkSuccess ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20' : 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20' }}">
+         class="flex flex-wrap items-center gap-3 p-3 rounded-2xl {{ $checkSuccess ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20' : 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20' }}">
         <div class="w-8 h-8 shrink-0 rounded-lg {{ $checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500' }} flex items-center justify-center text-xs">
             <i class="fas {{ $checkSuccess ? 'fa-check-circle' : 'fa-exclamation-circle' }}"></i>
         </div>
-        <p class="text-sm font-bold {{ $checkSuccess ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400' }}">{{ $checkMessage }}</p>
+        <p class="flex-1 min-w-0 text-xs sm:text-sm font-bold {{ $checkSuccess ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400' }}">{{ $checkMessage }}</p>
         <button @click="show = false" class="ml-auto w-6 h-6 shrink-0 rounded-lg {{ $checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500' }} hover:opacity-70 transition-all flex items-center justify-center">
             <i class="fas fa-times text-[9px]"></i>
         </button>
@@ -163,7 +163,7 @@
     {{-- ALERTE TICKETS MANQUANTS --}}
     @if($stuckCount > 0)
     <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-         class="flex items-start gap-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
+         class="flex flex-wrap items-start gap-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
         <div class="w-10 h-10 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-500 text-sm">
             <i class="fas fa-exclamation-triangle"></i>
         </div>
@@ -171,7 +171,7 @@
             <p class="text-sm font-extrabold text-amber-700 dark:text-amber-400">{{ $stuckCount }} transaction(s) confirmée(s) sans ticket attribué</p>
             <p class="text-xs text-amber-600/70 dark:text-amber-400/70 mt-0.5">Ces clients ont payé mais n'ont pas reçu leur ticket.</p>
         </div>
-        <div class="flex items-center gap-2 shrink-0">
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
             <a href="{{ route('vendor.alertes') }}"
                class="px-3 py-1.5 rounded-lg text-xs font-extrabold bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-all flex items-center gap-1.5">
                 <i class="fas fa-external-link-alt text-[10px]"></i>
@@ -202,8 +202,8 @@
                         <i class="fas fa-money-bill-wave text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Revenus</p>
-                        <p class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1">
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Revenus</p>
+                        <p class="text-[15px] sm:text-lg lg:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1 min-w-0 truncate">
                             {{ number_format($totalRevenus, 0, ',', ' ') }} <span class="text-[10px] text-slate-400 font-bold">{{ $currency }}</span>
                         </p>
                     </div>
@@ -219,8 +219,8 @@
                         <i class="fas fa-wallet text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Solde Dispo</p>
-                        <p class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1">
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Solde Dispo</p>
+                        <p class="text-[15px] sm:text-lg lg:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1 min-w-0 truncate">
                             {{ number_format($soldeDisponible, 0, ',', ' ') }} <span class="text-[10px] text-slate-400 font-bold">{{ $currency }}</span>
                         </p>
                     </div>
@@ -236,8 +236,8 @@
                         <i class="fas fa-calendar-day text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Aujourd'hui</p>
-                        <p class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1">
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Aujourd'hui</p>
+                        <p class="text-[15px] sm:text-lg lg:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1 min-w-0 truncate">
                             {{ number_format($revenusAujourdhui, 0, ',', ' ') }} <span class="text-[10px] text-slate-400 font-bold">{{ $currency }}</span>
                         </p>
                     </div>
@@ -253,23 +253,23 @@
                         <i class="fas fa-ticket text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Vendus</p>
-                        <p class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalVendus }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Vendus</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalVendus }}</p>
                     </div>
                 </div>
                 <div class="relative pointer-events-none">{!! $sparkline($evo['vendus'], $C['purple'], 28, 'vendus') !!}</div>
             </div>
 
             {{-- Restants --}}
-            <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-pink-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(236,72,153,0.35)] group overflow-hidden">
+            <div class="relative col-span-2 sm:col-span-1 bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-pink-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(236,72,153,0.35)] group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-pink-500/5 group-hover:bg-pink-500/10 transition-colors duration-500"></div>
                 <div class="relative p-4 flex items-center gap-3">
                     <div class="w-10 h-10 shrink-0 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-500 group-hover:bg-pink-500 group-hover:text-white group-hover:rotate-3 transition-all duration-300">
                         <i class="fas fa-ticket text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Restants</p>
-                        <p class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalDispo }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Restants</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalDispo }}</p>
                     </div>
                 </div>
                 <div class="relative pointer-events-none">{!! $sparkline($evo['dispo'], $C['pink'], 28, 'dispo') !!}</div>
@@ -307,10 +307,44 @@
                     Voir tous <i class="fas fa-arrow-right text-[9px]"></i>
                 </a>
             </div>
-            <div class="overflow-x-auto">
+            <div class="md:hidden divide-y divide-slate-50 dark:divide-darkBorder/20">
+                @forelse(array_slice($recentSales, 0, 5) as $sale)
+                    <div class="p-4 space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <div class="w-7 h-7 shrink-0 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center text-blue-500 text-[10px] font-black">
+                                    {{ strtoupper(substr($sale['user'] ?? 'U', 0, 2)) }}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ $sale['user'] ?? '-' }}</p>
+                                    <p class="text-[10px] text-slate-400">{{ \Carbon\Carbon::parse($sale['date_creation'])->format('d/m/Y H:i') }}</p>
+                                </div>
+                            </div>
+                            <span class="shrink-0 inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                                {{ $sale['forfait'] ?? '-' }}
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Montant</span>
+                            <span class="text-sm font-black text-slate-900 dark:text-white">
+                                {{ number_format($sale['montant'], 0, ',', ' ') }} <span class="text-[9px] text-slate-400">{{ $currency }}</span>
+                            </span>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-8 text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-darkBg mb-2 text-slate-400">
+                            <i class="fas fa-inbox text-lg"></i>
+                        </div>
+                        <p class="text-slate-500 dark:text-gray-400 text-xs font-medium">Aucune vente récente.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/30 dark:bg-transparent">
+                        <tr class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/30 dark:bg-transparent">
                             <th class="py-2 px-4 font-bold">Date</th>
                             <th class="py-2 px-4 font-bold">Utilisateur</th>
                             <th class="py-2 px-4 font-bold">Forfait</th>
@@ -372,6 +406,7 @@ function initRevenueChart() {
 
     const isDark = document.documentElement.classList.contains('dark');
     const legendColor = isDark ? '#ffffff' : '#1e293b';
+    const isMobile = window.innerWidth < 640;
 
     new Chart(ctx, {
         type: 'line',
@@ -386,13 +421,14 @@ function initRevenueChart() {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top',
+                    position: isMobile ? 'bottom' : 'top',
                     labels: {
                         color: legendColor,
-                        font: { size: 12, weight: '500' },
+                        font: { size: isMobile ? 10 : 12, weight: '500' },
                         usePointStyle: true,
-                        pointStyleWidth: 10,
-                        padding: 16,
+                        pointStyleWidth: isMobile ? 6 : 10,
+                        boxHeight: isMobile ? 6 : 10,
+                        padding: isMobile ? 8 : 16,
                         generateLabels: function(chart) {
                             return chart.data.datasets.map(function(ds, i) {
                                 var meta = chart.getDatasetMeta(i);
@@ -441,14 +477,15 @@ function initRevenueChart() {
             scales: {
                 x: {
                     grid: { color: 'rgba(156,163,175,0.08)', drawBorder: false },
-                    ticks: { color: '#9ca3af', font: { size: 11 }, maxRotation: 0 },
+                    ticks: { color: '#9ca3af', font: { size: isMobile ? 9 : 11 }, maxRotation: 0, maxTicksLimit: isMobile ? 5 : 30 },
                 },
                 y: {
                     beginAtZero: true,
                     grid: { color: 'rgba(156,163,175,0.08)', drawBorder: false },
                     ticks: {
                         color: '#9ca3af',
-                        font: { size: 11 },
+                        font: { size: isMobile ? 9 : 11 },
+                        maxTicksLimit: isMobile ? 4 : 8,
                         callback: function(v) { return v.toLocaleString('fr-FR'); },
                     },
                 }

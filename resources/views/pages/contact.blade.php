@@ -38,7 +38,7 @@
                             <p class="text-sm text-slate-500 dark:text-gray-400">Disponible du lundi au samedi</p>
                             <a href="tel:+22573525432" class="text-neonGreen font-semibold text-sm hover:underline">73-52-54-32</a>
                             <span class="text-slate-400 dark:text-gray-500 text-sm mx-1">/</span>
-                            <a href="tel:+22564658644" class="text-neonGreen font-semibold text-sm hover:underline">64-65-86-44</a>
+                            <a href="tel:+22562261391" class="text-neonGreen font-semibold text-sm hover:underline">62 261391</a>
                         </div>
                     </div>
                     <div class="flex items-start gap-5">

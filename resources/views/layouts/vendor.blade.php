@@ -17,7 +17,7 @@
         @yield('sidebar')
         <main class="vendor-main">
             <div class="vendor-topbar">
-                <button class="sidebar-toggle" onclick="document.querySelector('.vendor-sidebar').classList.toggle('open'); document.querySelector('.sidebar-overlay').classList.toggle('active')" aria-label="Menu">
+                <button class="sidebar-toggle" onclick="toggleVendorSidebar()" aria-label="Menu">
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="vendor-topbar-brand"><i class="fas fa-wifi"></i> {{ config('platform.name') }}</div>

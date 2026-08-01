@@ -119,8 +119,8 @@
                         <i class="fas fa-tags text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Forfaits</p>
-                        <p class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $nbForfaits }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Forfaits</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $nbForfaits }}</p>
                     </div>
                 </div>
             </div>
@@ -133,8 +133,8 @@
                         <i class="fas fa-check-circle text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Actifs</p>
-                        <p class="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tight leading-none">{{ $nbActifs }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Actifs</p>
+                        <p class="text-lg sm:text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tight leading-none">{{ $nbActifs }}</p>
                     </div>
                 </div>
             </div>
@@ -147,8 +147,8 @@
                         <i class="fas fa-eye-slash text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Inactifs</p>
-                        <p class="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400 tracking-tight leading-none">{{ $nbForfaits - $nbActifs }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Inactifs</p>
+                        <p class="text-lg sm:text-2xl font-black text-amber-600 dark:text-amber-400 tracking-tight leading-none">{{ $nbForfaits - $nbActifs }}</p>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@
                         <i class="fas fa-palette text-sm"></i>
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
-                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Couleur</p>
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Couleur</p>
                         <div class="flex items-center gap-2">
                             <span class="w-5 h-5 rounded-full border-2 border-white dark:border-darkCard shadow-sm" style="background:{{ $couleur }}"></span>
                             <span class="text-sm font-black text-slate-900 dark:text-white tracking-tight">{{ strtoupper($couleur) }}</span>
@@ -266,18 +266,18 @@
                                         <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ $forfait->label }}</p>
                                         <p class="text-[10px] text-slate-400 dark:text-gray-500">{{ $forfait->formattedDuration() }}</p>
                                     </div>
-                                    <span class="text-xs font-black text-slate-900 dark:text-white whitespace-nowrap">{{ number_format($forfait->montant, 0, ',', ' ') }}</span>
+                                    <span class="text-[11px] sm:text-xs font-black text-slate-900 dark:text-white whitespace-nowrap">{{ number_format($forfait->montant, 0, ',', ' ') }}</span>
                                     <div class="flex items-center gap-1 shrink-0">
                                         <button type="button" wire:click="toggleForfait({{ $forfait->id }})"
-                                                class="w-7 h-7 rounded-lg flex items-center justify-center transition-all {{ $forfait->actif ? 'bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white' : 'bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-amber-500 hover:text-white' }}">
+                                                class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center transition-all {{ $forfait->actif ? 'bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white' : 'bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-amber-500 hover:text-white' }}">
                                             <i class="fas fa-{{ $forfait->actif ? 'eye' : 'eye-slash' }} text-[10px]"></i>
                                         </button>
                                         <button type="button" wire:click="editForfait({{ $forfait->id }})"
-                                                class="w-7 h-7 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-neonGreen hover:text-black transition-all">
+                                                class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-neonGreen hover:text-black transition-all">
                                             <i class="fas fa-edit text-[10px]"></i>
                                         </button>
                                         <button type="button" wire:click="confirmDelete({{ $forfait->id }})"
-                                                class="w-7 h-7 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-red-500 hover:text-white transition-all">
+                                                class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-red-500 hover:text-white transition-all">
                                             <i class="fas fa-trash text-[10px]"></i>
                                         </button>
                                     </div>

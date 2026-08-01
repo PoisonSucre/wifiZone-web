@@ -75,16 +75,16 @@
 <div class="flex flex-wrap items-center justify-between gap-4 pb-1">
     <div class="flex items-center gap-4">
         {{-- SIGNATURE : icône hotspot (identique à la page hotspots) --}}
-        <div class="relative w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-[0_4px_12px_-4px_rgba(6,182,212,0.4)]">
-            <i class="fas fa-wifi text-xl"></i>
+        <div class="relative w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-[0_4px_12px_-4px_rgba(6,182,212,0.4)]">
+            <i class="fas fa-wifi text-base sm:text-xl"></i>
             <span class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full border-2 border-white dark:border-darkCard
                          {{ $isActif ? 'bg-red-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
         </div>
-        <div>
-            <p class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.22em]">Point d'accès</p>
+        <div class="min-w-0">
+            <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.22em]">Point d'accès</p>
             <div class="flex items-center gap-2.5 mt-1">
-                <h2 class="text-2xl sm:text-[28px] font-extrabold text-slate-900 dark:text-white tracking-tight leading-none">{{ $hotspot->name }}</h2>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                <h2 class="text-xl sm:text-2xl lg:text-[28px] font-extrabold text-slate-900 dark:text-white tracking-tight leading-none truncate">{{ $hotspot->name }}</h2>
+                <span class="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
                              {{ $isActif ? 'bg-neonGreen/10 text-neonGreen dark:text-neonGreen-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-gray-500' }}">
                     <span class="w-1.5 h-1.5 rounded-full {{ $isActif ? 'bg-red-500 animate-pulse' : 'bg-slate-400' }}"></span>
                     {{ $isActif ? 'En ligne' : 'Hors ligne' }}
@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-    <a href="{{ route('vendor.hotspot') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-white dark:text-black text-[11px] font-bold transition shrink-0">
+    <a href="{{ route('vendor.hotspot') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-white dark:text-black text-[10px] sm:text-[11px] font-bold transition shrink-0">
         <i class="fas fa-arrow-left text-[10px]"></i>
         Tous les hotspots
     </a>
@@ -110,7 +110,7 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          class="absolute inset-0 z-10 space-y-5 animate-pulse">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             @for ($i = 0; $i < 3; $i++)
                 <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-5 h-[104px]"></div>
             @endfor
@@ -129,42 +129,42 @@
          class="space-y-5 sm:space-y-6 relative z-[1]">
 
         {{-- BANDEAU MÉTRIQUES --}}
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {{-- Disponibles --}}
-            <div class="group relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-neonGreen/50 rounded-2xl p-5 transition-all duration-300 overflow-hidden">
+            <div class="group relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-neonGreen/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 overflow-hidden">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.18em]">En stock</span>
                     <span class="w-9 h-9 rounded-xl bg-neonGreen/10 flex items-center justify-center text-neonGreen group-hover:bg-neonGreen group-hover:text-black transition-colors">
                         <i class="fas fa-ticket-alt text-xs"></i>
                     </span>
                 </div>
-                <p class="text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none tabular-nums">{{ $nbDispo }}</p>
+                <p class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none tabular-nums">{{ $nbDispo }}</p>
                 <p class="text-[11px] text-slate-400 dark:text-gray-500 mt-1 font-medium">tickets disponibles</p>
                 <div class="mt-3 -mx-1">{!! $sparkline($ajoutsParJour, '#10B981', 28, 'hd_dispo') !!}</div>
             </div>
 
             {{-- Vendus --}}
-            <div class="group relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-blue-500/50 rounded-2xl p-5 transition-all duration-300 overflow-hidden">
+            <div class="group relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-blue-500/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 overflow-hidden">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.18em]">Vendus</span>
                     <span class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
                         <i class="fas fa-check-circle text-xs"></i>
                     </span>
                 </div>
-                <p class="text-4xl font-black text-blue-600 dark:text-blue-400 tracking-tight leading-none tabular-nums">{{ $nbVendus }}</p>
+                <p class="text-3xl sm:text-4xl font-black text-blue-600 dark:text-blue-400 tracking-tight leading-none tabular-nums">{{ $nbVendus }}</p>
                 <p class="text-[11px] text-slate-400 dark:text-gray-500 mt-1 font-medium">tickets écoulés</p>
                 <div class="mt-3 -mx-1">{!! $sparkline($ventesParJour, '#3B82F6', 28, 'hd_vendus') !!}</div>
             </div>
 
             {{-- Forfaits --}}
-            <div class="group relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-amber-500/50 rounded-2xl p-5 transition-all duration-300 overflow-hidden">
+            <div class="group relative col-span-2 sm:col-span-1 bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-amber-500/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 overflow-hidden">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.18em]">Forfaits</span>
                     <span class="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                         <i class="fas fa-tags text-xs"></i>
                     </span>
                 </div>
-                <p class="text-4xl font-black text-amber-600 dark:text-amber-400 tracking-tight leading-none tabular-nums">{{ $nbForfaits }}</p>
+                <p class="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 tracking-tight leading-none tabular-nums">{{ $nbForfaits }}</p>
                 <p class="text-[11px] text-slate-400 dark:text-gray-500 mt-1 font-medium">offres configurées</p>
                 <div class="mt-3 -mx-1">{!! $sparkline($repForfaits, '#F59E0B', 28, 'hd_forfaits') !!}</div>
             </div>
