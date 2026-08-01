@@ -43,6 +43,7 @@ class PaymentInitController extends Controller
                 'transaction_id' => $transactionId,
                 'montant' => $montant,
                 'statut' => 'pending',
+                'type' => 'ticket',
             ]);
 
             return redirect()->away($data['response_text']);

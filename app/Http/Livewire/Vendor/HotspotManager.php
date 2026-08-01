@@ -77,6 +77,8 @@ class HotspotManager extends Component
     public function addHotspot(): void
     {
         try {
+            app(HotspotService::class)->freezeExpiredSubscriptions(auth()->user());
+
             if (!app(HotspotService::class)->canCreate(auth()->user())) {
                 $this->dispatch('toast', type: 'error', message: 'Quota de hotspots atteint.');
                 return;
@@ -86,6 +88,7 @@ class HotspotManager extends Component
                 'hotspotName' => 'required|string|max:150',
                 'hotspotDescription' => 'nullable|string|max:500',
                 'mikrotikUrl' => 'nullable|string|max:255',
+                'statut' => 'required|in:actif,inactif',
             ]);
 
             Hotspot::create([
@@ -108,6 +111,7 @@ class HotspotManager extends Component
     public function chooseSoldePack(string $packKey): void
     {
         $service = app(HotspotService::class);
+        $service->freezeExpiredSubscriptions(auth()->user());
         $pack = $service->pack($packKey);
 
         if (!$pack) {
@@ -128,6 +132,7 @@ class HotspotManager extends Component
     public function subscribePackWithSolde(): void
     {
         $service = app(HotspotService::class);
+        $service->freezeExpiredSubscriptions(auth()->user());
         $vendeur = auth()->user();
         $pack = $service->pack($this->soldePackKey ?? '');
 
@@ -294,13 +299,14 @@ class HotspotManager extends Component
         $subscriptions = $service->activeSubscriptions($vendeur);
         $frozenSubscriptions = $service->frozenSubscriptions($vendeur);
         $hasFrozen = $service->hasFrozen($vendeur);
+        $availableFreeSlots = $service->availableFreeSlots($vendeur);
 
         $this->showRenewBanner = $hasFrozen;
 
         return view('livewire.vendor.hotspot-manager', compact(
             'hotspots', 'totalHotspots', 'actifs', 'inactifs',
             'packs', 'limit', 'used', 'remaining', 'canCreate',
-            'soldeDisponible', 'subscriptions', 'frozenSubscriptions', 'hasFrozen'
+            'soldeDisponible', 'subscriptions', 'frozenSubscriptions', 'hasFrozen', 'availableFreeSlots'
         ));
     }
 }

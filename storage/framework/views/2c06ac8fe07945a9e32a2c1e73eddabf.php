@@ -34,4 +34,5 @@ $brandText = 'Salut ' . ($vendeur->prenom ?? '') . ' 👋';
 $navLabel = 'Menu principal';
 $logoutRoute = 'vendor.logout';
 ?>
-@include('components.sidebar')
+<?php echo $__env->make('components.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/components/sidebar-vendor.blade.php ENDPATH**/ ?>

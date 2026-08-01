@@ -1,4 +1,4 @@
-@php
+<?php
     // === SPARKLINE HELPER ===
     $sparkline = function (array $data, string $color, int $h = 28, string $key = 'sp'): string {
         $data = array_values(array_filter($data, fn ($v) => is_numeric($v)));
@@ -73,20 +73,20 @@
     $dispoParForfait  = $dispoParForfait  ?? [];
 
     $currency = config('platform.currency') ?? 'FCFA';
-@endphp
+?>
 
 <div x-data="{ loaded: false }" x-cloak
      x-init="$nextTick(() => loaded = true)"
      class="space-y-4 sm:space-y-5 pb-2">
 
-    {{-- SKELETON --}}
+    
     <div x-show="!loaded"
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          class="space-y-4 animate-pulse">
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            @for ($i = 0; $i < 5; $i++)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php for($i = 0; $i < 5; $i++): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 h-[100px] flex flex-col justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-700/40"></div>
@@ -97,10 +97,10 @@
                     </div>
                     <div class="h-6 w-full bg-slate-100 dark:bg-slate-700/20 rounded-md"></div>
                 </div>
-            @endfor
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
         <div class="grid grid-cols-3 gap-3">
-            @for ($i = 0; $i < 3; $i++)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php for($i = 0; $i < 3; $i++): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 h-[72px]">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-700/40"></div>
@@ -110,7 +110,7 @@
                         </div>
                     </div>
                 </div>
-            @endfor
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-5">
             <div class="flex items-center gap-3 mb-4">
@@ -131,7 +131,7 @@
                 <div class="h-3 w-14 bg-slate-200 dark:bg-slate-700/40 rounded"></div>
             </div>
             <div class="p-4 space-y-3">
-                @for ($j = 0; $j < 5; $j++)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php for($j = 0; $j < 5; $j++): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                     <div class="flex items-center gap-3">
                         <div class="h-2.5 w-20 bg-slate-200 dark:bg-slate-700/40 rounded"></div>
                         <div class="flex items-center gap-2">
@@ -141,38 +141,38 @@
                         <div class="h-5 w-14 bg-slate-200 dark:bg-slate-700/40 rounded"></div>
                         <div class="ml-auto h-2.5 w-16 bg-slate-200 dark:bg-slate-700/40 rounded"></div>
                     </div>
-                @endfor
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             </div>
         </div>
     </div>
 
-    {{-- ALERTE TRANSACTIONS BLOQUÉES --}}
-    @if($checkMessage)
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($checkMessage): ?>
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-         class="flex flex-wrap items-center gap-3 p-3 rounded-2xl {{ $checkSuccess ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20' : 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20' }}">
-        <div class="w-8 h-8 shrink-0 rounded-lg {{ $checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500' }} flex items-center justify-center text-xs">
-            <i class="fas {{ $checkSuccess ? 'fa-check-circle' : 'fa-exclamation-circle' }}"></i>
+         class="flex flex-wrap items-center gap-3 p-3 rounded-2xl <?php echo e($checkSuccess ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20' : 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20'); ?>">
+        <div class="w-8 h-8 shrink-0 rounded-lg <?php echo e($checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500'); ?> flex items-center justify-center text-xs">
+            <i class="fas <?php echo e($checkSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'); ?>"></i>
         </div>
-        <p class="flex-1 min-w-0 text-xs sm:text-sm font-bold {{ $checkSuccess ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400' }}">{{ $checkMessage }}</p>
-        <button @click="show = false" class="ml-auto w-6 h-6 shrink-0 rounded-lg {{ $checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500' }} hover:opacity-70 transition-all flex items-center justify-center">
+        <p class="flex-1 min-w-0 text-xs sm:text-sm font-bold <?php echo e($checkSuccess ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400'); ?>"><?php echo e($checkMessage); ?></p>
+        <button @click="show = false" class="ml-auto w-6 h-6 shrink-0 rounded-lg <?php echo e($checkSuccess ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500' : 'bg-red-100 dark:bg-red-500/20 text-red-500'); ?> hover:opacity-70 transition-all flex items-center justify-center">
             <i class="fas fa-times text-[9px]"></i>
         </button>
     </div>
-    @endif
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    {{-- ALERTE TICKETS MANQUANTS --}}
-    @if($stuckCount > 0)
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($stuckCount > 0): ?>
     <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
          class="flex flex-wrap items-start gap-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
         <div class="w-10 h-10 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-500 text-sm">
             <i class="fas fa-exclamation-triangle"></i>
         </div>
         <div class="flex-1 min-w-0">
-            <p class="text-sm font-extrabold text-amber-700 dark:text-amber-400">{{ $stuckCount }} transaction(s) confirmée(s) sans ticket attribué</p>
+            <p class="text-sm font-extrabold text-amber-700 dark:text-amber-400"><?php echo e($stuckCount); ?> transaction(s) confirmée(s) sans ticket attribué</p>
             <p class="text-xs text-amber-600/70 dark:text-amber-400/70 mt-0.5">Ces clients ont payé mais n'ont pas reçu leur ticket.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2 shrink-0">
-            <a href="{{ route('vendor.alertes') }}"
+            <a href="<?php echo e(route('vendor.alertes')); ?>"
                class="px-3 py-1.5 rounded-lg text-xs font-extrabold bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-all flex items-center gap-1.5">
                 <i class="fas fa-external-link-alt text-[10px]"></i>
                 Voir
@@ -182,19 +182,19 @@
             </button>
         </div>
     </div>
-    @endif
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    {{-- CONTENU RÉEL --}}
+    
     <div x-show="loaded"
          x-transition:enter="transition ease-out duration-500"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
          class="space-y-4 sm:space-y-5">
 
-        {{-- STATS GRID --}}
+        
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
 
-            {{-- Revenus --}}
+            
             <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-neonGreen/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(0,255,136,0.35)] group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-neonGreen/5 group-hover:bg-neonGreen/10 transition-colors duration-500"></div>
                 <div class="relative p-4 flex items-center gap-3">
@@ -204,14 +204,14 @@
                     <div class="flex flex-col min-w-0 flex-1">
                         <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Revenus</p>
                         <p class="text-[15px] sm:text-lg lg:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1 min-w-0 truncate">
-                            {{ number_format($totalRevenus, 0, ',', ' ') }} <span class="text-[10px] text-slate-400 font-bold">{{ $currency }}</span>
+                            <?php echo e(number_format($totalRevenus, 0, ',', ' ')); ?> <span class="text-[10px] text-slate-400 font-bold"><?php echo e($currency); ?></span>
                         </p>
                     </div>
                 </div>
-                <div class="relative pointer-events-none">{!! $sparkline($evo['revenus'], $C['neon'], 28, 'revenus') !!}</div>
+                <div class="relative pointer-events-none"><?php echo $sparkline($evo['revenus'], $C['neon'], 28, 'revenus'); ?></div>
             </div>
 
-            {{-- Solde Dispo --}}
+            
             <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-blue-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(59,130,246,0.35)] group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-blue-500/5 group-hover:bg-blue-500/10 transition-colors duration-500"></div>
                 <div class="relative p-4 flex items-center gap-3">
@@ -221,14 +221,14 @@
                     <div class="flex flex-col min-w-0 flex-1">
                         <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Solde Dispo</p>
                         <p class="text-[15px] sm:text-lg lg:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1 min-w-0 truncate">
-                            {{ number_format($soldeDisponible, 0, ',', ' ') }} <span class="text-[10px] text-slate-400 font-bold">{{ $currency }}</span>
+                            <?php echo e(number_format($soldeDisponible, 0, ',', ' ')); ?> <span class="text-[10px] text-slate-400 font-bold"><?php echo e($currency); ?></span>
                         </p>
                     </div>
                 </div>
-                <div class="relative pointer-events-none">{!! $sparkline($evo['solde'], $C['blue'], 28, 'solde') !!}</div>
+                <div class="relative pointer-events-none"><?php echo $sparkline($evo['solde'], $C['blue'], 28, 'solde'); ?></div>
             </div>
 
-            {{-- Aujourd'hui --}}
+            
             <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-amber-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(245,158,11,0.35)] group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors duration-500"></div>
                 <div class="relative p-4 flex items-center gap-3">
@@ -238,14 +238,14 @@
                     <div class="flex flex-col min-w-0 flex-1">
                         <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Aujourd'hui</p>
                         <p class="text-[15px] sm:text-lg lg:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-baseline gap-1 min-w-0 truncate">
-                            {{ number_format($revenusAujourdhui, 0, ',', ' ') }} <span class="text-[10px] text-slate-400 font-bold">{{ $currency }}</span>
+                            <?php echo e(number_format($revenusAujourdhui, 0, ',', ' ')); ?> <span class="text-[10px] text-slate-400 font-bold"><?php echo e($currency); ?></span>
                         </p>
                     </div>
                 </div>
-                <div class="relative pointer-events-none">{!! $sparkline($evo['revenus'], $C['amber'], 28, 'aujourdhui') !!}</div>
+                <div class="relative pointer-events-none"><?php echo $sparkline($evo['revenus'], $C['amber'], 28, 'aujourdhui'); ?></div>
             </div>
 
-            {{-- Vendus --}}
+            
             <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-purple-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(168,85,247,0.45)] group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-purple-500/5 group-hover:bg-purple-500/15 transition-colors duration-500"></div>
                 <div class="relative p-4 flex items-center gap-3">
@@ -254,13 +254,13 @@
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
                         <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Vendus</p>
-                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalVendus }}</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none"><?php echo e($totalVendus); ?></p>
                     </div>
                 </div>
-                <div class="relative pointer-events-none">{!! $sparkline($evo['vendus'], $C['purple'], 28, 'vendus') !!}</div>
+                <div class="relative pointer-events-none"><?php echo $sparkline($evo['vendus'], $C['purple'], 28, 'vendus'); ?></div>
             </div>
 
-            {{-- Restants --}}
+            
             <div class="relative col-span-2 sm:col-span-1 bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-pink-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-12px_rgba(236,72,153,0.35)] group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-pink-500/5 group-hover:bg-pink-500/10 transition-colors duration-500"></div>
                 <div class="relative p-4 flex items-center gap-3">
@@ -269,15 +269,15 @@
                     </div>
                     <div class="flex flex-col min-w-0 flex-1">
                         <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Restants</p>
-                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ $totalDispo }}</p>
+                        <p class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none"><?php echo e($totalDispo); ?></p>
                     </div>
                 </div>
-                <div class="relative pointer-events-none">{!! $sparkline($evo['dispo'], $C['pink'], 28, 'dispo') !!}</div>
+                <div class="relative pointer-events-none"><?php echo $sparkline($evo['dispo'], $C['pink'], 28, 'dispo'); ?></div>
             </div>
         </div>
 
-        {{-- QUOTA RÉSUMÉ --}}
-        @php
+        
+        <?php
             $hotspotService = app(\App\Services\HotspotService::class);
             $vendeur = auth()->user();
             if ($vendeur) {
@@ -293,29 +293,30 @@
             $quotaTextColor = $quotaCanCreate ? 'text-neonGreen' : 'text-red-400';
             $quotaLabel = $quotaCanCreate ? "+{$quotaRemaining} hotspot" . ($quotaRemaining > 1 ? 's' : '') . " restant" . ($quotaRemaining > 1 ? 's' : '') : "Quota atteint";
             $quotaBadgeColor = $quotaCanCreate ? 'bg-neonGreen/20 text-neonGreen' : 'bg-red-500/20 text-red-400';
-        @endphp
+        ?>
 <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 flex items-center gap-4">
-             <div class="w-10 h-10 shrink-0 rounded-xl {{ $quotaBarBg }} flex items-center justify-center {{ $quotaTextColor }}">
+             <div class="w-10 h-10 shrink-0 rounded-xl <?php echo e($quotaBarBg); ?> flex items-center justify-center <?php echo e($quotaTextColor); ?>">
                  <i class="fas fa-layer-group text-sm"></i>
              </div>
              <div class="flex-1 min-w-0">
                  <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1">Quota Hotspots</p>
                  <div class="flex items-center gap-2">
-                     <span class="text-sm font-black text-slate-900 dark:text-white">{{ $quotaUsed }} / {{ $quotaLimit }}</span>
-                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ $quotaBadgeColor }}">
-                         <i class="fas {{ $quotaCanCreate ? 'fa-plus' : 'fa-ban' }} text-[8px]"></i> {{ $quotaLabel }}
+                     <span class="text-sm font-black text-slate-900 dark:text-white"><?php echo e($quotaUsed); ?> / <?php echo e($quotaLimit); ?></span>
+                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider <?php echo e($quotaBadgeColor); ?>">
+                         <i class="fas <?php echo e($quotaCanCreate ? 'fa-plus' : 'fa-ban'); ?> text-[8px]"></i> <?php echo e($quotaLabel); ?>
+
                      </span>
                  </div>
                  <div class="relative h-1.5 rounded-full bg-slate-100 dark:bg-darkBorder mt-2 overflow-hidden">
-                     <div class="h-full rounded-full transition-all duration-700 {{ $quotaBarColor }}" style="width: {{ $quotaPercent }}%"></div>
+                     <div class="h-full rounded-full transition-all duration-700 <?php echo e($quotaBarColor); ?>" style="width: <?php echo e($quotaPercent); ?>%"></div>
                  </div>
              </div>
-             <a href="{{ route('vendor.hotspot') }}" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-neonGreen/10 text-neonGreen hover:bg-neonGreen hover:text-black text-[10px] font-bold transition-all">
+             <a href="<?php echo e(route('vendor.hotspot')); ?>" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-neonGreen/10 text-neonGreen hover:bg-neonGreen hover:text-black text-[10px] font-bold transition-all">
                  <i class="fas fa-cog text-[9px]"></i> Gérer
              </a>
          </div>
 
-        {{-- GRAPHIQUE --}}
+        
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-5">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
@@ -333,7 +334,7 @@
             </div>
         </div>
 
-        {{-- VENTES RÉCENTES --}}
+        
         <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm flex flex-col h-full overflow-hidden">
             <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 dark:border-darkBorder/40 bg-slate-50/50 dark:bg-darkBg/30">
                 <div class="flex items-center gap-2.5">
@@ -342,42 +343,44 @@
                     </div>
                     <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Ventes Récentes</h3>
                 </div>
-                <a href="{{ route('vendor.tickets') }}" class="inline-flex items-center gap-1 text-[11px] font-bold text-neonGreen hover:text-neonGreen-600 transition-colors">
+                <a href="<?php echo e(route('vendor.tickets')); ?>" class="inline-flex items-center gap-1 text-[11px] font-bold text-neonGreen hover:text-neonGreen-600 transition-colors">
                     Voir tous <i class="fas fa-arrow-right text-[9px]"></i>
                 </a>
             </div>
             <div class="md:hidden divide-y divide-slate-50 dark:divide-darkBorder/20">
-                @forelse(array_slice($recentSales, 0, 5) as $sale)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = array_slice($recentSales, 0, 5); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                     <div class="p-4 space-y-2">
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center gap-2 min-w-0">
                                 <div class="w-7 h-7 shrink-0 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center text-blue-500 text-[10px] font-black">
-                                    {{ strtoupper(substr($sale['user'] ?? 'U', 0, 2)) }}
+                                    <?php echo e(strtoupper(substr($sale['user'] ?? 'U', 0, 2))); ?>
+
                                 </div>
                                 <div class="min-w-0">
-                                    <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ $sale['user'] ?? '-' }}</p>
-                                    <p class="text-[10px] text-slate-400">{{ \Carbon\Carbon::parse($sale['date_creation'])->format('d/m/Y H:i') }}</p>
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white truncate"><?php echo e($sale['user'] ?? '-'); ?></p>
+                                    <p class="text-[10px] text-slate-400"><?php echo e(\Carbon\Carbon::parse($sale['date_creation'])->format('d/m/Y H:i')); ?></p>
                                 </div>
                             </div>
                             <span class="shrink-0 inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
-                                {{ $sale['forfait'] ?? '-' }}
+                                <?php echo e($sale['forfait'] ?? '-'); ?>
+
                             </span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Montant</span>
                             <span class="text-sm font-black text-slate-900 dark:text-white">
-                                {{ number_format($sale['montant'], 0, ',', ' ') }} <span class="text-[9px] text-slate-400">{{ $currency }}</span>
+                                <?php echo e(number_format($sale['montant'], 0, ',', ' ')); ?> <span class="text-[9px] text-slate-400"><?php echo e($currency); ?></span>
                             </span>
                         </div>
                     </div>
-                @empty
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     <div class="p-8 text-center">
                         <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-darkBg mb-2 text-slate-400">
                             <i class="fas fa-inbox text-lg"></i>
                         </div>
                         <p class="text-slate-500 dark:text-gray-400 text-xs font-medium">Aucune vente récente.</p>
                     </div>
-                @endforelse
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <div class="hidden md:block overflow-x-auto">
@@ -391,29 +394,32 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs text-slate-700 dark:text-gray-300">
-                        @forelse(array_slice($recentSales, 0, 5) as $sale)
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = array_slice($recentSales, 0, 5); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                             <tr class="border-b border-slate-50 dark:border-darkBorder/20 hover:bg-slate-50/70 dark:hover:bg-darkBg/40 transition-colors last:border-0 group">
                                 <td class="py-2.5 px-4 text-slate-500 dark:text-gray-400 whitespace-nowrap">
-                                    {{ \Carbon\Carbon::parse($sale['date_creation'])->format('d/m/Y H:i') }}
+                                    <?php echo e(\Carbon\Carbon::parse($sale['date_creation'])->format('d/m/Y H:i')); ?>
+
                                 </td>
                                 <td class="py-2.5 px-4 font-bold text-slate-900 dark:text-white">
                                     <div class="flex items-center gap-2">
                                         <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center text-blue-500 text-[10px] font-black">
-                                            {{ strtoupper(substr($sale['user'] ?? 'U', 0, 2)) }}
+                                            <?php echo e(strtoupper(substr($sale['user'] ?? 'U', 0, 2))); ?>
+
                                         </div>
-                                        <span class="truncate max-w-[140px]">{{ $sale['user'] ?? '-' }}</span>
+                                        <span class="truncate max-w-[140px]"><?php echo e($sale['user'] ?? '-'); ?></span>
                                     </div>
                                 </td>
                                 <td class="py-2.5 px-4">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
-                                        {{ $sale['forfait'] ?? '-' }}
+                                        <?php echo e($sale['forfait'] ?? '-'); ?>
+
                                     </span>
                                 </td>
                                 <td class="py-2.5 px-4 font-black text-slate-900 dark:text-white text-right whitespace-nowrap">
-                                    {{ number_format($sale['montant'], 0, ',', ' ') }} <span class="text-[9px] text-slate-400">{{ $currency }}</span>
+                                    <?php echo e(number_format($sale['montant'], 0, ',', ' ')); ?> <span class="text-[9px] text-slate-400"><?php echo e($currency); ?></span>
                                 </td>
                             </tr>
-                        @empty
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             <tr>
                                 <td colspan="4" class="py-10 text-center">
                                     <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-darkBg mb-2 text-slate-400">
@@ -422,7 +428,7 @@
                                     <p class="text-slate-500 dark:text-gray-400 text-xs font-medium">Aucune vente récente.</p>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -430,7 +436,7 @@
     </div>
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 function initRevenueChart() {
     const ctx = document.getElementById('revenueChart');
@@ -438,8 +444,8 @@ function initRevenueChart() {
     if (ctx._chartInitialized) return;
     ctx._chartInitialized = true;
 
-    const labels = @js($chartLabels);
-    const datasets = @js($chartDatasets);
+    const labels = <?php echo \Illuminate\Support\Js::from($chartLabels)->toHtml() ?>;
+    const datasets = <?php echo \Illuminate\Support\Js::from($chartDatasets)->toHtml() ?>;
 
     if (!labels.length || !datasets.length) return;
 
@@ -505,7 +511,7 @@ function initRevenueChart() {
                         },
                         label: function(ctx) {
                             var val = ctx.parsed.y.toLocaleString('fr-FR');
-                            return ' ' + ctx.dataset.label + '  :  ' + val + ' {{ $currency }}';
+                            return ' ' + ctx.dataset.label + '  :  ' + val + ' <?php echo e($currency); ?>';
                         }
                     },
                     itemSort: function(a, b) {
@@ -549,4 +555,5 @@ document.addEventListener('livewire:navigated', function() {
     setTimeout(initRevenueChart, 50);
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/livewire/vendor/dashboard.blade.php ENDPATH**/ ?>

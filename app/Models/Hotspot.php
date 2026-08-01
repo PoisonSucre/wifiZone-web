@@ -39,19 +39,4 @@ class Hotspot extends Model
     {
         return $this->hasMany(Ticket::class);
     }
-
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
-    public function withdrawals(): HasMany
-    {
-        return $this->hasMany(Withdrawal::class);
-    }
-
-    public function importBatches(): HasMany
-    {
-        return $this->hasMany(ImportBatch::class);
-    }
 }

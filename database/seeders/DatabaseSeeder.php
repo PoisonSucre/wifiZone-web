@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             VendeurSeeder::class,
             SettingSeeder::class,
             HotspotSeeder::class,
+            HotspotSubscriptionSeeder::class,
             ForfaitSeeder::class,
             DemoVendeursSeeder::class,
             DemoDataSeeder::class,

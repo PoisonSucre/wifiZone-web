@@ -18,9 +18,26 @@
         @yield('sidebar')
         <main class="vendor-main">
             <div class="vendor-topbar" x-data="{ showTopbarLogout: false }">
-                <div class="vendor-topbar-greeting">
-                    <i class="fas fa-wifi"></i> Salut {{ $vendeurTopbar->prenom ?? '' }} 👋
-                </div>
+                @php
+    $vendeurTopbar = auth()->user();
+    $hotspotService = app(\App\Services\HotspotService::class);
+    if ($vendeurTopbar) {
+        $hotspotService->freezeExpiredSubscriptions($vendeurTopbar);
+    }
+    $headerHotspotUsed = $vendeurTopbar ? $hotspotService->usedSlots($vendeurTopbar) : 0;
+    $headerHotspotLimit = $vendeurTopbar ? $hotspotService->limit($vendeurTopbar) : 0;
+    $headerHotspotRemaining = $vendeurTopbar ? $hotspotService->remaining($vendeurTopbar) : 0;
+    $headerHotspotCanCreate = $vendeurTopbar ? $hotspotService->canCreate($vendeurTopbar) : true;
+@endphp
+<div class="vendor-topbar-greeting">
+    <i class="fas fa-wifi"></i> Salut {{ $vendeurTopbar->prenom ?? '' }} 👋
+    @if($vendeurTopbar)
+        <span class="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ $headerHotspotCanCreate ? 'bg-neonGreen/20 text-neonGreen' : 'bg-red-500/20 text-red-400' }}">
+            <i class="fas {{ $headerHotspotCanCreate ? 'fa-plus' : 'fa-ban' }} text-[8px]"></i>
+            {{ $headerHotspotCanCreate ? "+{$headerHotspotRemaining} hotspot" . ($headerHotspotRemaining > 1 ? 's' : '') : "Quota atteint" }}
+        </span>
+    @endif
+</div>
                 <div class="vendor-topbar-actions">
                     <button type="button" class="vendor-topbar-icon" onclick="toggleTheme()" aria-label="Basculer le thème">
                         <i class="fas fa-sun"></i>

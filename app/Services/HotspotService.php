@@ -86,6 +86,11 @@ class HotspotService
         return $this->usedSlots($vendeur) < $this->limit($vendeur);
     }
 
+    public function availableFreeSlots(Vendeur $vendeur): int
+    {
+        return max(0, $this->freeSlots() - $this->usedSlots($vendeur));
+    }
+
     public function hasFrozen(Vendeur $vendeur): bool
     {
         return $this->frozenSlots($vendeur) > 0;
@@ -144,13 +149,12 @@ class HotspotService
 
         if ($frozen) {
             $frozen->unfreeze();
-            $latest = $frozen->expires_at;
             $frozen->update([
                 'slots' => $pack['slots'],
                 'montant' => $pack['price'],
                 'payment_method' => $paymentMethod,
                 'starts_at' => now(),
-                'expires_at' => Carbon::parse($latest)->addDays($this->packDurationDays()),
+                'expires_at' => now()->addDays($this->packDurationDays()),
             ]);
             return $frozen->fresh();
         }
@@ -167,6 +171,15 @@ class HotspotService
             ->sum('montant');
     }
 
+    public function pendingPackConsomme(Vendeur $vendeur): float
+    {
+        return (float) Transaction::where('vendeur_id', $vendeur->id)
+            ->where('type', 'pack')
+            ->where('payment_method', 'solde')
+            ->where('statut', 'pending')
+            ->sum('montant');
+    }
+
     public function soldeDisponible(Vendeur $vendeur): float
     {
         $totalRevenus = (float) $vendeur->transactions()->completed()->where('type', 'ticket')->sum('montant');
@@ -174,7 +187,7 @@ class HotspotService
             ->whereIn('statut', ['pending', 'approved', 'paid'])
             ->sum('montant_brut');
 
-        return max(0, $totalRevenus - $dejaRetire - $this->soldeConsomme($vendeur));
+        return max(0, $totalRevenus - $dejaRetire - $this->soldeConsomme($vendeur) - $this->pendingPackConsomme($vendeur));
     }
 
     public function activatePack(Vendeur $vendeur, string $packKey, string $paymentMethod = 'ligdicash'): HotspotSubscription

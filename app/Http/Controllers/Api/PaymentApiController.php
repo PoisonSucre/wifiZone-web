@@ -169,11 +169,21 @@ class PaymentApiController extends Controller
                 return;
             }
 
-             $subscription = app(HotspotService::class)->renewSubscription(
-                 $vendeur,
-                 $transaction->pack_key ?? 'A',
-                 'ligdicash'
-             );
+        $packKey = $transaction->pack_key;
+
+        if (!$packKey || !app(HotspotService::class)->pack($packKey)) {
+            Log::warning('Pack purchase: pack_key invalide ou manquant', [
+                'transaction_id' => $transaction->transaction_id,
+                'pack_key' => $packKey,
+            ]);
+            return;
+        }
+
+         $subscription = app(HotspotService::class)->renewSubscription(
+             $vendeur,
+             $packKey,
+             'ligdicash'
+         );
 
             try {
                 Mail::to($vendeur->email)->send(new HotspotPackConfirmedMail($subscription));

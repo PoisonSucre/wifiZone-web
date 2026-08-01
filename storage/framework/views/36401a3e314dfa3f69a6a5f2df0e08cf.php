@@ -77,7 +77,7 @@
 </header>
 
 <?php $__env->startPush('scripts'); ?>
-<?php if (! $__env->hasRenderedOnce('ec589939-4bea-4c84-87d6-7bd7e087c241')): $__env->markAsRenderedOnce('ec589939-4bea-4c84-87d6-7bd7e087c241'); ?>
+<?php if (! $__env->hasRenderedOnce('a9205f7e-90d9-4f43-bebc-205f21cef4f2')): $__env->markAsRenderedOnce('a9205f7e-90d9-4f43-bebc-205f21cef4f2'); ?>
 <script>
     // --- Header shrink + blur-on-scroll (all public pages) ---
     const _mainHeader = document.getElementById('main-header');
