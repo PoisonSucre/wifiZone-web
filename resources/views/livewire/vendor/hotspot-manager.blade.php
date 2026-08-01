@@ -113,29 +113,36 @@
             </div>
         </div>
 
-        {{-- BANNIÈRE QUOTA --}}
+{{-- BANNIÈRE QUOTA --}}
          <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 p-4 sm:p-5 text-white shadow-[0_10px_30px_-12px_rgba(6,182,212,0.45)]">
              <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10"></div>
              <div class="absolute -right-2 -top-2 w-24 h-24 rounded-full bg-white/5"></div>
-             <div class="relative flex flex-col sm:flex-row sm:items-start gap-4">
+             
+{{-- Bouton Acheter des quotas - mobile: top right absolute, desktop: dans le flex à droite --}}
+              <button type="button" wire:click="openPackModal"
+                      class="absolute top-3 right-3 sm:hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-white text-blue-700 hover:bg-blue-50 text-[10px] font-extrabold transition-all shadow-sm hover:shadow-md z-10">
+                  <i class="fas fa-cart-plus text-[9px]"></i> Acheter des quotas
+              </button>
+             
+             <div class="relative flex flex-col sm:flex-row sm:items-start gap-4 sm:pr-10">
                  <div class="flex-1 min-w-0">
                      <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-white/70">Quota de hotspots</p>
                      <div class="flex items-baseline gap-2 mt-1">
                          <p class="text-2xl font-black tracking-tight">{{ $used }} / {{ $limit }}</p>
-@if($canCreate)
-                              <span class="inline-flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider">
-                                  <span class="font-medium text-white/80">{{ $remaining }} Restant{{ $remaining > 1 ? 's' : '' }}</span>
-                              </span>
-                          @else
-                              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-[11px] font-black uppercase tracking-wider">
-                                  <i class="fas fa-ban text-[9px]"></i> Quota atteint
-                              </span>
-                          @endif
+                         @if($canCreate)
+                               <span class="inline-flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider">
+                                   <span class="font-medium text-white/80">{{ $remaining }} Restant{{ $remaining > 1 ? 's' : '' }}</span>
+                               </span>
+                           @else
+                               <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-[11px] font-black uppercase tracking-wider">
+                                   <i class="fas fa-ban text-[9px]"></i> Quota atteint
+                               </span>
+                           @endif
                      </div>
-<div class="relative h-2 rounded-full bg-white/20 mt-3 overflow-hidden">
-                          <div class="h-full rounded-full transition-all duration-700"
-                               style="width: {{ $limit > 0 ? min(($used / $limit) * 100, 100) : ($used > 0 ? 100 : 0) }}%; background: {{ $limit > 0 && $used >= $limit ? '#ef4444' : ($limit === 0 && $used > 0 ? '#f59e0b' : '#00ff88') }}"></div>
-                      </div>
+                     <div class="relative h-2 rounded-full bg-white/20 mt-3 overflow-hidden">
+                         <div class="h-full rounded-full transition-all duration-700"
+                              style="width: {{ $limit > 0 ? min(($used / $limit) * 100, 100) : ($used > 0 ? 100 : 0) }}%; background: {{ $limit > 0 && $used >= $limit ? '#ef4444' : ($limit === 0 && $used > 0 ? '#f59e0b' : '#00ff88') }}"></div>
+                     </div>
                      @if($hasFrozen)
                          <div class="flex flex-wrap gap-2 mt-2">
                              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/30 text-[10px] font-bold uppercase tracking-wider text-amber-200">
@@ -147,7 +154,9 @@
                          </div>
                      @endif
                  </div>
-                 <div class="shrink-0 flex flex-col gap-2 sm:items-end">
+                 
+                 {{-- Côté droit : sur desktop bouton + solde, sur mobile rien (bouton en absolute) --}}
+                 <div class="shrink-0 hidden sm:flex sm:flex-col sm:items-end sm:gap-2">
                      <button type="button" wire:click="openPackModal"
                              class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-blue-700 hover:bg-blue-50 text-[11px] font-extrabold transition-all shadow-sm hover:shadow-md">
                          <i class="fas fa-cart-plus text-[10px]"></i> Acheter des quotas
@@ -159,8 +168,19 @@
                          </p>
                      @endif
                  </div>
+                 
+                 {{-- Solde mobile sous la barre --}}
+                 @if($soldeDisponible > 0)
+                     <div class="sm:hidden w-full mt-2 pt-2 border-t border-white/20">
+                         <p class="text-[10px] font-bold text-white/85 flex items-center justify-center gap-1.5">
+                             <i class="fas fa-wallet text-[9px]"></i>
+                             Solde : {{ number_format($soldeDisponible, 0, ',', ' ') }} {{ config('platform.currency') }}
+                         </p>
+                     </div>
+                 @endif
              </div>
-             <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 mt-3">
+             
+             <div class="relative flex flex-col gap-1.5 mt-3 sm:mt-4">
                  @if(!$canCreate && $hasFrozen)
                       <p class="text-[11px] font-bold text-white/90">
                           {{ $frozenSubscriptions->sum('slots') }} slot(s) payant(s) gelé(s).
@@ -170,24 +190,23 @@
                           <button type="button" wire:click="openRenewModal('{{ $frozenSubscriptions->first()->pack_key }}')"
                                   class="underline hover:no-underline font-extrabold">Renouveler →</button>
                       </p>
-                 @elseif(!$canCreate)
+                  @elseif(!$canCreate)
                       <p class="text-[11px] font-bold text-white/90">
                           Tous vos emplacements sont utilisés. Achetez un pack pour ajouter plus de hotspots.
                       </p>
-                 @else
-                     <p class="text-[11px] text-white/80">
-                         {{ $limit - $used }} emplacement(s) restant(s). Un abonnement mensuel vous permet d'ajouter plus de hotspots.
-                     </p>
-                 @endif
-                 @if($subscriptions->isNotEmpty())
-                     <p class="shrink-0 text-[10px] font-bold text-white/85 flex items-center gap-1.5">
-                         <i class="fas fa-crown text-[9px]"></i>
-                         @foreach($subscriptions as $sub)
-                             <span>Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} +{{ $sub->slots }} · expire le {{ $sub->expires_at?->format('d/m/Y') }}</span>
-                             @if(!$loop->last)<span class="text-white/40">•</span>@endif
-                         @endforeach
-                     </p>
-                 @endif
+                  @else
+                      <p class="text-[11px] text-white/80">
+                          {{ $limit - $used }} emplacement(s) restant(s). Un abonnement mensuel vous permet d'ajouter plus de hotspots.
+                      </p>
+                  @endif
+                  @if($subscriptions->isNotEmpty())
+                      <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 flex-wrap">
+                          <i class="fas fa-crown text-[9px] sm:text-[10px] text-white/70 shrink-0"></i>
+                          @foreach($subscriptions as $sub)
+                              <span class="text-[10px] sm:text-[11px] font-bold text-white/85 whitespace-nowrap">Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} +{{ $sub->slots }} · expire le {{ $sub->expires_at?->format('d/m/Y') }}</span>
+                          @endforeach
+                      </div>
+                  @endif
              </div>
         </div>
 
@@ -323,7 +342,7 @@
                                     <i class="fas fa-wifi text-[11px]"></i>
                                 </span>
                                 <div class="min-w-0">
-                                    <p class="text-xs font-extrabold text-slate-900 dark:text-white">Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} <span class="text-neonGreen">+{{ $sub->slots }}</span></p>
+                                    <p class="text-xs font-extrabold text-slate-900 dark:text-white truncate">Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} <span class="text-neonGreen">+{{ $sub->slots }}</span></p>
                                     <p class="text-[10px] text-slate-400 dark:text-gray-500">
                                         Paiement {{ $sub->payment_method === 'solde' ? 'via solde' : 'via LigdiCash' }} · expire le {{ $sub->expires_at?->format('d/m/Y') }}
                                     </p>
@@ -342,14 +361,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     @foreach($packs as $pack)
                     <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 flex flex-col hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 text-white text-[11px] font-extrabold uppercase tracking-wider">
-                                <i class="fas fa-wifi text-[9px]"></i> {{ $pack['label'] }}
-                            </span>
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neonGreen/15 text-neonGreen dark:text-neonGreen-400 text-[11px] font-black uppercase tracking-wider">
-                                 <i class="fas fa-plus text-[9px]"></i> +{{ $pack['slots'] }} hotspots
+<div class="flex items-center justify-between mb-3 gap-2">
+                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 text-white text-[11px] font-extrabold uppercase tracking-wider shrink-0">
+                                 <i class="fas fa-wifi text-[9px]"></i> {{ $pack['label'] }}
                              </span>
-                        </div>
+                         </div>
                         <div class="mb-4">
                             <p class="text-lg font-black text-slate-900 dark:text-white tracking-tight leading-none">{{ number_format($pack['price'], 0, ',', ' ') }} <span class="text-[11px] text-slate-400 font-bold">{{ config('platform.currency') }}</span></p>
                             <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-1 font-medium">par mois, sans engagement</p>
@@ -358,6 +374,9 @@
                             @endif
                         </div>
                         <div class="flex flex-col gap-1.5 mt-auto">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-neonGreen dark:text-neonGreen-400 text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap mb-1 self-center">
+                                 <i class="fas fa-plus text-[8px]"></i> +{{ $pack['slots'] }} Hotspots
+                             </span>
                             <form method="POST" action="{{ route('vendor.pack.payment', $pack['key']) }}" class="w-full">
                                 @csrf
                                 <button type="submit"

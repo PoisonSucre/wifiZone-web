@@ -16,6 +16,7 @@ $hotspotBadge = $vendeur ? ($hotspotCanCreate ? "+{$hotspotRemaining} hotspot" .
 $links = [
     ['route' => 'vendor.dashboard',     'label' => 'Dashboard',      'icon' => 'fa-chart-line',              'url' => '/vendeur'],
     ['route' => 'vendor.hotspot',       'label' => 'Mes Hotspots',   'icon' => 'fa-wifi',                    'url' => '/vendeur/hotspot', 'badge' => $hotspotBadge],
+    ['route' => 'vendor.transactions',  'label' => 'Transactions',  'icon' => 'fa-receipt',                 'url' => '/vendeur/transactions'],
     ['route' => 'vendor.alertes',        'label' => 'Alertes',        'icon' => 'fa-exclamation-triangle',    'url' => '/vendeur/alertes'],
     ['route' => 'vendor.retraits',      'label' => 'Retraits',       'icon' => 'fa-wallet',                  'url' => '/vendeur/retraits'],
     ['route' => 'vendor.profil',        'label' => 'Profil',         'icon' => 'fa-user',                    'url' => '/vendeur/profil'],

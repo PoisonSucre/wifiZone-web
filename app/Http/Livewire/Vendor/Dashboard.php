@@ -63,6 +63,7 @@ class Dashboard extends Component
 
         $this->recentSales = Transaction::where('transactions.vendeur_id', $vendeur->id)
             ->where('transactions.statut', 'completed')
+            ->where('transactions.type', 'ticket')
             ->leftJoin('ticket', 'transactions.ticket_id', '=', 'ticket.id')
             ->select('transactions.*', 'ticket.user', 'ticket.forfait')
             ->orderByDesc('transactions.date_creation')

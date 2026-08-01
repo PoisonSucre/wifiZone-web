@@ -107,6 +107,7 @@ Route::middleware(['auth', 'vendeur.status'])->prefix('vendeur')->name('vendor.'
     })->name('hotspot.details');
     Route::get('/profil', fn () => view('vendor.profil'))->name('profil');
     Route::get('/retraits', fn () => view('vendor.retraits'))->name('retraits');
+    Route::get('/transactions', fn () => view('vendor.transactions'))->name('transactions');
     Route::get('/template', function (\Illuminate\Http\Request $request) {
         $format = $request->query('format', 'csv');
         $mode = $request->query('mode', 'with_password');

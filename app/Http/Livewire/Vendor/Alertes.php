@@ -27,6 +27,7 @@ class Alertes extends Component
         $vendeur = auth()->user();
         $this->transactions = Transaction::where('vendeur_id', $vendeur->id)
             ->where('statut', 'completed')
+            ->where('type', 'ticket')
             ->whereNull('ticket_id')
             ->orderByDesc('date_creation')
             ->limit(50)
