@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Vendor\Concerns;
 
 use App\Models\Transaction;
+use App\Services\HotspotService;
 use App\Services\LigdiCashService;
 use App\Services\TicketService;
 use Illuminate\Support\Facades\Log;
@@ -41,6 +42,17 @@ trait ChecksPendingPayments
                 'verification_status' => 'verified',
             ]);
 
+            if ($transaction->type === 'pack') {
+                app(HotspotService::class)->activatePack(
+                    $vendeur,
+                    $transaction->pack_key ?? 'A',
+                    'ligdicash'
+                );
+                $this->checkMessage = 'Paiement confirmé et pack activé avec succès.';
+                $this->checkSuccess = true;
+                return;
+            }
+
             $ticket = app(TicketService::class)->assignTicket(
                 $transaction->vendeur_id,
                 $transaction->montant,
@@ -64,7 +76,10 @@ trait ChecksPendingPayments
         if (method_exists($this, 'refreshStuck')) {
             $this->refreshStuck();
         }
-        $this->checkMessage = 'Paiement confirmé et ticket attribué avec succès.';
-        $this->checkSuccess = true;
+
+        if ($transaction->type !== 'pack') {
+            $this->checkMessage = 'Paiement confirmé et ticket attribué avec succès.';
+            $this->checkSuccess = true;
+        }
     }
 }

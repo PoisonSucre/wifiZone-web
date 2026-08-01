@@ -72,19 +72,19 @@
 @endphp
 
 @section('header')
-<div class="flex flex-wrap items-center justify-between gap-4 pb-1">
-    <div class="flex items-center gap-4">
+<div class="flex items-center justify-between gap-2 pb-1">
+    <div class="flex items-center gap-2.5 min-w-0">
         {{-- SIGNATURE : icône hotspot (identique à la page hotspots) --}}
-        <div class="relative w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-[0_4px_12px_-4px_rgba(6,182,212,0.4)]">
-            <i class="fas fa-wifi text-base sm:text-xl"></i>
-            <span class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full border-2 border-white dark:border-darkCard
+        <div class="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-[0_8px_20px_-8px_rgba(6,182,212,0.4)]">
+            <i class="fas fa-wifi text-sm"></i>
+            <span class="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white dark:border-darkCard
                          {{ $isActif ? 'bg-red-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
         </div>
         <div class="min-w-0">
-            <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.22em]">Point d'accès</p>
-            <div class="flex items-center gap-2.5 mt-1">
-                <h2 class="text-xl sm:text-2xl lg:text-[28px] font-extrabold text-slate-900 dark:text-white tracking-tight leading-none truncate">{{ $hotspot->name }}</h2>
-                <span class="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+            <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.16em]">Point d'accès</p>
+            <div class="flex items-center gap-2 mt-0.5">
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight truncate">{{ $hotspot->name }}</h2>
+                <span class="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider
                              {{ $isActif ? 'bg-neonGreen/10 text-neonGreen dark:text-neonGreen-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-gray-500' }}">
                     <span class="w-1.5 h-1.5 rounded-full {{ $isActif ? 'bg-red-500 animate-pulse' : 'bg-slate-400' }}"></span>
                     {{ $isActif ? 'En ligne' : 'Hors ligne' }}
@@ -92,9 +92,8 @@
             </div>
         </div>
     </div>
-    <a href="{{ route('vendor.hotspot') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-white dark:text-black text-[10px] sm:text-[11px] font-bold transition shrink-0">
-        <i class="fas fa-arrow-left text-[10px]"></i>
-        Tous les hotspots
+    <a href="{{ route('vendor.hotspot') }}" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-white dark:text-black text-[10px] font-bold transition shrink-0">
+        <i class="fas fa-arrow-left text-[9px]"></i> <span class="hidden sm:inline">Tous les hotspots</span><span class="inline sm:hidden">Hotspots</span>
     </a>
 </div>
 @endsection

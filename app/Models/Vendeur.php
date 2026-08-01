@@ -80,6 +80,11 @@ class Vendeur extends Authenticatable
         return $this->hasMany(ImportBatch::class);
     }
 
+    public function hotspotSubscriptions(): HasMany
+    {
+        return $this->hasMany(HotspotSubscription::class);
+    }
+
     public function fullName(): string
     {
         return "{$this->prenom} {$this->nom}";

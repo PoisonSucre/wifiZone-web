@@ -10,6 +10,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\TemplateDownloadController;
 use App\Http\Controllers\PaymentInitController;
+use App\Http\Controllers\PackPaymentController;
 
 
 // --- Public ---
@@ -99,6 +100,7 @@ Route::middleware(['auth', 'vendeur.status'])->prefix('vendeur')->name('vendor.'
     })->name('preview');
     Route::get('/import', fn () => view('vendor.import'))->name('import');
     Route::get('/hotspot', fn () => view('vendor.hotspot'))->name('hotspot');
+    Route::post('/paiement-pack/{packKey}', [PackPaymentController::class, 'init'])->name('pack.payment')->middleware('throttle:10,60');
     Route::get('/hotspot/{hotspot}', function (\App\Models\Hotspot $hotspot) {
         abort_if($hotspot->vendeur_id !== auth()->id(), 404);
         return view('vendor.hotspot-details', ['hotspot' => $hotspot]);

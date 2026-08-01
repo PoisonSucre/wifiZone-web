@@ -19,6 +19,14 @@ class ParametreManager extends Component
     public string $adminNewPass = '';
     public string $adminConfirmPass = '';
 
+    public int $hotspotFreeSlots = 2;
+    public int $hotspotPackDurationDays = 30;
+    public array $hotspotPacks = [
+        'A' => ['slots' => 2, 'price' => 5000, 'desc' => 'Idéal pour tester'],
+        'B' => ['slots' => 4, 'price' => 7500, 'desc' => 'Le meilleur rapport qualité/prix'],
+        'C' => ['slots' => 8, 'price' => 12000, 'desc' => 'Pour les gros volumes'],
+    ];
+
     public function mount(): void
     {
         $settings = Setting::allAsArray();
@@ -26,6 +34,15 @@ class ParametreManager extends Component
         $this->plateformeDevise = $settings['plateforme_devise'] ?? config('platform.currency');
         $this->commissionPct = (float) ($settings['commission_pct'] ?? config('platform.commission_pct'));
         $this->adminEmail = Admin::value('email') ?? '';
+
+        $this->hotspotFreeSlots = (int) ($settings['hotspot_free_slots'] ?? 2);
+        $this->hotspotPackDurationDays = (int) ($settings['hotspot_pack_duration_days'] ?? 30);
+
+        foreach ($this->hotspotPacks as $key => $default) {
+            $this->hotspotPacks[$key]['slots'] = (int) ($settings["hotspot_pack_{$key}_slots"] ?? $default['slots']);
+            $this->hotspotPacks[$key]['price'] = (int) ($settings["hotspot_pack_{$key}_price"] ?? $default['price']);
+            $this->hotspotPacks[$key]['desc'] = $settings["hotspot_pack_{$key}_desc"] ?? $default['desc'];
+        }
     }
 
     public function updatePlatform(): void
@@ -89,6 +106,44 @@ class ParametreManager extends Component
         $this->adminNewPass = '';
         $this->adminConfirmPass = '';
         session()->flash('success', 'Mot de passe administrateur mis à jour.');
+    }
+
+    public function updateHotspots(): void
+    {
+        $this->validate([
+            'hotspotFreeSlots' => 'required|integer|min:0',
+            'hotspotPackDurationDays' => 'required|integer|min:1|max:365',
+            'hotspotPacks.A.slots' => 'required|integer|min:1|max:1000',
+            'hotspotPacks.A.slots' => 'required|integer|min:1|max:1000',
+            'hotspotPacks.A.price' => 'required|integer|min:0',
+            'hotspotPacks.A.desc' => 'required|string|max:100',
+            'hotspotPacks.B.slots' => 'required|integer|min:1|max:1000',
+            'hotspotPacks.B.price' => 'required|integer|min:0',
+            'hotspotPacks.B.desc' => 'required|string|max:100',
+            'hotspotPacks.C.slots' => 'required|integer|min:1|max:1000',
+            'hotspotPacks.C.price' => 'required|integer|min:0',
+            'hotspotPacks.C.desc' => 'required|string|max:100',
+        ]);
+
+        Setting::set('hotspot_free_slots', $this->hotspotFreeSlots, 'Hotspots gratuits par vendeur');
+        Setting::set('hotspot_pack_duration_days', $this->hotspotPackDurationDays, 'Durée d\'un abonnement pack (jours)');
+
+        foreach ($this->hotspotPacks as $key => $pack) {
+            Setting::set("hotspot_pack_{$key}_slots", $pack['slots'], "Pack {$key} - hotspots ajoutés");
+            Setting::set("hotspot_pack_{$key}_price", $pack['price'], "Pack {$key} - prix");
+            Setting::set("hotspot_pack_{$key}_desc", $pack['desc'], "Pack {$key} - description");
+        }
+
+        AdminLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'update_hotspot_packs',
+            'target_type' => 'platform',
+            'target_id' => null,
+            'details' => "Hotspots gratuits: {$this->hotspotFreeSlots}, durée: {$this->hotspotPackDurationDays}j, packs: " . json_encode($this->hotspotPacks),
+            'ip' => request()->ip(),
+        ]);
+
+        session()->flash('success', 'Paramètres hotspots mis à jour.');
     }
 
     public function render()

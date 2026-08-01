@@ -70,18 +70,18 @@
         @endif
 
         {{-- BANNIÈRE COMMENT ÇA MARCHE --}}
-        <div class="bg-blue-50 dark:bg-blue-900/10 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-3 min-w-0 flex-1">
-                <div class="w-10 h-10 shrink-0 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                    <i class="fas fa-info-circle text-lg"></i>
+        <div class="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+                <div class="w-8 h-8 shrink-0 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+                    <i class="fas fa-info-circle text-[13px]"></i>
                 </div>
                 <div class="min-w-0">
-                    <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Comment fonctionnent les retraits ?</h4>
-                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-gray-400">Suivez nos étapes simples pour gérer vos revenus.</p>
+                    <h4 class="text-[10px] font-bold text-slate-900 dark:text-white truncate">Comment fonctionnent les retraits ?</h4>
+                    <p class="text-[9px] text-slate-500 dark:text-gray-400 hidden sm:block">Suivez nos étapes simples pour gérer vos revenus.</p>
                 </div>
             </div>
             <button type="button" @click="commentCaMarcheOpen = true"
-                    class="shrink-0 px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-[11px] font-bold transition-all shadow-sm">
+                    class="shrink-0 px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold transition-all shadow-sm whitespace-nowrap">
                 Savoir plus
             </button>
         </div>
@@ -366,7 +366,7 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          @click.self="retraitOpen = false"
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+         class="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div x-show="retraitOpen"
              x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 scale-95"
@@ -468,7 +468,7 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          @click.self="commentCaMarcheOpen = false"
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+         class="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="w-full max-w-md bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-2xl p-6"
              onclick="event.stopPropagation()">
             <div class="flex items-center justify-between mb-4">

@@ -7,29 +7,29 @@
     $activeHotspot = $hsId > 0 ? \App\Models\Hotspot::where('id', $hsId)->where('vendeur_id', auth()->id())->first() : null;
 @endphp
 @section('header')
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-1">
-    <div class="flex items-center gap-3">
-        <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-neonGreen via-neonGreen/90 to-emerald-400 flex items-center justify-center text-black text-base sm:text-lg shadow-[0_10px_30px_-10px_rgba(0,255,136,0.55)]">
+<div class="flex items-center justify-between gap-2 pb-1">
+    <div class="flex items-center gap-2.5 min-w-0">
+        <div class="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-br from-neonGreen via-neonGreen/90 to-emerald-400 flex items-center justify-center text-black text-sm sm:text-base shadow-[0_8px_20px_-8px_rgba(0,255,136,0.5)]">
             <i class="fas fa-store"></i>
-            <span class="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white dark:border-darkCard"></span>
+            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white dark:border-darkCard"></span>
         </div>
-        <div>
-            <p class="text-[10px] sm:text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.2em]">Personnalisation</p>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-0.5 sm:mt-1">Mon Portail</h2>
+        <div class="min-w-0">
+            <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.16em]">Personnalisation</p>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight truncate">Mon Portail</h2>
         </div>
     </div>
-    <div class="flex flex-wrap items-center gap-2">
+    <div class="flex items-center gap-1.5 shrink-0">
         @if ($activeHotspot)
-            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neonGreen/10 text-neonGreen dark:text-neonGreen-400 text-[10px] sm:text-xs font-bold border border-neonGreen/20">
-                <i class="fas fa-wifi text-[10px]"></i> {{ $activeHotspot->name }}
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neonGreen/10 text-neonGreen dark:text-neonGreen-400 text-[10px] font-bold border border-neonGreen/20">
+                <i class="fas fa-wifi text-[9px]"></i> {{ $activeHotspot->name }}
             </span>
         @else
-            <a href="{{ route('vendor.hotspot') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-darkBg text-slate-600 dark:text-gray-300 text-[10px] sm:text-[11px] font-bold hover:bg-slate-200 dark:hover:bg-darkBorder transition">
-                <i class="fas fa-wifi text-[10px]"></i> Choisir un hotspot
+            <a href="{{ route('vendor.hotspot') }}" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-darkBg text-slate-600 dark:text-gray-300 text-[10px] font-bold hover:bg-slate-200 dark:hover:bg-darkBorder transition">
+                <i class="fas fa-wifi text-[9px]"></i> <span class="hidden sm:inline">Choisir un hotspot</span><span class="inline sm:hidden">Hotspot</span>
             </a>
         @endif
-        <a href="{{ $hsId > 0 ? route('vendor.preview', ['hotspot' => $hsId]) : $shopUrl }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neonGreen hover:bg-neonGreen-600 text-white text-[10px] sm:text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
-            <i class="fas fa-external-link-alt text-[10px]"></i> Voir mon portail
+        <a href="{{ $hsId > 0 ? route('vendor.preview', ['hotspot' => $hsId]) : $shopUrl }}" target="_blank" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neonGreen hover:bg-neonGreen-600 text-white text-[10px] font-bold transition-all shadow-sm hover:shadow-md">
+            <i class="fas fa-external-link-alt text-[9px]"></i> <span class="hidden sm:inline">Voir mon portail</span><span class="inline sm:hidden">Voir</span>
         </a>
     </div>
 </div>

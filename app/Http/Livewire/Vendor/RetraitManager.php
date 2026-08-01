@@ -6,6 +6,7 @@ use App\Mail\WithdrawalRequestedMail;
 use App\Models\Admin;
 use App\Models\Setting;
 use App\Models\Withdrawal;
+use App\Services\HotspotService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -34,12 +35,11 @@ class RetraitManager extends Component
         try {
             DB::transaction(function () use (&$error) {
                 $vendeur = auth()->user();
+                $hotspotService = app(HotspotService::class);
 
                 $vendeur->lockForUpdate();
 
-                $totalRevenus = $vendeur->transactions()->completed()->sum('montant') ?? 0;
-                $dejaRetire = $vendeur->withdrawals()->whereIn('statut', ['pending', 'approved', 'paid'])->sum('montant_brut') ?? 0;
-                $soldeDisponible = max(0, $totalRevenus - $dejaRetire);
+                $soldeDisponible = $hotspotService->soldeDisponible($vendeur);
                 $commissionPct = $vendeur->commission_pct ?? config('platform.commission_pct', 10);
 
                 if ($this->montant > $soldeDisponible) {
@@ -97,10 +97,11 @@ class RetraitManager extends Component
     public function render()
     {
         $vendeur = auth()->user();
+        $hotspotService = app(HotspotService::class);
         $totalRevenus = $vendeur->transactions()->completed()->sum('montant') ?? 0;
         $dejaRetire = $vendeur->withdrawals()->whereIn('statut', ['pending', 'approved', 'paid'])->sum('montant_brut') ?? 0;
         $commissionPct = $vendeur->commission_pct ?? config('platform.commission_pct', 10);
-        $soldeDisponible = max(0, $totalRevenus - $dejaRetire);
+        $soldeDisponible = $hotspotService->soldeDisponible($vendeur);
         $soldeNet = $soldeDisponible * (1 - $commissionPct / 100);
         $retraits = $vendeur->withdrawals()->orderByDesc('date_creation')->paginate(20);
 

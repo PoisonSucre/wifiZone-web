@@ -14,16 +14,16 @@
     @endif
 
     {{-- HEADER --}}
-    <div class="flex flex-wrap items-center gap-x-3 gap-y-2 pb-1">
-        <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 via-amber-500/90 to-orange-400 flex items-center justify-center text-white text-lg shadow-[0_10px_30px_-10px_rgba(245,158,11,0.55)]">
+    <div class="flex items-center justify-between gap-2 pb-1">
+        <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 via-amber-500/90 to-orange-400 flex items-center justify-center text-white text-sm shadow-[0_8px_20px_-8px_rgba(245,158,11,0.5)]">
             <i class="fas fa-exclamation-triangle"></i>
-            <span class="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-amber-400 border-2 border-white dark:border-darkCard"></span>
+            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-amber-400 border-2 border-white dark:border-darkCard"></span>
         </div>
         <div class="min-w-0">
-            <p class="text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.2em]">Alertes</p>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">Paiements sans ticket</h2>
+            <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-[0.16em]">Alertes</p>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">Paiements sans ticket</h2>
         </div>
-        <span class="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/10 border border-amber-200/60 dark:border-amber-500/20 text-xs font-extrabold text-amber-700 dark:text-amber-400">
+        <span class="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 border border-amber-200/60 dark:border-amber-500/20 text-[10px] font-extrabold text-amber-700 dark:text-amber-400">
             <span class="relative flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>

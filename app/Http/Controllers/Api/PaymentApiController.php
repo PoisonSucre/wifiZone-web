@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\HotspotPackConfirmedMail;
 use App\Mail\TransactionCompletedMail;
 use App\Models\Transaction;
 use App\Models\Vendeur;
+use App\Services\HotspotService;
 use App\Services\LigdiCashService;
 use App\Services\TicketService;
 use Illuminate\Http\JsonResponse;
@@ -125,6 +127,11 @@ class PaymentApiController extends Controller
             'verification_status' => 'verified',
         ]);
 
+        if ($status === 'completed' && $transaction->type === 'pack') {
+            $this->handlePackPurchase($transaction);
+            return response('OK');
+        }
+
         if ($status === 'completed') {
             $ticket = $this->tickets->assignTicket($transaction->vendeur_id, $transaction->montant, $transaction->token);
 
@@ -151,5 +158,33 @@ class PaymentApiController extends Controller
         }
 
         return response('OK');
+    }
+
+    private function handlePackPurchase(Transaction $transaction): void
+    {
+        try {
+            $vendeur = Vendeur::find($transaction->vendeur_id);
+            if (!$vendeur) {
+                Log::warning('Pack purchase: vendeur introuvable', ['transaction_id' => $transaction->transaction_id]);
+                return;
+            }
+
+             $subscription = app(HotspotService::class)->renewSubscription(
+                 $vendeur,
+                 $transaction->pack_key ?? 'A',
+                 'ligdicash'
+             );
+
+            try {
+                Mail::to($vendeur->email)->send(new HotspotPackConfirmedMail($subscription));
+            } catch (\Exception $e) {
+                Log::error('Erreur envoi email pack', ['vendeur_id' => $vendeur->id, 'error' => $e->getMessage()]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Erreur activation pack', [
+                'transaction_id' => $transaction->transaction_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\Transaction;
 use App\Models\Withdrawal;
 use App\Services\LigdiCashService;
+use App\Services\HotspotService;
 use App\Services\TicketService;
 use Livewire\Component;
 use App\Http\Livewire\Vendor\Concerns\ChecksPendingPayments;
@@ -40,17 +41,19 @@ class Dashboard extends Component
 
         $this->totalVendus = $vendeur->tickets()->sold()->count();
         $this->totalDispo = $vendeur->tickets()->available()->count();
-        $this->totalRevenus = $vendeur->transactions()->completed()->sum('montant') ?? 0;
+        $this->totalRevenus = $vendeur->transactions()->completed()->where('type', 'ticket')->sum('montant') ?? 0;
         $this->dejaRetire = $vendeur->withdrawals()->whereIn('statut', ['pending', 'approved', 'paid'])->sum('montant_brut') ?? 0;
         $this->revenusAujourdhui = $vendeur->transactions()->completed()
+            ->where('type', 'ticket')
             ->whereDate('date_creation', today())->sum('montant') ?? 0;
 
         $this->commissionPct = $vendeur->commission_pct ?? config('platform.commission_pct', 10);
-        $this->soldeDisponible = max(0, $this->totalRevenus - $this->dejaRetire);
+        $this->soldeDisponible = app(HotspotService::class)->soldeDisponible($vendeur);
         $this->soldeNet = $this->soldeDisponible * (1 - $this->commissionPct / 100);
 
         $this->stuckTransactions = Transaction::where('vendeur_id', $vendeur->id)
             ->where('statut', 'completed')
+            ->where('type', 'ticket')
             ->whereNull('ticket_id')
             ->orderByDesc('date_creation')
             ->limit(20)
@@ -75,6 +78,7 @@ class Dashboard extends Component
     {
         $chart = Transaction::where('vendeur_id', $vendeur->id)
             ->where('statut', 'completed')
+            ->where('type', 'ticket')
             ->where('date_creation', '>=', now()->subDays(30))
             ->selectRaw('DATE(date_creation) as jour, SUM(montant) as total')
             ->groupBy('jour')
@@ -193,6 +197,7 @@ class Dashboard extends Component
         // Transactions — 1 grouped query (revenus daily, non-cumul)
         $transactionsDaily = Transaction::where('vendeur_id', $vendeur->id)
             ->where('statut', 'completed')
+            ->where('type', 'ticket')
             ->where('date_creation', '>=', $startDate)
             ->selectRaw('DATE(date_creation) as date, COALESCE(SUM(montant), 0) as montant')
             ->groupBy('date')
@@ -236,6 +241,7 @@ class Dashboard extends Component
         $vendeur = auth()->user();
         $this->stuckTransactions = Transaction::where('vendeur_id', $vendeur->id)
             ->where('statut', 'completed')
+            ->where('type', 'ticket')
             ->whereNull('ticket_id')
             ->orderByDesc('date_creation')
             ->limit(20)

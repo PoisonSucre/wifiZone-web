@@ -10,6 +10,10 @@
             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'plateforme' ? 'bg-white dark:bg-darkCard text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-300' }}">
             <i class="fas fa-globe"></i> Plateforme
         </button>
+        <button wire:click="$set('activeTab', 'hotspots')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'hotspots' ? 'bg-white dark:bg-darkCard text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-300' }}">
+            <i class="fas fa-wifi"></i> Hotspots
+        </button>
         <button wire:click="$set('activeTab', 'securite')"
             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'securite' ? 'bg-white dark:bg-darkCard text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-300' }}">
             <i class="fas fa-shield-alt"></i> Sécurité
@@ -46,6 +50,71 @@
                     class="w-full px-3 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
                 @error('commissionPct') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
             </div>
+            <button type="submit"
+                class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm">
+                <i class="fas fa-save text-[10px]"></i>Enregistrer
+            </button>
+        </form>
+    </div>
+    @endif
+
+    @if($activeTab === 'hotspots')
+    <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-500">
+                <i class="fas fa-wifi text-sm"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Hotspots &amp; Packs</h3>
+                <p class="text-[10px] text-slate-500 dark:text-gray-400">Quota gratuit par vendeur et tarifs des packs</p>
+            </div>
+        </div>
+        <form wire:submit.prevent="updateHotspots" class="space-y-4 max-w-lg">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5">Hotspots gratuits</label>
+                    <input type="number" min="0" wire:model="hotspotFreeSlots"
+                        class="w-full px-3 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
+                    @error('hotspotFreeSlots') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5">Durée abonnement (jours)</label>
+                    <input type="number" min="1" max="365" wire:model="hotspotPackDurationDays"
+                        class="w-full px-3 py-2.5 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
+                    @error('hotspotPackDurationDays') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
+            <div class="border-t border-slate-100 dark:border-darkBorder/40 pt-4">
+                <p class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-3">Les 3 packs (slots ajoutés + prix)</p>
+                @foreach($hotspotPacks as $key => $pack)
+                <div class="flex items-center gap-3 mb-3 p-3 rounded-xl bg-slate-50 dark:bg-darkBg/60 border border-slate-100 dark:border-darkBorder/40">
+                    <span class="shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-extrabold">P</span>
+                    <div class="flex-1 grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1">Pack {{ $key }} · Hotspots</label>
+                            <input type="number" min="1" wire:model="hotspotPacks.{{ $key }}.slots"
+                                class="w-full px-3 py-2 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
+                            @error("hotspotPacks.{{ $key }}.slots") <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1">Prix ({{ $plateformeDevise }})</label>
+                            <input type="number" min="0" wire:model="hotspotPacks.{{ $key }}.price"
+                                class="w-full px-3 py-2 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors">
+                            @error("hotspotPacks.{{ $key }}.price") <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1">Description</label>
+                            <input type="text" wire:model="hotspotPacks.{{ $key }}.desc" maxlength="100"
+                                class="w-full px-3 py-2 rounded-xl text-xs font-bold border-2 border-slate-200 dark:border-darkBorder bg-white dark:bg-darkBg text-slate-700 dark:text-gray-300 focus:border-neonGreen outline-none transition-colors"
+                                placeholder="Ex: Idéal pour tester">
+                            @error("hotspotPacks.{{ $key }}.desc") <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
             <button type="submit"
                 class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm">
                 <i class="fas fa-save text-[10px]"></i>Enregistrer
