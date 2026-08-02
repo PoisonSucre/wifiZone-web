@@ -13,10 +13,10 @@ class EnsureApiKey
         $key = $request->header('X-API-Key');
         $expected = config('platform.api_key');
 
-        if (!$expected || !hash_equals($expected, $key)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if ($expected && is_string($key) && hash_equals($expected, $key)) {
+            return $next($request);
         }
 
-        return $next($request);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 }

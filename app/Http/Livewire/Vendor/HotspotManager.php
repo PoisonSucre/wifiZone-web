@@ -14,6 +14,7 @@ class HotspotManager extends Component
     public string $hotspotName = '';
     public string $hotspotDescription = '';
     public string $mikrotikUrl = '';
+    public string $statut = 'actif';
     public ?int $editingHotspot = null;
     public bool $showDeleteModal = false;
     public ?int $deleteHotspotId = null;
@@ -96,7 +97,7 @@ class HotspotManager extends Component
                 'name' => $this->hotspotName,
                 'description' => $this->hotspotDescription ?: null,
                 'mikrotik_url' => $this->mikrotikUrl ?: null,
-                'statut' => 'actif',
+                'statut' => $this->statut,
             ]);
 
             $this->resetForm();
@@ -271,6 +272,7 @@ class HotspotManager extends Component
         $this->hotspotName = '';
         $this->hotspotDescription = '';
         $this->mikrotikUrl = '';
+        $this->statut = 'actif';
         $this->showForm = false;
     }
 

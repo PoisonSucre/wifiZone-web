@@ -213,13 +213,14 @@
                 <h3 class="text-sm font-extrabold text-slate-900 dark:text-white tracking-tight mb-5">Gérer ce hotspot</h3>
                 <div class="grid grid-cols-1 gap-2.5">
                     <a href="{{ route('vendor.tickets', ['hotspot' => $hotspot->id]) }}"
+                       wire:navigate
                        class="group flex items-center gap-3 px-4 py-3 rounded-xl bg-neonGreen/10 hover:bg-neonGreen hover:text-white dark:bg-neonGreen/10 dark:hover:bg-neonGreen text-neonGreen dark:text-neonGreen-400 font-bold transition-all border border-neonGreen/20 dark:border-neonGreen/20 shadow-sm hover:shadow-neon-glow">
                         <span class="w-9 h-9 shrink-0 rounded-lg bg-neonGreen/15 flex items-center justify-center text-neonGreen group-hover:bg-white/20 group-hover:text-white transition-colors">
                             <i class="fas fa-ticket-alt text-sm"></i>
                         </span>
                         <span class="flex-1">
                             <span class="block text-[13px] font-extrabold tracking-tight leading-tight">Tickets</span>
-                            <span class="block text-[10px] font-medium text-slate-500 dark:text-gray-400 group-hover:text-white">Voir le stock et les ventes</span>
+                            <span class="block text-[10px] font-medium text-slate-500 dark:text-gray-400 group-hover:text-white">Voir les tickets de ce hotspot</span>
                         </span>
                         <i class="fas fa-chevron-right text-[10px] opacity-50 group-hover:translate-x-0.5 transition-transform"></i>
                     </a>
