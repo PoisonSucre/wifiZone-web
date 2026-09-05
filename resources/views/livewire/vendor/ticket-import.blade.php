@@ -195,7 +195,7 @@
                     <p class="text-[11px] text-amber-600 dark:text-amber-400/80">
                         Vous devez créer au moins un forfait avant d'importer des tickets. Le prix des tickets provient du forfait, pas du fichier Mikhmon.
                     </p>
-                    <a href="{{ route('vendor.boutique', ['hotspot' => $hotspotId]) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all">
+                    <a href="{{ route('vendor.boutique', ['hotspot' => $hotspotId, 'from' => 'import']) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all">
                         <i class="fas fa-plus text-[10px]"></i> Configurer un forfait
                     </a>
                 </div>
@@ -259,10 +259,40 @@
                     <code class="block font-mono text-[11px] px-3 py-2 rounded-lg bg-slate-100 dark:bg-darkBorder/50 text-neonGreen font-bold border border-neonGreen/10">
                         Username,Password,Profile,Time Limit,Data Limit,Comment
                     </code>
-                    <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-2">
+                    <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-2 leading-relaxed">
                         <i class="fas fa-info-circle mr-1"></i>
-                        Exportez vos utilisateurs depuis Mikhmon (Hotspot → Export Users → CSV). Le prix est attribué automatiquement selon le forfait sélectionné.
+                        Exportez vos utilisateurs depuis Mikhmon (Hotspot → Export Users → CSV).<br>
+                        <strong>Seules les 2 premières colonnes sont obligatoires</strong> (Username, Password). Les colonnes Profile, Time Limit, Data Limit et Comment sont ignorées — le prix et le forfait sont attribués automatiquement selon votre sélection à l'étape 2.
                     </p>
+                </div>
+
+                {{-- Avertissement correspondance forfait --}}
+                @php $selFr = $forfaits->firstWhere('id', $forfaitId); @endphp
+                <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/40">
+                    <div class="flex items-start gap-2.5">
+                        <div class="shrink-0 w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-amber-500 text-xs"></i>
+                        </div>
+                        <div class="flex-1 space-y-1.5">
+                            <p class="text-[11px] font-bold text-amber-700 dark:text-amber-400">
+                                Vérifiez la correspondance avant d'importer
+                            </p>
+                            <p class="text-[11px] text-amber-600 dark:text-amber-400/90 leading-relaxed">
+                                Tous les tickets de ce fichier seront importés avec le forfait <strong>{{ $selFr?->label ?? '—' }}</strong> au prix de <strong>{{ $selFr ? number_format($selFr->montant, 0, ',', ' ') . ' ' . $currency : '—' }}</strong>.
+                            </p>
+                            <p class="text-[11px] text-amber-600 dark:text-amber-400/90 leading-relaxed">
+                                Assurez-vous que les tickets Mikhmon que vous importez correspondent bien à ce forfait (même durée, même profil). Si vous avez plusieurs profils dans votre fichier, importez-les séparément en sélectionnant à chaque fois le forfait correspondant.
+                            </p>
+                            <div class="flex items-center gap-2 pt-1">
+                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-800/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold">
+                                    <i class="fas fa-ticket text-[9px]"></i> Profil Mikhmon : <strong>{{ $selFr?->label ?? '—' }}</strong>
+                                </span>
+                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-800/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold">
+                                    <i class="fas fa-clock text-[9px]"></i> Durée : <strong>{{ $selFr?->formattedDuration() ?? '—' }}</strong>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Upload --}}

@@ -5,6 +5,7 @@
     $shopUrl = auth()->user()?->shopUrl() ?? '#';
     $hsId = (int) request()->query('hotspot', 0);
     $activeHotspot = $hsId > 0 ? \App\Models\Hotspot::where('id', $hsId)->where('vendeur_id', auth()->id())->first() : null;
+    $fromImport = request()->query('from') === 'import';
 @endphp
 @section('header')
 <div class="flex items-center justify-between gap-2 pb-1">

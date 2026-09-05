@@ -342,11 +342,17 @@
                             @endforelse
                         </div>
 
-                        <div class="border-t border-slate-100 dark:border-darkBorder/40 pt-4">
+                        <div class="border-t border-slate-100 dark:border-darkBorder/40 pt-4 space-y-2">
                             <button type="button" wire:click="openAddForfaitModal"
                                     class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
                                 <i class="fas fa-plus text-[10px]"></i> Ajouter un forfait
                             </button>
+                            @if(request()->query('from') === 'import' && $forfaits->isNotEmpty())
+                            <a href="{{ route('vendor.import', ['hotspot' => $hotspotId]) }}"
+                               class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold transition-all shadow-sm hover:shadow-md">
+                                <i class="fas fa-arrow-left text-[10px]"></i> Retour à l'import
+                            </a>
+                            @endif
                         </div>
                     </div>
                 </x-card>

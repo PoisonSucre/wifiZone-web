@@ -227,10 +227,21 @@ class TicketService
         $firstLine = reset($lines);
         $delimiter = substr_count($firstLine, ';') >= substr_count($firstLine, ',') ? ';' : ',';
 
+        // Détecte si la première ligne est un en-tête (contient "username", "user", "name", etc.)
+        $firstParts = str_getcsv($firstLine, $delimiter);
+        $firstColLower = strtolower(trim($firstParts[0] ?? ''));
+        $headerKeywords = ['username', 'user', 'name', 'login', 'loginid', 'no'];
+        $hasHeader = in_array($firstColLower, $headerKeywords);
+
         $rows = [];
-        foreach ($lines as $i => $line) {
-            if ($i === 0) continue;
+        $i = 0;
+        foreach ($lines as $line) {
+            if ($i === 0 && $hasHeader) {
+                $i++;
+                continue;
+            }
             $rows[] = str_getcsv($line, $delimiter);
+            $i++;
         }
 
         return $rows;
@@ -242,7 +253,14 @@ class TicketService
         $worksheet = $spreadsheet->getActiveSheet();
         $data = $worksheet->toArray();
 
-        return array_slice($data, 1);
+        if (empty($data)) return [];
+
+        // Détecte si la première ligne est un en-tête
+        $firstColLower = strtolower(trim($data[0][0] ?? ''));
+        $headerKeywords = ['username', 'user', 'name', 'login', 'loginid', 'no'];
+        $hasHeader = in_array($firstColLower, $headerKeywords);
+
+        return $hasHeader ? array_slice($data, 1) : $data;
     }
 
     public function generateBatch(int $vendeurId, array $params): int
