@@ -1,23 +1,23 @@
-@if(!($embed ?? false))<!DOCTYPE html>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!($embed ?? false)): ?><!DOCTYPE html>
 <html>
 <head>
-    <title>{{ $vendeur->nom_portail ?? ($vendeur->prenom ?? '') . ' ' . ($vendeur->nom ?? '') }} - WiFi</title>
+    <title><?php echo e($vendeur->nom_portail ?? ($vendeur->prenom ?? '') . ' ' . ($vendeur->nom ?? '')); ?> - WiFi</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="theme-color" content="{{ $vendeur->couleur ?? '#1ca04e' }}" />
+    <meta name="theme-color" content="<?php echo e($vendeur->couleur ?? '#1ca04e'); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-@endif
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     <style>
-@if(!($embed ?? false))
+<?php if(!($embed ?? false)): ?>
 body {
     font-family: -apple-system, BlinkMacSystemFont, "segoe ui", Verdana, Roboto, "helvetica neue", Arial, sans-serif, "apple color emoji";
     font-size: 14px;
     margin: 0;
 }
-@endif
+<?php endif; ?>
 .main {
-    background: linear-gradient(to bottom, {{ $vendeur->couleur_top ?? '#110904' }}cb, {{ $vendeur->couleur ?? '#1ca04e' }}ab);
+    background: linear-gradient(to bottom, <?php echo e($vendeur->couleur_top ?? '#110904'); ?>cb, <?php echo e($vendeur->couleur ?? '#1ca04e'); ?>ab);
     color: #f2f2f2;
     max-width: 300px;
     height: 100%;
@@ -37,7 +37,7 @@ body {
     border-bottom: solid 2px #fff;
     border: #fff solid;
     border-radius: 25px;
-    background-image: url('{{ asset($vendeur->logo ? $vendeur->logo : "template/boom.gif") }}');
+    background-image: url('<?php echo e(asset($vendeur->logo ? $vendeur->logo : "template/boom.gif")); ?>');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -97,7 +97,7 @@ body {
     animation: floating 3s ease-in-out infinite;
 }
 #main .button:hover {
-    background: {{ $vendeur->couleur ?? '#1ca04e' }};
+    background: <?php echo e($vendeur->couleur ?? '#1ca04e'); ?>;
     font-weight: bold;
     box-shadow: 0 10px 15px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-color: #000;
@@ -210,12 +210,12 @@ body {
 @media (max-width: 600px) { .main { width: 90%; margin-top: 10%; } }
 @media (min-width: 600px) { .main { margin-top: 2%; } }
     </style>
-@if(!($embed ?? false))
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!($embed ?? false)): ?>
 </head>
 <body>
-@endif
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     <div id="main" class="main">
-        <h3 class="nom">{{ $vendeur->nom_portail ?? ($vendeur->prenom ?? '') . ' ' . ($vendeur->nom ?? '') }}</h3>
+        <h3 class="nom"><?php echo e($vendeur->nom_portail ?? ($vendeur->prenom ?? '') . ' ' . ($vendeur->nom ?? '')); ?></h3>
 
         <div class="box">
             <h3 class="brand"></h3>
@@ -225,14 +225,14 @@ body {
         </div>
 
         <div class="box">
-            <button class="small-button" onclick="window.location='{{ url('/recuperer-ticket') }}'">
+            <button class="small-button" onclick="window.location='<?php echo e(url('/recuperer-ticket')); ?>'">
                 <i class="fas fa-ticket-alt"></i> Récupérer un ticket acheté
             </button>
         </div>
 
-        @if(!($hideLogin ?? false))
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!($hideLogin ?? false)): ?>
         <div class="box">
-            <button class="small-button" onclick="window.location='{{ url('/recuperer-ticket') }}'">
+            <button class="small-button" onclick="window.location='<?php echo e(url('/recuperer-ticket')); ?>'">
                 <i class="fas fa-qrcode"></i> Scannez le Qrcode ici
             </button>
         </div>
@@ -251,14 +251,14 @@ body {
             </div>
             <button class="button" type="submit">Valider</button>
         </form>
-        @endif
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <table class="table" border="0" cellspacing="2" cellpadding="3">
             <span class="pub">Acheter nos tickets avec :</span>
             <div class="notification">
-                <i style="background-image:url('{{ asset('template/orange.png') }}');width:70px;height:40px;display:inline-block;background-size:cover"></i>
-                <i style="background-image:url('{{ asset('template/moov.png') }}');width:40px;height:40px;display:inline-block;background-size:cover"></i>
-                <i style="background-image:url('{{ asset('template/wave.png') }}');width:50px;height:42px;display:inline-block;background-size:cover"></i>
+                <i style="background-image:url('<?php echo e(asset('template/orange.png')); ?>');width:70px;height:40px;display:inline-block;background-size:cover"></i>
+                <i style="background-image:url('<?php echo e(asset('template/moov.png')); ?>');width:40px;height:40px;display:inline-block;background-size:cover"></i>
+                <i style="background-image:url('<?php echo e(asset('template/wave.png')); ?>');width:50px;height:42px;display:inline-block;background-size:cover"></i>
             </div>
             <br />
             <caption style="font-size:16px;font-weight:800;margin-bottom:5px">Nos Tarifs</caption>
@@ -267,34 +267,35 @@ body {
                 <th>Prix</th>
                 <th>Activer</th>
             </tr>
-            @forelse($forfaits as $forfait)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $forfaits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $forfait): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
             <tr>
-                <td>{{ $forfait->label }}</td>
-                <td>{{ number_format($forfait->montant, 0, ',', ' ') }} FCFA</td>
+                <td><?php echo e($forfait->label); ?></td>
+                <td><?php echo e(number_format($forfait->montant, 0, ',', ' ')); ?> FCFA</td>
                 <td>
-                    <form action="{{ url('/api/payment-process') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="vendeur_id" value="{{ $vendeur->id }}" />
-                        @if(!empty($hotspot))
-                            <input type="hidden" name="hotspot_id" value="{{ $hotspot->id }}" />
-                        @endif
-                        <input type="hidden" name="montant" value="{{ $forfait->montant }}" />
-                        <input type="hidden" name="forfait" value="{{ $forfait->label }}" />
+                    <form action="<?php echo e(url('/api/payment-process')); ?>" method="POST">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="vendeur_id" value="<?php echo e($vendeur->id); ?>" />
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($hotspot)): ?>
+                            <input type="hidden" name="hotspot_id" value="<?php echo e($hotspot->id); ?>" />
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <input type="hidden" name="montant" value="<?php echo e($forfait->montant); ?>" />
+                        <input type="hidden" name="forfait" value="<?php echo e($forfait->label); ?>" />
                         <button type="submit" class="pay-button">Payer</button>
                     </form>
                 </td>
             </tr>
-            @empty
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             <tr>
                 <td colspan="3" style="text-align:center;color:#999">Aucun forfait disponible pour le moment.</td>
             </tr>
-            @endforelse
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </table>
 
         <br>
 
         <div class="infos">
-            {{ $vendeur->message_bienvenue ?? "Les tickets peuvent être achetés en contactant votre fournisseur d'accès." }}
+            <?php echo e($vendeur->message_bienvenue ?? "Les tickets peuvent être achetés en contactant votre fournisseur d'accès."); ?>
+
         </div>
 
         <br />
@@ -303,15 +304,15 @@ body {
         </div>
     </div>
 
-@if(!($embed ?? false))
-    @if(!($hideLogin ?? false))
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!($embed ?? false)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!($hideLogin ?? false)): ?>
     <script>
         function togglePasswordVisibility() {
             var f = document.querySelector(".password");
             f.type = f.type === "password" ? "text" : "password";
         }
     </script>
-    @endif
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     <script>
         document.addEventListener('submit', function(e) {
             var form = e.target;
@@ -342,4 +343,4 @@ body {
     </script>
 </body>
 </html>
-@endif
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/shop/template/preview.blade.php ENDPATH**/ ?>

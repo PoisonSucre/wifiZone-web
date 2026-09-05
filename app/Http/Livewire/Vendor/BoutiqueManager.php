@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Vendor;
 
 use App\Models\Forfait;
 use App\Models\Hotspot;
+use App\Models\Vendeur;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -89,7 +90,7 @@ class BoutiqueManager extends Component
             $ext = $this->logo->getClientOriginalExtension();
             $prefix = $this->hotspotId ? 'preview_logo_' . auth()->id() . '_hs' . $this->hotspotId : 'preview_logo_' . auth()->id();
             $filename = $prefix . '_' . Str::random(16) . '.' . $ext;
-            $this->logo->storeAs('public/tmp/preview', $filename);
+            $this->logo->storeAs('tmp/preview', $filename, 'public');
             session([$this->previewKey('logo') => 'storage/tmp/preview/' . $filename]);
         } catch (ValidationException $e) {
             throw $e;
@@ -134,7 +135,7 @@ class BoutiqueManager extends Component
                 }
                 rename($tmpPath, $destPath);
                 $data['logo'] = $permanent;
-            } elseif ($this->logo) {
+            } elseif ($this->logo && $this->logo->exists()) {
                 $this->validate(['logo' => 'image|mimes:jpeg,png,gif,webp|max:2048']);
 
                 $suffix = $this->hotspotId ? 'hs' . $this->hotspotId : 'v' . auth()->id();
@@ -301,8 +302,11 @@ class BoutiqueManager extends Component
     private function cleanupTempLogo(): void
     {
         $previewLogo = session($this->previewKey('logo'));
-        if ($previewLogo && Storage::exists(str_replace('storage/', 'public/', $previewLogo))) {
-            Storage::delete(str_replace('storage/', 'public/', $previewLogo));
+        if ($previewLogo) {
+            $relativePath = str_replace('storage/', '', $previewLogo);
+            if (Storage::disk('public')->exists($relativePath)) {
+                Storage::disk('public')->delete($relativePath);
+            }
         }
     }
 
@@ -314,6 +318,50 @@ class BoutiqueManager extends Component
             ->orderBy('ordre')
             ->get();
         $hotspots = $vendeur->hotspots()->orderBy('name')->get();
-        return view('livewire.vendor.boutique-manager', compact('vendeur', 'forfaits', 'hotspots'));
+
+        $portalReady = $this->isPortalReady($vendeur, $forfaits);
+        $portalMissingSteps = $this->getPortalMissingSteps($vendeur, $forfaits);
+
+        return view('livewire.vendor.boutique-manager', compact('vendeur', 'forfaits', 'hotspots', 'portalReady', 'portalMissingSteps'));
+    }
+
+    private function isPortalReady(Vendeur $vendeur, $forfaits): bool
+    {
+        if ($this->hotspotId) {
+            $hotspot = Hotspot::find($this->hotspotId);
+            if (!$hotspot || empty($hotspot->mikrotik_url)) {
+                return false;
+            }
+        } else {
+            $configuredHotspot = $vendeur->hotspots()->whereNotNull('mikrotik_url')->where('mikrotik_url', '!=', '')->first();
+            if (!$configuredHotspot) {
+                return false;
+            }
+        }
+
+        return $forfaits->where('actif', true)->count() > 0;
+    }
+
+    private function getPortalMissingSteps(Vendeur $vendeur, $forfaits): array
+    {
+        $steps = [];
+
+        if ($this->hotspotId) {
+            $hotspot = Hotspot::find($this->hotspotId);
+            if (!$hotspot || empty($hotspot->mikrotik_url)) {
+                $steps[] = 'Configurez l\'URL MikroTik de ce hotspot dans la section « Mes Hotspots ».';
+            }
+        } else {
+            $configuredHotspot = $vendeur->hotspots()->whereNotNull('mikrotik_url')->where('mikrotik_url', '!=', '')->first();
+            if (!$configuredHotspot) {
+                $steps[] = 'Créez un hotspot et configurez son URL MikroTik dans la section « Mes Hotspots ».';
+            }
+        }
+
+        if ($forfaits->where('actif', true)->count() === 0) {
+            $steps[] = 'Ajoutez et activez au moins un forfait pour que les clients puissent payer.';
+        }
+
+        return $steps;
     }
 }

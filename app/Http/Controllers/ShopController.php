@@ -27,6 +27,6 @@ class ShopController extends Controller
             $forfaits = $vendeur->forfaits()->active()->ordered()->get();
         }
 
-        return view('shop.template.preview', compact('vendeur', 'forfaits') + ['hideLogin' => true]);
+        return view('shop.template.preview', compact('vendeur', 'forfaits', 'hotspot') + ['hideLogin' => true]);
     }
 }

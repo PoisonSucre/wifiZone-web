@@ -11,9 +11,9 @@
         <p class="text-sm text-slate-500 dark:text-gray-400">Entrez votre email pour recevoir un lien de réinitialisation.</p>
     </div>
 
-    @if(session('status'))
+    @if(session('success'))
         <div class="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl text-green-700 dark:text-green-400 text-sm text-center">
-            <i class="fas fa-check-circle mr-2"></i> {{ session('status') }}
+            <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
         </div>
     @endif
 

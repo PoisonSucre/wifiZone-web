@@ -27,7 +27,7 @@
                 <i class="fas fa-wifi text-[9px]"></i> <span class="hidden sm:inline">Choisir un hotspot</span><span class="inline sm:hidden">Hotspot</span>
             </a>
         @endif
-        <a href="{{ route('vendor.import') }}" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neonGreen hover:bg-neonGreen-600 text-white text-[10px] font-bold transition-all shadow-sm hover:shadow-md">
+        <a href="{{ route('vendor.import', $hsId > 0 ? ['hotspot' => $hsId] : []) }}" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neonGreen hover:bg-neonGreen-600 text-white text-[10px] font-bold transition-all shadow-sm hover:shadow-md">
             <i class="fas fa-plus text-[9px]"></i> <span class="hidden sm:inline">Ajouter</span>
         </a>
     </div>

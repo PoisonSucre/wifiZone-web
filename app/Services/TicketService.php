@@ -126,6 +126,99 @@ class TicketService
         });
     }
 
+    /**
+     * Import tickets from a Mikhmon CSV/Excel export.
+     *
+     * Mikhmon CSV format:
+     *   Username,Password,Profile,Time Limit,Data Limit,Comment
+     *
+     * The montant (price) is NOT in the Mikhmon file — it comes from the
+     * selected forfait configured by the vendor in the platform.
+     */
+    public function importFromMikhmon(int $vendeurId, UploadedFile $file, int $forfaitId, int $hotspotId): array
+    {
+        $ext = strtolower($file->getClientOriginalExtension());
+        $isExcel = in_array($ext, ['xlsx', 'xls']);
+
+        $rows = $isExcel ? $this->readExcelRows($file) : $this->readCsvRows($file);
+
+        $forfait = Forfait::where('id', $forfaitId)->where('vendeur_id', $vendeurId)->first();
+        if (!$forfait) {
+            return [
+                'created' => 0,
+                'skipped' => 0,
+                'invalid' => 0,
+                'message' => 'Forfait introuvable. Configurez vos forfaits avant d\'importer.',
+            ];
+        }
+
+        $existingUsers = Ticket::where('vendeur_id', $vendeurId)->pluck('user')->toArray();
+        $created = 0;
+        $skipped = 0;
+        $invalid = 0;
+        $maxPerImport = 500;
+
+        return DB::transaction(function () use ($vendeurId, $hotspotId, $rows, $existingUsers, $forfait, $maxPerImport, $file, $ext, &$created, &$skipped, &$invalid) {
+            $existingSet = array_flip($existingUsers);
+
+            foreach ($rows as $parts) {
+                if ($created >= $maxPerImport) break;
+
+                // Mikhmon format: Username,Password,Profile,Time Limit,Data Limit,Comment
+                // Col 0 = Username, Col 1 = Password, Col 2 = Profile (ignored, we use selected forfait)
+                $user = trim($parts[0] ?? '');
+                $pass = trim($parts[1] ?? '');
+
+                if (empty($user)) {
+                    $invalid++;
+                    continue;
+                }
+
+                // In VC mode, Mikhmon sets password = username. If password empty, use username.
+                if (empty($pass)) {
+                    $pass = $user;
+                }
+
+                if (isset($existingSet[$user])) {
+                    $skipped++;
+                    continue;
+                }
+
+                Ticket::create([
+                    'vendeur_id' => $vendeurId,
+                    'hotspot_id' => $hotspotId ?: null,
+                    'user' => $user,
+                    'password' => $pass,
+                    'forfait' => $forfait->label,
+                    'montant' => $forfait->montant,
+                    'source' => 'import',
+                ]);
+
+                $existingSet[$user] = true;
+                $created++;
+            }
+
+            ImportBatch::create([
+                'vendeur_id' => $vendeurId,
+                'filename' => $file->getClientOriginalName(),
+                'format_file' => $isExcel ? 'excel' : 'csv',
+                'total_tickets' => $created,
+                'statut' => $created > 0 ? 'success' : 'error',
+            ]);
+
+            $message = "{$created} tickets importés (forfait : {$forfait->label} - {$forfait->montant} FCFA)";
+            if ($skipped > 0) {
+                $message .= ", {$skipped} doublons ignorés";
+            }
+            if ($invalid > 0) {
+                $message .= ", {$invalid} lignes invalides";
+            }
+            $message .= ".";
+
+            return compact('created', 'skipped', 'invalid', 'message');
+        });
+    }
+
     private function readCsvRows(UploadedFile $file): array
     {
         $content = file_get_contents($file->getRealPath());

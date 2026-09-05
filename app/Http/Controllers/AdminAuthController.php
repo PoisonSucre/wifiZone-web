@@ -103,7 +103,7 @@ class AdminAuthController extends Controller
 
         $this->issuePasswordReset($admin);
 
-        return back()->with('status', 'Un email vous a été envoyé pour définir votre mot de passe.');
+        return back()->with('success', 'Un email vous a été envoyé pour définir votre mot de passe.');
     }
 
     public function showSetPasswordForm(Request $request, string $token)
@@ -151,7 +151,7 @@ class AdminAuthController extends Controller
             'ip' => $request->ip(),
         ]);
 
-        return redirect()->route('admin.login')->with('status', 'Votre mot de passe a été défini. Vous pouvez maintenant vous connecter.');
+        return redirect()->route('admin.login')->with('success', 'Votre mot de passe a été défini. Vous pouvez maintenant vous connecter.');
     }
 
     public function issuePasswordReset(Admin $admin): string

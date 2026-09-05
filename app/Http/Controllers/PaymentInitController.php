@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Vendeur;
+use App\Services\HotspotService;
 use App\Services\LigdiCashService;
 use Illuminate\Http\Request;
 
@@ -18,10 +19,21 @@ class PaymentInitController extends Controller
         ]);
 
         $vendeur = Vendeur::active()->findOrFail($request->vendeur_id);
-        $forfait = $vendeur->forfaits()->active()->where('label', $request->forfait)->first();
+
+        $query = $vendeur->forfaits()->active()->where('label', $request->forfait);
+        $hsId = (int) $request->input('hotspot_id', 0);
+        if ($hsId > 0) {
+            $query->where('hotspot_id', $hsId);
+        }
+        $forfait = $query->first();
 
         if (!$forfait) {
             return redirect()->route('annule', ['error' => 'Forfait non trouvé']);
+        }
+
+        $raison = app(HotspotService::class)->saleBlockReason($vendeur, $forfait->hotspot);
+        if ($raison) {
+            return redirect()->route('portail-indisponible', ['vendeur_id' => $vendeur->id, 'raison' => $raison]);
         }
 
         $montant = (int) $validated['montant'];

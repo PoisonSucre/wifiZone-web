@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Hotspot;
 use App\Models\HotspotSubscription;
 use App\Models\Transaction;
 use App\Models\Vendeur;
@@ -55,6 +56,20 @@ class HotspotService
         return $vendeur->hotspots()->count();
     }
 
+    public function usedFreeSlots(Vendeur $vendeur): int
+    {
+        return (int) Hotspot::where('vendeur_id', $vendeur->id)
+            ->where('slot_type', 'gratuit')
+            ->count();
+    }
+
+    public function usedPaidSlots(Vendeur $vendeur): int
+    {
+        return (int) Hotspot::where('vendeur_id', $vendeur->id)
+            ->where('slot_type', 'abonnement')
+            ->count();
+    }
+
     public function paidSlots(Vendeur $vendeur): int
     {
         return (int) HotspotSubscription::where('vendeur_id', $vendeur->id)
@@ -82,22 +97,44 @@ class HotspotService
 
     public function canCreate(Vendeur $vendeur): bool
     {
-        return $this->usedSlots($vendeur) < $this->limit($vendeur);
+        return $this->usedFreeSlots($vendeur) < $this->freeSlots()
+            || $this->usedPaidSlots($vendeur) < $this->paidSlots($vendeur);
     }
 
     public function availableFreeSlots(Vendeur $vendeur): int
     {
-        return max(0, $this->freeSlots() - $this->usedSlots($vendeur));
+        return max(0, $this->freeSlots() - $this->usedFreeSlots($vendeur));
+    }
+
+    public function blockedPaidSlots(Vendeur $vendeur): int
+    {
+        return max(0, $this->usedPaidSlots($vendeur) - $this->paidSlots($vendeur));
     }
 
     public function hasFrozen(Vendeur $vendeur): bool
     {
-        return $this->frozenSlots($vendeur) > 0;
+        return $this->blockedPaidSlots($vendeur) > 0;
+    }
+
+    public function saleBlockReason(Vendeur $vendeur, ?Hotspot $hotspot): ?string
+    {
+        $this->freezeExpiredSubscriptions($vendeur);
+
+        if ($hotspot && $hotspot->slot_type !== 'gratuit' && $this->hasFrozen($vendeur)) {
+            return 'gele';
+        }
+
+        if ($hotspot && $hotspot->statut !== 'actif') {
+            return 'desactive';
+        }
+
+        return null;
     }
 
     public function remaining(Vendeur $vendeur): int
     {
-        return max(0, $this->limit($vendeur) - $this->usedSlots($vendeur));
+        return max(0, $this->freeSlots() - $this->usedFreeSlots($vendeur))
+            + max(0, $this->paidSlots($vendeur) - $this->usedPaidSlots($vendeur));
     }
 
     public function activeSubscriptions(Vendeur $vendeur)

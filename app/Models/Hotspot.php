@@ -13,6 +13,7 @@ class Hotspot extends Model
         'name',
         'description',
         'statut',
+        'slot_type',
         'couleur',
         'couleur_top',
         'nom_portail',
@@ -23,6 +24,7 @@ class Hotspot extends Model
 
     protected $casts = [
         'statut' => 'string',
+        'slot_type' => 'string',
     ];
 
     public function vendeur(): BelongsTo

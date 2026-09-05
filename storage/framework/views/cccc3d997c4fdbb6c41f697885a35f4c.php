@@ -71,7 +71,7 @@
     </div>
 </aside>
 
-<?php if (! $__env->hasRenderedOnce('6012cf7c-ea22-45a9-b0d0-28c477846ad2')): $__env->markAsRenderedOnce('6012cf7c-ea22-45a9-b0d0-28c477846ad2'); ?>
+<?php if (! $__env->hasRenderedOnce('fa4159f9-aa49-48c0-9b40-42a3726852b6')): $__env->markAsRenderedOnce('fa4159f9-aa49-48c0-9b40-42a3726852b6'); ?>
 <?php $__env->startPush('scripts'); ?>
 <script>
 function toggleVendorSidebar() {

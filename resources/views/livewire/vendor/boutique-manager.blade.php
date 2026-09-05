@@ -109,6 +109,56 @@
          x-transition:enter-end="opacity-100"
          class="space-y-4 sm:space-y-5 relative z-[1]">
 
+        {{-- BANNIÈRE LIEN DU PORTAIL --}}
+        <div class="relative overflow-hidden rounded-2xl border shadow-sm {{ $portalReady ? 'bg-gradient-to-br from-neonGreen/10 via-emerald-500/5 to-transparent border-neonGreen/30 dark:border-neonGreen/20' : 'bg-gradient-to-br from-amber-50 to-amber-50/30 dark:from-amber-900/10 dark:to-transparent border-amber-300/60 dark:border-amber-700/30' }}">
+            <div class="absolute -right-8 -top-8 w-32 h-32 rounded-full {{ $portalReady ? 'bg-neonGreen/10' : 'bg-amber-400/10' }} blur-2xl"></div>
+            <div class="relative p-4 sm:p-5">
+                <div class="flex items-center gap-2.5 mb-2">
+                    <div class="w-9 h-9 rounded-xl {{ $portalReady ? 'bg-neonGreen/15 text-neonGreen' : 'bg-amber-400/15 text-amber-600 dark:text-amber-400' }} flex items-center justify-center shrink-0">
+                        <i class="fas {{ $portalReady ? 'fa-share-alt' : 'fa-exclamation-triangle' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white leading-tight">Lien de paiement en ligne</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-gray-400">Envoyez ce lien à vos clients pour qu'ils paient en ligne et se connectent à votre WiFi.</p>
+                    </div>
+                </div>
+
+                @if($portalReady)
+                    <p class="text-[11px] text-slate-600 dark:text-gray-300 mb-2 leading-relaxed">
+                        <i class="fas fa-check-circle text-neonGreen mr-1"></i>
+                        Votre portail est prêt ! Partagez ce lien avec vos clients : ils pourront acheter un ticket en ligne, puis se connecter directement sur votre portail MikroTik.
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <input type="text" value="{{ $shopLink }}" readonly id="shopLink"
+                               class="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs font-mono text-slate-700 dark:text-gray-300 truncate focus:outline-none focus:border-neonGreen/50">
+                        <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('shopLink').value);this.innerHTML='<i class=\'fas fa-check\'></i> Copié';setTimeout(()=>this.innerHTML='<i class=\'fas fa-copy\'></i> Copier',1500)"
+                                class="shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white text-xs font-bold transition-all shadow-sm hover:shadow-md">
+                            <i class="fas fa-copy text-[10px]"></i> <span>Copier</span>
+                        </button>
+                    </div>
+                @else
+                    <div class="rounded-xl bg-amber-100/60 dark:bg-amber-900/20 border border-amber-300/50 dark:border-amber-700/30 p-3 mb-3">
+                        <p class="text-[11px] font-bold text-amber-700 dark:text-amber-400 mb-1.5">
+                            <i class="fas fa-lock mr-1"></i> Portail incomplet — terminez la configuration pour partager le lien.
+                        </p>
+                        <ul class="text-[11px] text-amber-700 dark:text-amber-400/90 leading-relaxed space-y-1 list-disc list-inside">
+                            @foreach($portalMissingSteps as $step)
+                                <li>{{ $step }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="flex items-center gap-2 opacity-50 cursor-not-allowed">
+                        <input type="text" value="{{ $shopLink }}" readonly
+                               class="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs font-mono text-slate-400 dark:text-gray-500 truncate cursor-not-allowed">
+                        <button type="button" disabled
+                                class="shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-gray-400 text-xs font-bold cursor-not-allowed">
+                            <i class="fas fa-lock text-[10px]"></i> <span>Verrouillé</span>
+                        </button>
+                    </div>
+                @endif
+            </div>
+        </div>
+
         {{-- STATS GRID --}}
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {{-- Forfaits --}}
@@ -322,24 +372,21 @@
             </x-card>
         </div>
 
-        {{-- LIEN DU PORTAIL (full width) --}}
+        {{-- PACK MIKROTIK (full width) --}}
         <x-card padding="p-0" class="shadow-sm">
             <x-slot:header>
-                <x-section-header icon="link" color="amber">Lien du portail</x-section-header>
+                <x-section-header icon="download" color="purple">Pack MikroTik</x-section-header>
             </x-slot:header>
             <div class="p-4">
-                <p class="text-[11px] text-slate-400 dark:text-gray-500 mb-3">Partagez ce lien aux clients connectés à votre WiFi :</p>
-                <div class="flex items-center gap-2 mb-4">
-                    <input type="text" value="{{ $shopLink }}" readonly id="shopLink"
-                           class="flex-1 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-xs font-mono text-slate-600 dark:text-gray-400 truncate focus:outline-none">
-                    <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('shopLink').value);this.innerHTML='<i class=\'fas fa-check\'></i>';setTimeout(()=>this.innerHTML='<i class=\'fas fa-copy\'></i>',1500)"
-                            class="w-10 h-10 shrink-0 rounded-xl bg-neonGreen hover:bg-neonGreen-600 text-white flex items-center justify-center transition-all shadow-sm hover:shadow-md">
-                        <i class="fas fa-copy text-xs"></i>
-                    </button>
+                <div class="rounded-xl bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800/40 p-3 mb-4">
+                    <p class="text-[11px] text-purple-700 dark:text-purple-400 leading-relaxed">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Téléchargez ce pack puis importez-le dans votre routeur MikroTik (menu <strong>Files</strong>) pour personnaliser la page de connexion affichée à vos clients.
+                    </p>
                 </div>
                 <a href="{{ route('vendor.boutique.download') }}{{ $hotspotId ? '?hotspot=' . $hotspotId : '' }}"
                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-sm hover:shadow-md">
-                    <i class="fas fa-download text-[10px]"></i> Télécharger le pack MikroTik
+                    <i class="fas fa-download text-[10px]"></i> Télécharger et installer dans mon MikroTik
                 </a>
             </div>
         </x-card>

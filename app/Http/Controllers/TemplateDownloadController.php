@@ -10,6 +10,8 @@ use ZipArchive;
 
 class TemplateDownloadController extends Controller
 {
+    private const SITE_URL = 'https://f0d6-102-180-122-130.ngrok-free.app';
+
     public function download(Request $request)
     {
         $vendeur = auth()->user();
@@ -20,7 +22,7 @@ class TemplateDownloadController extends Controller
             ? Forfait::where('hotspot_id', $hotspot->id)->orderBy('ordre')->get()
             : Forfait::where('vendeur_id', $vendeur->id)->orderBy('ordre')->get();
 
-        $appUrl = config('app.url');
+        $appUrl = self::SITE_URL;
         $couleur = $hotspot ? $hotspot->couleur : ($vendeur->couleur ?? '#1ca04e');
 
         $tmpDir = sys_get_temp_dir() . '/template_' . $vendeur->id;
@@ -66,14 +68,8 @@ class TemplateDownloadController extends Controller
         $html = file_get_contents($templatePath);
 
         $html = str_replace(
-            ['https://bf43-102-180-122-130.ngrok-free.app'],
-            $appUrl,
-            $html
-        );
-
-        $html = str_replace(
-            ['https://laksa19.github.io/myqr', 'https://bf43-102-180-122-130.ngrok-free.app/recuperer_ticket.php'],
-            $appUrl . '/recuperer-ticket',
+            ['https://f0d6-102-180-122-130.ngrok-free.app/'],
+            $appUrl . '/',
             $html
         );
 
@@ -109,6 +105,9 @@ class TemplateDownloadController extends Controller
             $forfaitRows .= "      <input type=\"hidden\" name=\"montant\" value=\"" . e($f->montant) . "\" />\n";
             $forfaitRows .= "      <input type=\"hidden\" name=\"forfait\" value=\"" . e($f->label) . "\" />\n";
             $forfaitRows .= "      <input type=\"hidden\" name=\"vendeur_id\" value=\"" . e($vendeur_id) . "\" />\n";
+            if ($hotspot) {
+                $forfaitRows .= "      <input type=\"hidden\" name=\"hotspot_id\" value=\"" . e($hotspot->id) . "\" />\n";
+            }
             $forfaitRows .= "      <input type=\"hidden\" name=\"order_id\" value=\"order_" . e($f->id) . "\" />\n";
             $forfaitRows .= "      <button type=\"submit\" class=\"pay-button\"><i class=\"fas fa-credit-card\" style=\"margin-right:5px\"></i> Payer</button>\n";
             $forfaitRows .= "    </form>\n";

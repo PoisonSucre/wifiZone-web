@@ -92,12 +92,16 @@ class HotspotManager extends Component
                 'statut' => 'required|in:actif,inactif',
             ]);
 
+            $service = app(HotspotService::class);
+            $slotType = $service->usedFreeSlots(auth()->user()) < $service->freeSlots() ? 'gratuit' : 'abonnement';
+
             Hotspot::create([
                 'vendeur_id' => auth()->id(),
                 'name' => $this->hotspotName,
                 'description' => $this->hotspotDescription ?: null,
                 'mikrotik_url' => $this->mikrotikUrl ?: null,
                 'statut' => $this->statut,
+                'slot_type' => $slotType,
             ]);
 
             $this->resetForm();
@@ -266,6 +270,11 @@ class HotspotManager extends Component
         $this->resetForm();
     }
 
+    public function openWalledGarden(int $id): void
+    {
+        $this->dispatch('open-walled-garden', hotspotId: $id);
+    }
+
     private function resetForm(): void
     {
         $this->editingHotspot = null;
@@ -291,6 +300,8 @@ class HotspotManager extends Component
         $totalHotspots = $hotspots->count();
         $actifs = $hotspots->where('statut', 'actif')->count();
         $inactifs = $totalHotspots - $actifs;
+        $nbGratuits = $hotspots->where('slot_type', 'gratuit')->count();
+        $nbAbonnement = $totalHotspots - $nbGratuits;
 
         $packs = $service->packs();
         $limit = $service->limit($vendeur);
@@ -301,14 +312,16 @@ class HotspotManager extends Component
         $subscriptions = $service->activeSubscriptions($vendeur);
         $frozenSubscriptions = $service->frozenSubscriptions($vendeur);
         $hasFrozen = $service->hasFrozen($vendeur);
+        $blockedPaidSlots = $service->blockedPaidSlots($vendeur);
         $availableFreeSlots = $service->availableFreeSlots($vendeur);
+        $total = $limit;
 
         $this->showRenewBanner = $hasFrozen;
 
         return view('livewire.vendor.hotspot-manager', compact(
-            'hotspots', 'totalHotspots', 'actifs', 'inactifs',
+            'hotspots', 'totalHotspots', 'actifs', 'inactifs', 'nbGratuits', 'nbAbonnement',
             'packs', 'limit', 'used', 'remaining', 'canCreate',
-            'soldeDisponible', 'subscriptions', 'frozenSubscriptions', 'hasFrozen', 'availableFreeSlots'
+            'soldeDisponible', 'subscriptions', 'frozenSubscriptions', 'hasFrozen', 'blockedPaidSlots', 'availableFreeSlots', 'total'
         ));
     }
 }

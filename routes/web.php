@@ -20,6 +20,7 @@ Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 Route::get('/installation', [PageController::class, 'installation'])->name('installation');
 Route::get('/merci', [PageController::class, 'merci'])->name('merci');
 Route::get('/annule', [PageController::class, 'annule'])->name('annule');
+Route::get('/portail-indisponible', [PageController::class, 'portailIndisponible'])->name('portail-indisponible');
 Route::get('/recuperer-ticket', [PageController::class, 'recupererTicket'])->name('recuperer-ticket');
 Route::post('/recuperer-ticket', [PageController::class, 'recupererTicket'])->middleware('throttle:5,1');
 Route::get('/recuperer-ticket/password/{ticket}', [PageController::class, 'ticketPassword'])->name('recuperer-ticket.password')->middleware('throttle:10,1');
@@ -96,7 +97,7 @@ Route::middleware(['auth', 'vendeur.status'])->prefix('vendeur')->name('vendor.'
         $forfaits = $hotspot
             ? $hotspot->forfaits()->orderBy('ordre')->get()
             : $vendeur->forfaits()->orderBy('ordre')->get();
-        return view('shop.template.preview', compact('vendeur', 'forfaits'));
+        return view('shop.template.preview', compact('vendeur', 'forfaits', 'hotspot'));
     })->name('preview');
     Route::get('/import', fn () => view('vendor.import'))->name('import');
     Route::get('/hotspot', fn () => view('vendor.hotspot'))->name('hotspot');

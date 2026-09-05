@@ -231,7 +231,7 @@
                             <i class="fas fa-store text-sm"></i>
                         </span>
                         <span class="flex-1">
-                            <span class="block text-[13px] font-extrabold tracking-tight leading-tight">Boutique</span>
+                            <span class="block text-[13px] font-extrabold tracking-tight leading-tight">Portail</span>
                             <span class="block text-[10px] font-medium text-slate-500 dark:text-gray-400 group-hover:text-white">Personnaliser le portail</span>
                         </span>
                         <i class="fas fa-chevron-right text-[10px] opacity-50 group-hover:translate-x-0.5 transition-transform"></i>

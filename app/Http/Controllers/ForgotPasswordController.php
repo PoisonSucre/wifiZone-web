@@ -46,7 +46,7 @@ class ForgotPasswordController extends Controller
             \Log::error('Erreur envoi email reset password', ['email' => $request->email, 'error' => $e->getMessage()]);
         }
 
-        return redirect()->route('vendor.forgot-password')->with('status', 'Un email de réinitialisation a été envoyé.');
+        return redirect()->route('vendor.forgot-password')->with('success', 'Un email de réinitialisation a été envoyé à votre adresse.');
     }
 
     public function showResetForm(Request $request, string $token)
@@ -90,6 +90,6 @@ class ForgotPasswordController extends Controller
         $vendeur->update(['password' => $request->password]);
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-        return redirect()->route('vendor.login')->with('status', 'Votre mot de passe a été réinitialisé. Vous pouvez vous connecter.');
+        return redirect()->route('vendor.login')->with('success', 'Votre mot de passe a été réinitialisé. Vous pouvez vous connecter.');
     }
 }

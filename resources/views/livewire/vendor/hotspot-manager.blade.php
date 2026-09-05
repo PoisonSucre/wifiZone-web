@@ -2,6 +2,8 @@
     $nbTotal = $totalHotspots;
     $nbActifs = $actifs;
     $nbInactifs = $inactifs;
+    $nbGratuits = $nbGratuits ?? $hotspots->where('slot_type', 'gratuit')->count();
+    $nbAbonnement = $nbAbonnement ?? ($nbTotal - $nbGratuits);
     $totalTickets = $hotspots->sum('tickets_count');
 @endphp
 
@@ -15,8 +17,8 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          class="absolute inset-0 z-10 space-y-4 animate-pulse">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            @for ($i = 0; $i < 4; $i++)
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            @for ($i = 0; $i < 6; $i++)
                 <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 h-[72px]">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-700/40"></div>
@@ -55,7 +57,7 @@
           class="space-y-4 sm:space-y-5 relative z-[1]">
 
          {{-- STATISTIQUES --}}
-         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {{-- Total --}}
             <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-cyan-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 group overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-cyan-500/5 group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
@@ -111,173 +113,227 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Gratuits --}}
+            <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-cyan-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 group overflow-hidden">
+                <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-cyan-500/5 group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
+                <div class="relative p-4 flex items-center gap-3">
+                    <div class="w-10 h-10 shrink-0 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-500 group-hover:bg-cyan-500 group-hover:text-white group-hover:rotate-3 transition-all duration-300">
+                        <i class="fas fa-gift text-sm"></i>
+                    </div>
+                    <div class="flex flex-col min-w-0 flex-1">
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Gratuits</p>
+                        <p class="text-lg sm:text-2xl font-black text-cyan-600 dark:text-cyan-400 tracking-tight leading-none">{{ $nbGratuits }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Abonnement --}}
+            <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder hover:border-purple-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 group overflow-hidden">
+                <div class="absolute -right-6 -top-6 w-20 h-20 rounded-full bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors duration-500"></div>
+                <div class="relative p-4 flex items-center gap-3">
+                    <div class="w-10 h-10 shrink-0 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white group-hover:rotate-3 transition-all duration-300">
+                        <i class="fas fa-crown text-sm"></i>
+                    </div>
+                    <div class="flex flex-col min-w-0 flex-1">
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">Abonnement</p>
+                        <p class="text-lg sm:text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight leading-none">{{ $nbAbonnement }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
 {{-- BANNIÈRE QUOTA --}}
-         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 p-4 sm:p-5 text-white shadow-[0_10px_30px_-12px_rgba(6,182,212,0.45)]">
-             <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10"></div>
-             <div class="absolute -right-2 -top-2 w-24 h-24 rounded-full bg-white/5"></div>
-             
-{{-- Bouton Acheter des quotas - mobile: top right absolute, desktop: dans le flex à droite --}}
+          <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 p-4 sm:p-5 text-white shadow-[0_10px_30px_-12px_rgba(6,182,212,0.45)]">
+              <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10"></div>
+              <div class="absolute -right-2 -top-2 w-24 h-24 rounded-full bg-white/5"></div>
+
+              {{-- Bouton Acheter des quotas - mobile: top right absolute, desktop: dans le flex à droite --}}
               <button type="button" wire:click="openPackModal"
                       class="absolute top-3 right-3 sm:hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-white text-blue-700 hover:bg-blue-50 text-[10px] font-extrabold transition-all shadow-sm hover:shadow-md z-10">
                   <i class="fas fa-cart-plus text-[9px]"></i> Acheter des quotas
               </button>
-             
-             <div class="relative flex flex-col sm:flex-row sm:items-start gap-4 sm:pr-10">
-                 <div class="flex-1 min-w-0">
-                     <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-white/70">Quota de hotspots</p>
-                     <div class="flex items-baseline gap-2 mt-1">
-                         <p class="text-2xl font-black tracking-tight">{{ $used }} / {{ $limit }}</p>
-                         @if($canCreate)
-                               <span class="inline-flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider">
-                                   <span class="font-medium text-white/80">{{ $remaining }} Restant{{ $remaining > 1 ? 's' : '' }}</span>
-                               </span>
-                           @else
-                               <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-[11px] font-black uppercase tracking-wider">
-                                   <i class="fas fa-ban text-[9px]"></i> Quota atteint
-                               </span>
-                           @endif
-                     </div>
-                     <div class="relative h-2 rounded-full bg-white/20 mt-3 overflow-hidden">
-                         <div class="h-full rounded-full transition-all duration-700"
-                              style="width: {{ $limit > 0 ? min(($used / $limit) * 100, 100) : ($used > 0 ? 100 : 0) }}%; background: {{ $limit > 0 && $used >= $limit ? '#ef4444' : ($limit === 0 && $used > 0 ? '#f59e0b' : '#00ff88') }}"></div>
-                     </div>
-                     @if($hasFrozen)
-                         <div class="flex flex-wrap gap-2 mt-2">
-                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/30 text-[10px] font-bold uppercase tracking-wider text-amber-200">
-                                 <i class="fas fa-snowflake text-[8px]"></i> {{ $frozenSubscriptions->sum('slots') }} gelé(s)
-                             </span>
-                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/30 text-[10px] font-bold uppercase tracking-wider text-green-200">
-                                 <i class="fas fa-unlock text-[8px]"></i> {{ $availableFreeSlots }} gratuit(s)
-                             </span>
-                         </div>
-                     @endif
-                 </div>
-                 
-                 {{-- Côté droit : sur desktop bouton + solde, sur mobile rien (bouton en absolute) --}}
-                 <div class="shrink-0 hidden sm:flex sm:flex-col sm:items-end sm:gap-2">
-                     <button type="button" wire:click="openPackModal"
-                             class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-blue-700 hover:bg-blue-50 text-[11px] font-extrabold transition-all shadow-sm hover:shadow-md">
-                         <i class="fas fa-cart-plus text-[10px]"></i> Acheter des quotas
-                     </button>
-                     @if($soldeDisponible > 0)
-                         <p class="text-[10px] font-bold text-white/85 flex items-center gap-1.5">
-                             <i class="fas fa-wallet text-[9px]"></i>
-                             Solde : {{ number_format($soldeDisponible, 0, ',', ' ') }} {{ config('platform.currency') }}
-                         </p>
-                     @endif
-                 </div>
-                 
-                 {{-- Solde mobile sous la barre --}}
-                 @if($soldeDisponible > 0)
-                     <div class="sm:hidden w-full mt-2 pt-2 border-t border-white/20">
-                         <p class="text-[10px] font-bold text-white/85 flex items-center justify-center gap-1.5">
-                             <i class="fas fa-wallet text-[9px]"></i>
-                             Solde : {{ number_format($soldeDisponible, 0, ',', ' ') }} {{ config('platform.currency') }}
-                         </p>
-                     </div>
-                 @endif
-             </div>
-             
-             <div class="relative flex flex-col gap-1.5 mt-3 sm:mt-4">
-                 @if(!$canCreate && $hasFrozen)
-                      <p class="text-[11px] font-bold text-white/90">
-                          {{ $frozenSubscriptions->sum('slots') }} slot(s) payant(s) gelé(s).
-                          @if($availableFreeSlots > 0)
-                              {{ $availableFreeSlots }} slot(s) gratuit(s) libre(s).
-                          @endif
-                          <button type="button" wire:click="openRenewModal('{{ $frozenSubscriptions->first()->pack_key }}')"
-                                  class="underline hover:no-underline font-extrabold">Renouveler →</button>
-                      </p>
-                  @elseif(!$canCreate)
-                      <p class="text-[11px] font-bold text-white/90">
-                          Tous vos emplacements sont utilisés. Achetez un pack pour ajouter plus de hotspots.
-                      </p>
-                  @else
-                      <p class="text-[11px] text-white/80">
-                          {{ $limit - $used }} emplacement(s) restant(s). Un abonnement mensuel vous permet d'ajouter plus de hotspots.
-                      </p>
-                  @endif
-                  @if($subscriptions->isNotEmpty())
-                      <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 flex-wrap">
-                          <i class="fas fa-crown text-[9px] sm:text-[10px] text-white/70 shrink-0"></i>
-                          @foreach($subscriptions as $sub)
-                              <span class="text-[10px] sm:text-[11px] font-bold text-white/85 whitespace-nowrap">Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} +{{ $sub->slots }} · expire le {{ $sub->expires_at?->format('d/m/Y') }}</span>
-                          @endforeach
+
+              <div class="relative flex flex-col sm:flex-row sm:items-start gap-4 sm:pr-10">
+                  <div class="flex-1 min-w-0">
+                      <p class="text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-white/70">Quota de hotspots</p>
+                      <div class="flex items-baseline gap-2 mt-0.5 sm:mt-1">
+                          <p class="text-xl sm:text-2xl font-black tracking-tight">{{ $used }} / {{ $total }} <span class="text-sm font-bold text-white/60">utilisés</span></p>
                       </div>
-                  @endif
-             </div>
-        </div>
+                      <div class="relative h-1.5 sm:h-2 rounded-full bg-white/20 mt-2 sm:mt-3 overflow-hidden">
+                          <div class="h-full rounded-full transition-all duration-700"
+                               style="width: {{ $total > 0 ? min(($used / $total) * 100, 100) : ($used > 0 ? 100 : 0) }}%; background: {{ $total > 0 && $used >= $total ? '#ef4444' : ($total === 0 && $used > 0 ? '#f59e0b' : '#00ff88') }}"></div>
+                      </div>
+                  </div>
+
+                  {{-- Côté droit : desktop bouton --}}
+                  <div class="shrink-0 hidden sm:flex sm:items-end">
+                      <button type="button" wire:click="openPackModal"
+                              class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-blue-700 hover:bg-blue-50 text-[11px] font-extrabold transition-all shadow-sm hover:shadow-md">
+                          <i class="fas fa-cart-plus text-[10px]"></i> Acheter des quotas
+                      </button>
+                  </div>
+              </div>
+
+              <div class="relative flex flex-col gap-1 sm:gap-1.5 mt-2 sm:mt-4">
+                  @if($blockedPaidSlots > 0)
+                       <p class="text-[10px] sm:text-[11px] font-bold text-white/90">
+                           {{ $blockedPaidSlots }} hotspot(s) payant(s) à renouveler.
+                           @if($availableFreeSlots > 0)
+                               {{ $availableFreeSlots }} slot(s) gratuit(s) libre(s).
+                           @endif
+                           <button type="button" wire:click="openRenewModal('{{ $frozenSubscriptions->first()->pack_key }}')"
+                                   class="underline hover:no-underline font-extrabold">Renouveler →</button>
+                       </p>
+                    @elseif(!$canCreate)
+                        <p class="text-[10px] sm:text-[11px] font-bold text-white/90">
+                            Quota atteint ({{ $used }}/{{ $total }}). Achetez un pack pour en ajouter plus.
+                        </p>
+                    @else
+                        <p class="text-[10px] sm:text-[11px] text-white/80">
+                            {{ $total - $used }} emplacement(s) restant(s). Un abonnement mensuel vous permet d'ajouter plus de hotspots.
+                        </p>
+                    @endif
+@if($subscriptions->isNotEmpty())
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-1.5 sm:gap-2 flex-wrap">
+                            @foreach($subscriptions as $sub)
+                                @php
+                                    $packIcons = ['A' => 'star', 'B' => 'crown', 'C' => 'rocket'];
+                                    $icon = $packIcons[$sub->pack_key] ?? 'wifi';
+                                    $iconColor = match($sub->pack_key) {
+                                        'A' => 'text-cyan-300',
+                                        'B' => 'text-amber-300',
+                                        'C' => 'text-pink-300',
+                                        default => 'text-cyan-300',
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-[9px] sm:text-[10px] font-bold whitespace-nowrap">
+                                    <i class="fas fa-{{ $icon }} {{ $iconColor }} text-[7px] sm:text-[8px] shrink-0"></i>
+                                    <span class="text-white/85">Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} +{{ $sub->slots }} · expire le {{ $sub->expires_at?->format('d/m/Y') }}</span>
+                                    <span class="inline-flex items-center gap-0.5 text-emerald-300"><i class="fas fa-check-circle text-[7px]"></i> actif</span>
+                                </span>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($frozenSubscriptions->isNotEmpty())
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-1.5 sm:gap-2 flex-wrap">
+                            @foreach($frozenSubscriptions as $sub)
+                                @php
+                                    $packIcons = ['A' => 'star', 'B' => 'crown', 'C' => 'rocket'];
+                                    $icon = $packIcons[$sub->pack_key] ?? 'wifi';
+                                    $iconColor = match($sub->pack_key) {
+                                        'A' => 'text-cyan-300',
+                                        'B' => 'text-amber-300',
+                                        'C' => 'text-pink-300',
+                                        default => 'text-cyan-300',
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/30 text-[9px] sm:text-[10px] font-bold whitespace-nowrap">
+                                    <i class="fas fa-{{ $icon }} {{ $iconColor }} text-[7px] sm:text-[8px] shrink-0"></i>
+                                    <span class="text-amber-200">Pack {{ $packs[$sub->pack_key]['label'] ?? $sub->pack_key }} +{{ $sub->slots }}</span>
+                                    <span class="inline-flex items-center gap-0.5 text-amber-300 uppercase tracking-wider"><i class="fas fa-snowflake text-[7px]"></i> gelé</span>
+                                </span>
+                            @endforeach
+                        </div>
+                    @endif
+              </div>
+         </div>
 
         {{-- TITRE SECTION --}}
-        <div>
-            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Mes Hotspots</h3>
-            <p class="text-[11px] text-slate-400 dark:text-gray-500 mt-0.5">{{ $nbTotal }} hotspot(s) configuré(s)</p>
+        <div class="flex items-end justify-between gap-3 flex-wrap">
+            <div>
+                <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Mes Hotspots</h3>
+                <p class="text-[11px] text-slate-400 dark:text-gray-500 mt-0.5">{{ $nbTotal }} hotspot(s) configuré(s)</p>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] font-bold">
+                <span class="inline-flex items-center gap-1 text-cyan-600 dark:text-cyan-400">
+                    <span class="w-2 h-2 rounded-full bg-cyan-500"></span> Gratuit
+                </span>
+                <span class="inline-flex items-center gap-1 text-purple-600 dark:text-purple-400">
+                    <span class="w-2 h-2 rounded-full bg-purple-500"></span> Abonnement
+                </span>
+            </div>
         </div>
 
         {{-- GRILLE HOTSPOTS --}}
         @if($hotspots->count() > 0)
-        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4 max-w-3xl">
+        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3 max-w-3xl">
             @foreach($hotspots as $hotspot)
-            <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5 group">
+            <div class="bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-xl shadow-sm overflow-hidden hover:border-cyan-500/30 transition-all duration-300 group">
                 {{-- Header --}}
-                <div class="px-4 pt-4 pb-3">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="flex items-center gap-3 min-w-0 flex-1">
-                            <div class="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-[0_4px_12px_-4px_rgba(6,182,212,0.4)] group-hover:rotate-3 transition-transform duration-300">
-                                <i class="fas fa-wifi text-sm"></i>
+                <div class="px-3 pt-3 pb-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <div class="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center text-white">
+                                <i class="fas fa-wifi text-[11px]"></i>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white truncate">{{ $hotspot->name }}</h4>
+                                <h4 class="text-xs font-extrabold text-slate-900 dark:text-white truncate">{{ $hotspot->name }}</h4>
                                 @if($hotspot->description)
-                                    <p class="text-[10px] text-slate-400 dark:text-gray-500 truncate mt-0.5">{{ $hotspot->description }}</p>
+                                    <p class="text-[9px] text-slate-400 dark:text-gray-500 truncate">{{ $hotspot->description }}</p>
                                 @endif
                             </div>
                         </div>
-                        {{-- Badge statut --}}
-                        <span class="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $hasFrozen ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400' : ($hotspot->statut === 'actif' ? 'bg-neonGreen/10 text-neonGreen dark:text-neonGreen-400' : 'bg-slate-100 dark:bg-slate-700/40 text-slate-400 dark:text-gray-500') }}">
-                            <span class="w-1.5 h-1.5 rounded-full {{ $hasFrozen ? 'bg-amber-400 animate-pulse' : ($hotspot->statut === 'actif' ? 'bg-red-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600') }}"></span>
-                            {{ $hasFrozen ? 'Gelé' : ($hotspot->statut === 'actif' ? 'En ligne' : 'Hors ligne') }}
-                        </span>
+                        {{-- Badges type + statut --}}
+                        <div class="shrink-0 flex flex-col items-end gap-1">
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider {{ $hotspot->slot_type === 'gratuit' ? 'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400' : 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400' }}">
+                                <i class="fas {{ $hotspot->slot_type === 'gratuit' ? 'fa-gift' : 'fa-crown' }} text-[8px]"></i>
+                                {{ $hotspot->slot_type === 'gratuit' ? 'Gratuit' : 'Abonnement' }}
+                            </span>
+                            @php
+                                $hotspotFrozen = $hasFrozen && $hotspot->slot_type === 'abonnement';
+                            @endphp
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider {{ $hotspotFrozen ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400' : ($hotspot->statut === 'actif' ? 'bg-neonGreen/10 text-neonGreen dark:text-neonGreen-400' : 'bg-slate-100 dark:bg-slate-700/40 text-slate-400 dark:text-gray-500') }}">
+                                <span class="w-1 h-1 rounded-full {{ $hotspotFrozen ? 'bg-amber-400 animate-pulse' : ($hotspot->statut === 'actif' ? 'bg-red-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600') }}"></span>
+                                {{ $hotspotFrozen ? 'Gelé' : ($hotspot->statut === 'actif' ? 'En ligne' : 'Hors ligne') }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 {{-- Stats --}}
-                <div class="px-4 pb-3 flex items-center gap-4">
-                    <div class="flex items-center gap-1.5">
-                        <i class="fas fa-tags text-[10px] text-neonGreen"></i>
-                        <span class="text-[11px] font-bold text-slate-600 dark:text-gray-400">{{ $hotspot->forfaits_count }} forfait(s)</span>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                        <i class="fas fa-ticket-alt text-[10px] text-cyan-500"></i>
-                        <span class="text-[11px] font-bold text-slate-600 dark:text-gray-400">{{ $hotspot->tickets_count }} ticket(s)</span>
-                    </div>
+                <div class="px-3 pb-2 flex items-center gap-3">
+                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 dark:text-gray-400">
+                        <i class="fas fa-tags text-[9px] text-neonGreen"></i>{{ $hotspot->forfaits_count }} forfait(s)
+                    </span>
+                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 dark:text-gray-400">
+                        <i class="fas fa-ticket-alt text-[9px] text-cyan-500"></i>{{ $hotspot->tickets_count }} ticket(s)
+                    </span>
                 </div>
 
                 {{-- Actions --}}
-                <div class="px-4 pb-4 flex items-center gap-1.5">
-                    <a href="{{ route('vendor.hotspot.details', $hotspot->id) }}"
-                       wire:navigate
-                       class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-white dark:text-black text-[11px] font-bold transition-all">
-                        <i class="fas fa-arrow-right text-[10px]"></i> Gérer
-                    </a>
-                    <button type="button" wire:click="confirmToggle({{ $hotspot->id }})"
-                            {{ $hasFrozen ? 'disabled' : '' }}
-                            class="w-8 h-8 rounded-xl flex items-center justify-center transition-all {{ $hasFrozen ? 'bg-slate-100 dark:bg-slate-700/40 text-slate-300 dark:text-slate-600 cursor-not-allowed' : ($hotspot->statut === 'actif' ? 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white' : 'bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-neonGreen hover:text-black') }}"
-                            title="{{ $hasFrozen ? 'Indisponible pendant le gel' : ($hotspot->statut === 'actif' ? 'Désactiver' : 'Activer') }}">
-                        <i class="fas {{ $hotspot->statut === 'actif' ? 'fa-toggle-on' : 'fa-toggle-off' }} text-sm"></i>
-                    </button>
-                    <button type="button" wire:click="editHotspot({{ $hotspot->id }})"
-                            class="w-8 h-8 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-neonGreen hover:text-black transition-all"
-                            title="Modifier">
-                        <i class="fas fa-edit text-[10px]"></i>
-                    </button>
-                    <button type="button" wire:click="confirmDelete({{ $hotspot->id }})"
-                            class="w-8 h-8 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-red-500 hover:text-white transition-all"
-                            title="Supprimer">
-                        <i class="fas fa-trash text-[10px]"></i>
-                    </button>
+                <div class="px-3 pb-3 space-y-1.5">
+                    <div class="flex items-center gap-1">
+                        <a href="{{ route('vendor.hotspot.details', $hotspot->id) }}"
+                           wire:navigate
+                           class="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-white dark:text-black text-[10px] font-bold transition-all">
+                            <i class="fas fa-arrow-right text-[9px]"></i> Gérer
+                        </a>
+                        <a href="{{ route('vendor.tickets', ['hotspot' => $hotspot->id]) }}"
+                           wire:navigate
+                           class="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-neonGreen/10 hover:bg-neonGreen hover:text-white dark:bg-neonGreen/10 dark:hover:bg-neonGreen text-neonGreen dark:text-neonGreen-400 text-[10px] font-bold transition-all border border-neonGreen/20 dark:border-neonGreen/20">
+                            <i class="fas fa-ticket-alt text-[9px]"></i> Tickets
+                        </a>
+                        <button type="button" wire:click="openWalledGarden({{ $hotspot->id }})"
+                                class="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500 hover:text-white dark:bg-cyan-500/10 dark:hover:bg-cyan-500 text-cyan-500 dark:text-cyan-400 text-[10px] font-bold transition-all border border-cyan-500/20 dark:border-cyan-500/20">
+                            <i class="fas fa-shield-alt text-[9px]"></i> Walled Garden
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button type="button" wire:click="confirmToggle({{ $hotspot->id }})"
+                                {{ $hasFrozen && $hotspot->slot_type === 'abonnement' ? 'disabled' : '' }}
+                                class="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg transition-all text-[10px] font-bold {{ $hasFrozen && $hotspot->slot_type === 'abonnement' ? 'bg-slate-100 dark:bg-slate-700/40 text-slate-300 dark:text-slate-600 cursor-not-allowed' : ($hotspot->statut === 'actif' ? 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white' : 'bg-slate-100 dark:bg-slate-700/40 text-slate-400 hover:bg-neonGreen hover:text-black') }}">
+                            <i class="fas {{ $hotspot->statut === 'actif' ? 'fa-toggle-on' : 'fa-toggle-off' }} text-[10px]"></i> {{ $hasFrozen && $hotspot->slot_type === 'abonnement' ? 'Gelé' : ($hotspot->statut === 'actif' ? 'Désactiver' : 'Activer') }}
+                        </button>
+                        <button type="button" wire:click="editHotspot({{ $hotspot->id }})"
+                                class="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700/40 text-slate-500 dark:text-gray-400 hover:bg-neonGreen hover:text-black text-[10px] font-bold transition-all">
+                            <i class="fas fa-edit text-[9px]"></i> Modifier
+                        </button>
+                        <button type="button" wire:click="confirmDelete({{ $hotspot->id }})"
+                                class="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700/40 text-slate-500 dark:text-gray-400 hover:bg-red-500 hover:text-white text-[10px] font-bold transition-all">
+                            <i class="fas fa-trash text-[9px]"></i> Supprimer
+                        </button>
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -360,10 +416,19 @@
                 {{-- PACKS --}}
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     @foreach($packs as $pack)
+                    @php
+                        $packIcons = ['A' => 'star', 'B' => 'crown', 'C' => 'rocket'];
+                        $packColor = match($pack['key']) {
+                            'A' => 'from-cyan-400 via-blue-500 to-indigo-500',
+                            'B' => 'from-amber-400 via-orange-500 to-red-500',
+                            'C' => 'from-purple-500 via-pink-500 to-red-500',
+                            default => 'from-cyan-400 via-blue-500 to-indigo-500',
+                        };
+                    @endphp
                     <div class="relative bg-white dark:bg-darkCard border border-slate-200/80 dark:border-darkBorder rounded-2xl p-4 flex flex-col hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-0.5">
 <div class="flex items-center justify-between mb-3 gap-2">
-                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 text-white text-[11px] font-extrabold uppercase tracking-wider shrink-0">
-                                 <i class="fas fa-wifi text-[9px]"></i> {{ $pack['label'] }}
+                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gradient-to-br {{ $packColor }} text-white text-[11px] font-extrabold uppercase tracking-wider shrink-0">
+                                 <i class="fas fa-{{ $packIcons[$pack['key']] ?? 'wifi' }} text-[{{ $pack['key'] === 'C' ? '11' : '9' }}px]"></i> {{ $pack['label'] }}
                              </span>
                          </div>
                         <div class="mb-4">
@@ -570,4 +635,7 @@
         </div>
     </div>
     @endif
+
+    {{-- MODAL WALLED GARDEN (composant séparé) --}}
+    @livewire('vendor.walled-garden-modal')
 </div>

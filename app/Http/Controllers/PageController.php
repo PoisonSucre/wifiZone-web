@@ -53,6 +53,14 @@ class PageController extends Controller
         return view('pages.annule', compact('token'));
     }
 
+    public function portailIndisponible(Request $request)
+    {
+        $vendeur = Vendeur::find((int) $request->query('vendeur_id', 0));
+        $raison = (string) $request->query('raison', '');
+
+        return view('pages.portail-indisponible', compact('vendeur', 'raison'));
+    }
+
     public function recupererTicket(Request $request)
     {
         $token = $request->input('token') ?? $request->query('token');
