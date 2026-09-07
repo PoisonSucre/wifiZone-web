@@ -77,36 +77,39 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $vendeur = Vendeur::create([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'email' => $request->email,
-            'telephone' => $request->telephone,
-            'adresse' => $request->adresse,
-            'ville' => $request->ville,
-            'password' => $request->password,
-            'statut' => 'en_attente',
-            'commission_pct' => config('platform.commission_pct', 10),
-            'card_number' => Vendeur::generateCardNumber(),
-        ]);
+        try {
+            $vendeur = Vendeur::create([
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'email' => $request->email,
+                'telephone' => $request->telephone,
+                'adresse' => $request->adresse,
+                'ville' => $request->ville,
+                'password' => $request->password,
+                'statut' => 'en_attente',
+                'commission_pct' => config('platform.commission_pct', 10),
+                'card_number' => Vendeur::generateCardNumber(),
+            ]);
+        } catch (\Throwable $e) {
+            try { Log::error('Erreur création vendeur', ['message' => $e->getMessage()]); } catch (\Throwable) {}
+            return back()->withInput()->withErrors(['email' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.']);
+        }
 
         try {
             Mail::to($vendeur->email)->send(new VendorRegisteredMail($vendeur));
-            Log::info('Notification vendeur envoyée', ['to' => $vendeur->email]);
-        } catch (\Exception $e) {
-            Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            try { Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
         }
 
-        $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
-            'vendor.verify',
-            now()->addMinutes(60),
-            ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
-        );
-
         try {
+            $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+                'vendor.verify',
+                now()->addMinutes(60),
+                ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
+            );
             Mail::to($vendeur->email)->send(new \App\Mail\EmailVerificationMail($vendeur, $verificationUrl));
-        } catch (\Exception $e) {
-            Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            try { Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
         }
 
         session(['pending_vendor_email' => $vendeur->email]);

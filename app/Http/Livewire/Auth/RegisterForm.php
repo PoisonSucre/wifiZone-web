@@ -3,11 +3,9 @@
 namespace App\Http\Livewire\Auth;
 
 use App\Mail\VendorRegisteredMail;
-use App\Models\Setting;
 use App\Models\Vendeur;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Exception;
 use Livewire\Component;
 
 class RegisterForm extends Component
@@ -29,17 +27,15 @@ class RegisterForm extends Component
             ]);
         } elseif ($this->step === 2) {
             $this->validate([
-                'email' => 'required|email:rfc,dns|unique:vendeurs,email',
+                'email' => 'required|email|unique:vendeurs,email',
                 'telephone' => 'required|string|max:20',
             ]);
         }
         $this->step++;
-        Log::info('Inscription étape suivante', ['step' => $this->step]);
     }
 
     public function submit(): void
     {
-        Log::info('Form submitted', ['step' => $this->step]);
         if ($this->step === 3) {
             $this->register();
         } else {
@@ -51,12 +47,10 @@ class RegisterForm extends Component
 
     public function register(): void
     {
-        Log::info('Tentative inscription', ['email' => $this->email]);
-
         $this->validate([
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
-            'email' => 'required|email:rfc,dns|unique:vendeurs,email',
+            'email' => 'required|email|unique:vendeurs,email',
             'telephone' => 'required|string|max:20',
             'password' => 'required|string|min:8|same:passwordConfirmation',
         ]);
@@ -69,23 +63,17 @@ class RegisterForm extends Component
                 'commission_pct' => config('platform.commission_pct', 10),
                 'card_number' => Vendeur::generateCardNumber(),
             ]);
-            Log::info('Vendeur créé avec succès', ['email' => $this->email]);
-        } catch (Exception $e) {
-            Log::error('Erreur création vendeur', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+        } catch (\Throwable $e) {
+            try { Log::error('Erreur création vendeur', ['message' => $e->getMessage()]); } catch (\Throwable) {}
             $this->dispatch('toast', type: 'error', message: 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer plus tard.');
             return;
         }
 
+        // Envoi des emails — ne doit jamais bloquer l'inscription
         try {
             Mail::to($vendeur->email)->send(new VendorRegisteredMail($vendeur));
-            Log::info('Notification vendeur envoyée', ['to' => $vendeur->email]);
-        } catch (Exception $e) {
-            Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            try { Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
         }
 
         session(['pending_vendor_email' => $this->email]);
@@ -99,8 +87,8 @@ class RegisterForm extends Component
             \Illuminate\Support\Facades\Mail::to($vendeur->email)->send(
                 new \App\Mail\EmailVerificationMail($vendeur, $verificationUrl)
             );
-        } catch (Exception $e) {
-            Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            try { Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
         }
 
         $this->redirectRoute('vendor.verify-email');
