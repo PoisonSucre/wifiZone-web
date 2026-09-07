@@ -8,22 +8,36 @@
 
 @if($flashSuccess || $flashError || $flashWarning || $flashInfo || $validationErrors)
 <script>
-    document.addEventListener('alpine:initialized', () => {
+    (function() {
+        var toasts = [];
         @if($flashSuccess)
-            window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'success', message: @json($flashSuccess) } }));
+            toasts.push({ type: 'success', message: @json($flashSuccess) });
         @endif
         @if($flashError)
-            window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: @json($flashError) } }));
+            toasts.push({ type: 'error', message: @json($flashError) });
         @endif
         @if($flashWarning)
-            window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'warning', message: @json($flashWarning) } }));
+            toasts.push({ type: 'warning', message: @json($flashWarning) });
         @endif
         @if($flashInfo)
-            window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'info', message: @json($flashInfo) } }));
+            toasts.push({ type: 'info', message: @json($flashInfo) });
         @endif
         @if($validationErrors)
-            window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: @json($validationErrors) } }));
+            toasts.push({ type: 'error', message: @json($validationErrors) });
         @endif
-    });
+
+        function dispatchToasts() {
+            toasts.forEach(function(t) {
+                window.dispatchEvent(new CustomEvent('toast', { detail: t }));
+            });
+        }
+
+        // Dispatch immédiatement + retry au cas où Alpine n'est pas encore prêt
+        dispatchToasts();
+        document.addEventListener('alpine:initialized', dispatchToasts);
+        document.addEventListener('DOMContentLoaded', dispatchToasts);
+        setTimeout(dispatchToasts, 100);
+        setTimeout(dispatchToasts, 500);
+    })();
 </script>
 @endif
