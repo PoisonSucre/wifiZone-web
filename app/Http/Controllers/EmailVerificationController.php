@@ -73,7 +73,10 @@ class EmailVerificationController extends Controller
         $this->sendVerificationEmail($vendeur);
 
         if ($request->expectsJson()) {
-            return response()->json(['success' => true, 'message' => 'Un nouvel email de vérification a été envoyé.']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Un nouvel email de vérification a été envoyé à ' . $vendeur->email . '. Vérifiez votre boîte de réception et vos spams.',
+            ]);
         }
 
         return back()->with('success', 'Un nouvel email de vérification a été envoyé.');
@@ -81,16 +84,16 @@ class EmailVerificationController extends Controller
 
     public function sendVerificationEmail(Vendeur $vendeur): void
     {
-        $verificationUrl = URL::temporarySignedRoute(
-            'vendor.verify',
-            now()->addMinutes(30),
-            ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
-        );
-
         try {
+            $verificationUrl = URL::temporarySignedRoute(
+                'vendor.verify',
+                now()->addMinutes(30),
+                ['id' => $vendeur->id, 'hash' => hash('sha256', $vendeur->email)]
+            );
+
             Mail::to($vendeur->email)->send(new EmailVerificationMail($vendeur, $verificationUrl));
-        } catch (\Exception $e) {
-            \Log::error('Erreur envoi email verification', ['email' => $vendeur->email, 'error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            try { \Log::error('Erreur envoi email verification', ['email' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
         }
     }
 }
