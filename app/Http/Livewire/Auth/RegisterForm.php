@@ -72,6 +72,7 @@ class RegisterForm extends Component
         // Envoi de l'email de vérification (contient aussi la confirmation d'inscription)
         session(['pending_vendor_email' => $this->email]);
 
+        $emailSent = false;
         try {
             $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
                 'vendor.verify',
@@ -81,8 +82,14 @@ class RegisterForm extends Component
             \Illuminate\Support\Facades\Mail::to($vendeur->email)->send(
                 new \App\Mail\EmailVerificationMail($vendeur, $verificationUrl)
             );
+            $emailSent = true;
         } catch (\Throwable $e) {
             try { Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
+        }
+
+        // Redirection avec message selon si l'email est parti ou non
+        if (!$emailSent) {
+            $this->dispatch('toast', type: 'warning', message: 'L\'email de vérification n\'a pas pu être envoyé. Cliquez sur "Renvoyer l\'email".');
         }
 
         $this->redirectRoute('vendor.verify-email');
