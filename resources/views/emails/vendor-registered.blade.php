@@ -37,7 +37,7 @@
 
     <!-- Preheader (hidden preview text in inbox) -->
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">
-        Votre demande d'inscription a bien été reçue&nbsp;! Votre compte est en attente d'approbation sur {{ config('platform.name') }}.
+        Votre inscription a bien été reçue&nbsp;! Vérifiez votre adresse email pour activer votre compte sur {{ config('platform.name') }}.
     </div>
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
         &#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;
@@ -88,24 +88,20 @@
                             </div>
 
                             <h1 class="h2-title" style="margin:0 0 14px;color:#0f172a;font-size:21px;font-weight:700;text-align:center;line-height:1.3;">
-                                Demande d'inscription reçue
+                                Inscription reçue
                             </h1>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
                                 Bonjour <strong style="color:#0f172a;">{{ $vendeur->prenom }} {{ $vendeur->nom }}</strong>,<br>
-                                votre demande d'inscription en tant que <strong>vendeur</strong> a bien été reçue.
+                                votre inscription en tant que <strong>vendeur</strong> a bien été enregistrée.
                             </p>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
-                                Votre compte est actuellement en <strong>attente d'approbation</strong> par notre équipe. Nous examinerons votre dossier dans les plus brefs délais.
-                            </p>
-
-                            <p style="margin:0 0 30px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
-                                Vous recevrez une notification par email dès que votre compte sera activé.
+                                Un email de vérification vient de vous être envoyé. Cliquez sur le lien qu'il contient pour <strong>activer votre compte</strong> et accéder à votre tableau de bord.
                             </p>
 
                             <p style="margin:0 0 30px;color:#94a3b8;font-size:13px;text-align:center;">
-                                Merci pour votre confiance&nbsp;!
+                                Pensez à vérifier vos spams si vous ne recevez pas l'email&nbsp;!
                             </p>
 
                         </td>

@@ -42,12 +42,8 @@ class PendingStatus extends Component
             return;
         }
 
-        if (!$vendeur->email_verified_at) {
-            $this->status = 'email_not_verified';
-            return;
-        }
-
-        $this->status = 'en_attente';
+        // en_attente = email non vérifié (pas de validation admin)
+        $this->status = 'email_not_verified';
     }
 
     public function render()

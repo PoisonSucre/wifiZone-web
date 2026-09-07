@@ -22,22 +22,12 @@
     </button>
 
     {{-- Status results --}}
-    @if($status === 'en_attente')
-        <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 rounded-2xl p-4 flex items-start gap-3 animate-pulse">
-            <i class="fas fa-clock text-amber-500 mt-0.5 shrink-0"></i>
-            <div class="text-left">
-                <p class="text-sm font-bold text-amber-700 dark:text-amber-400">Toujours en attente</p>
-                <p class="text-xs text-amber-600/70 dark:text-amber-500/70 mt-1">L'administrateur n'a pas encore validé votre compte. Vérification automatique toutes les 3 secondes.</p>
-            </div>
-        </div>
-    @endif
-
     @if($status === 'email_not_verified')
         <div class="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800/50 rounded-2xl p-4 flex items-start gap-3">
             <i class="fas fa-envelope text-purple-500 mt-0.5 shrink-0"></i>
             <div class="text-left">
                 <p class="text-sm font-bold text-purple-700 dark:text-purple-400">Email non vérifié</p>
-                <p class="text-xs text-purple-600/70 dark:text-purple-500/70 mt-1 mb-2">Vérifiez votre boîte de réception (et spams) pour le lien de confirmation.</p>
+                <p class="text-xs text-purple-600/70 dark:text-purple-500/70 mt-1 mb-2">Vérifiez votre boîte de réception (et spams) pour le lien de confirmation. Vérification automatique toutes les 3 secondes.</p>
                 <a href="{{ route('vendor.verify-email') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 dark:text-purple-400 hover:underline">
                     <i class="fas fa-redo"></i> Renvoyer l'email
                 </a>
