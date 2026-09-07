@@ -37,7 +37,7 @@
 
     <!-- Preheader (hidden preview text in inbox) -->
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">
-        Votre inscription a bien été enregistrée&nbsp;! Plus qu'une étape&nbsp;: confirmez votre adresse email pour activer votre compte {{ config('platform.name') }}.
+        Votre inscription a bien été enregistrée&nbsp;! Plus qu'une étape&nbsp;: confirmez votre adresse email pour activer votre compte <?php echo e(config('platform.name')); ?>.
     </div>
     <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
         &#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;&#8199;&#8203;
@@ -63,7 +63,7 @@
                                         </svg>
                                     </td>
                                     <td style="vertical-align:middle;">
-                                        <span style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:0.2px;">{{ config('platform.name') }}</span>
+                                        <span style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:0.2px;"><?php echo e(config('platform.name')); ?></span>
                                     </td>
                                 </tr>
                             </table>
@@ -92,8 +92,8 @@
                             </h1>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
-                                Bonjour <strong style="color:#0f172a;">{{ $vendeur->prenom }} {{ $vendeur->nom }}</strong>,<br>
-                                votre inscription en tant que <strong>vendeur</strong> sur <strong>{{ config('platform.name') }}</strong> a bien été enregistrée.
+                                Bonjour <strong style="color:#0f172a;"><?php echo e($vendeur->prenom); ?> <?php echo e($vendeur->nom); ?></strong>,<br>
+                                votre inscription en tant que <strong>vendeur</strong> sur <strong><?php echo e(config('platform.name')); ?></strong> a bien été enregistrée.
                             </p>
 
                             <p style="margin:0 0 22px;color:#475569;font-size:15px;line-height:1.7;text-align:center;">
@@ -103,7 +103,7 @@
                             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 20px;">
                                 <tr>
                                     <td align="center" style="border-radius:10px;background-color:#059669;">
-                                        <a href="{{ $verificationUrl }}" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
+                                        <a href="<?php echo e($verificationUrl); ?>" class="cta-button" style="display:inline-block;padding:15px 44px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">
                                             Vérifier mon adresse email
                                         </a>
                                     </td>
@@ -136,15 +136,16 @@
                     <tr>
                         <td class="email-footer" style="background-color:#f8fafc;padding:26px 40px;text-align:center;border-top:1px solid #e5e7eb;">
                             <p style="margin:0 0 6px;color:#64748b;font-size:12.5px;font-weight:600;">
-                                {{ config('platform.name') }}
+                                <?php echo e(config('platform.name')); ?>
+
                             </p>
-                            @if(config('platform.support_email'))
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(config('platform.support_email')): ?>
                             <p style="margin:0 0 12px;color:#94a3b8;font-size:11.5px;">
-                                Besoin d'aide&nbsp;? <a href="mailto:{{ config('platform.support_email') }}" style="color:#059669;text-decoration:none;">Contactez le support</a>
+                                Besoin d'aide&nbsp;? <a href="mailto:<?php echo e(config('platform.support_email')); ?>" style="color:#059669;text-decoration:none;">Contactez le support</a>
                             </p>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <p style="margin:0;color:#b6bec9;font-size:11px;">
-                                &copy; {{ date('Y') }} {{ config('platform.name') }} — Tous droits réservés.
+                                &copy; <?php echo e(date('Y')); ?> <?php echo e(config('platform.name')); ?> — Tous droits réservés.
                             </p>
                         </td>
                     </tr>
@@ -161,3 +162,4 @@
 
 </body>
 </html>
+<?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/emails/email-verification.blade.php ENDPATH**/ ?>

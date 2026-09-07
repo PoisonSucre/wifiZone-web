@@ -95,11 +95,7 @@ class AuthController extends Controller
             return back()->withInput()->withErrors(['email' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.']);
         }
 
-        try {
-            Mail::to($vendeur->email)->send(new VendorRegisteredMail($vendeur));
-        } catch (\Throwable $e) {
-            try { Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
-        }
+        session(['pending_vendor_email' => $vendeur->email]);
 
         try {
             $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
@@ -111,8 +107,6 @@ class AuthController extends Controller
         } catch (\Throwable $e) {
             try { Log::error('Erreur envoi email vérification', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
         }
-
-        session(['pending_vendor_email' => $vendeur->email]);
 
         return redirect()->route('vendor.verify-email')
             ->with('status', 'Votre compte a été créé. Veuillez vérifier votre email.');

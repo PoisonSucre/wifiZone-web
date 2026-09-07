@@ -69,13 +69,7 @@ class RegisterForm extends Component
             return;
         }
 
-        // Envoi des emails — ne doit jamais bloquer l'inscription
-        try {
-            Mail::to($vendeur->email)->send(new VendorRegisteredMail($vendeur));
-        } catch (\Throwable $e) {
-            try { Log::error('Erreur notification vendeur', ['to' => $vendeur->email, 'error' => $e->getMessage()]); } catch (\Throwable) {}
-        }
-
+        // Envoi de l'email de vérification (contient aussi la confirmation d'inscription)
         session(['pending_vendor_email' => $this->email]);
 
         try {
