@@ -16,9 +16,17 @@
         </div>
         <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Vérifiez votre adresse email</h2>
         <p id="verifyMsg" class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">
-            Un email de vérification vous a été envoyé. Cliquez sur le lien dans l'email pour accéder à votre tableau de bord.
+            Un email de vérification a été envoyé à
+            <strong class="text-slate-700 dark:text-gray-200">{{ session('pending_vendor_email', old('email')) }}</strong>.
+            Cliquez sur le lien dans l'email pour activer votre compte.
         </p>
     </div>
+
+    @if(session('status'))
+        <div class="mb-4 text-sm text-center rounded-2xl p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 font-semibold text-emerald-700 dark:text-emerald-400">
+            {{ session('status') }}
+        </div>
+    @endif
 
     <div id="resendAlert" class="hidden mb-4 text-sm text-center rounded-2xl p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 font-semibold text-emerald-700 dark:text-emerald-400"></div>
 

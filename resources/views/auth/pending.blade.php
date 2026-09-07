@@ -17,10 +17,34 @@
             Votre compte a bien été créé. Il est en cours de validation par notre équipe.
         </p>
 
+        {{-- Email non vérifié : alerte + bouton --}}
+        @php
+            $pendingEmail = session('pending_vendor_email');
+            $vendeur = $pendingEmail ? \App\Models\Vendeur::where('email', $pendingEmail)->first() : null;
+            $emailNotVerified = $vendeur && !$vendeur->email_verified_at;
+        @endphp
+
+        @if($emailNotVerified)
+            <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 rounded-2xl p-4 mb-5 text-left">
+                <div class="flex items-start gap-3 mb-3">
+                    <i class="fas fa-envelope-open-text text-amber-500 mt-0.5 shrink-0"></i>
+                    <div>
+                        <p class="text-sm font-bold text-amber-700 dark:text-amber-400">Email non vérifié</p>
+                        <p class="text-xs text-amber-600/70 dark:text-amber-500/70 mt-1">
+                            Vérifiez votre boîte de réception (et vos spams) pour l'email de confirmation envoyé à <strong>{{ $pendingEmail }}</strong>.
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ route('vendor.verify-email') }}" class="block w-full bg-neonGreen hover:bg-neonGreen-400 text-white font-bold py-2.5 px-5 rounded-xl text-sm text-center transition-all">
+                    <i class="fas fa-redo mr-1"></i> Renvoyer l'email de vérification
+                </a>
+            </div>
+        @endif
+
         {{-- Steps --}}
         <div class="text-left bg-slate-50 dark:bg-darkBg/60 border border-slate-100 dark:border-darkBorder rounded-2xl p-4 mb-5 space-y-3">
             <div class="flex items-start gap-3">
-                <div class="w-6 h-6 rounded-full bg-neonGreen text-white flex items-center justify-center shrink-0 mt-0.5">
+                <div class="w-6 h-6 rounded-full {{ $emailNotVerified ? 'bg-neonGreen' : 'bg-neonGreen' }} text-white flex items-center justify-center shrink-0 mt-0.5">
                     <i class="fas fa-check text-xs"></i>
                 </div>
                 <div>
@@ -29,12 +53,12 @@
                 </div>
             </div>
             <div class="flex items-start gap-3">
-                <div class="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 animate-pulse">
-                    <i class="fas fa-clock text-xs"></i>
+                <div class="w-6 h-6 rounded-full {{ $emailNotVerified ? 'bg-slate-200 dark:bg-darkBorder text-slate-400' : 'bg-amber-500 text-white animate-pulse' }} flex items-center justify-center shrink-0 mt-0.5">
+                    <i class="fas {{ $emailNotVerified ? 'fa-envelope' : 'fa-clock' }} text-xs"></i>
                 </div>
                 <div>
-                    <p class="text-sm font-bold text-amber-600 dark:text-amber-400">Validation en cours</p>
-                    <p class="text-xs text-slate-400 dark:text-gray-500">L'administrateur vérifie vos informations</p>
+                    <p class="text-sm font-bold {{ $emailNotVerified ? 'text-slate-400 dark:text-gray-500' : 'text-amber-600 dark:text-amber-400' }}">{{ $emailNotVerified ? 'Vérification email' : 'Validation en cours' }}</p>
+                    <p class="text-xs text-slate-400 dark:text-gray-500">{{ $emailNotVerified ? 'Cliquez sur le lien dans l\'email reçu' : 'L\'administrateur vérifie vos informations' }}</p>
                 </div>
             </div>
             <div class="flex items-start gap-3">
@@ -55,7 +79,10 @@
 
         {{-- Contact --}}
         <p class="text-xs text-slate-400 dark:text-gray-500 mb-4">
-            Une question ? Contactez-nous au <strong class="text-slate-600 dark:text-gray-300">66 63 59 58 / 64 65 86 44</strong>
+            Une question ? Contactez-nous sur WhatsApp au
+            <a href="https://wa.me/22562261391" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">62 261391</a>
+            /
+            <a href="https://wa.me/22573525432" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">73-52-54-32</a>
         </p>
 
         {{-- Back --}}

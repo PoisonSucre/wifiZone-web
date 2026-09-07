@@ -32,6 +32,19 @@
         </div>
     @endif
 
+    @if($status === 'email_not_verified')
+        <div class="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800/50 rounded-2xl p-4 flex items-start gap-3">
+            <i class="fas fa-envelope text-purple-500 mt-0.5 shrink-0"></i>
+            <div class="text-left">
+                <p class="text-sm font-bold text-purple-700 dark:text-purple-400">Email non vérifié</p>
+                <p class="text-xs text-purple-600/70 dark:text-purple-500/70 mt-1 mb-2">Vérifiez votre boîte de réception (et spams) pour le lien de confirmation.</p>
+                <a href="{{ route('vendor.verify-email') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 dark:text-purple-400 hover:underline">
+                    <i class="fas fa-redo"></i> Renvoyer l'email
+                </a>
+            </div>
+        </div>
+    @endif
+
     @if($status === 'not_found')
         <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 rounded-2xl p-4 flex items-start gap-3">
             <i class="fas fa-times-circle text-red-500 mt-0.5 shrink-0"></i>

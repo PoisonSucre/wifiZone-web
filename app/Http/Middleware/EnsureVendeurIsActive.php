@@ -18,6 +18,11 @@ class EnsureVendeurIsActive
         $vendeur = Auth::user();
 
         if ($vendeur->statut === 'en_attente') {
+            if (!$vendeur->email_verified_at) {
+                session(['pending_vendor_email' => $vendeur->email]);
+                return redirect()->route('vendor.verify-email')
+                    ->with('status', 'Veuillez vérifier votre adresse email pour activer votre compte.');
+            }
             session(['pending_vendor_email' => $vendeur->email]);
             return redirect()->route('vendor.pending');
         }
