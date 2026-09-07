@@ -10,7 +10,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         Admin::updateOrCreate(
-            ['email' => 'admin@wifipourtous.com'],
+            ['email' => 'ranihamedt@gmail.com'],
             [
                 'nom' => 'Admin',
                 'prenom' => 'Raider',
@@ -18,6 +18,6 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        $this->command->info('Admin seeded: admin@wifipourtous.com / password');
+        $this->command->info('Admin seeded: ranihamedt@gmail.com / password');
     }
 }
