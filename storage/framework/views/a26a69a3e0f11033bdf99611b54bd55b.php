@@ -1,12 +1,31 @@
-@extends('layouts.public')
+<?php $__env->startSection('title', 'Récupérer un Ticket - ' . config('platform.name')); ?>
 
-@section('title', 'Récupérer un Ticket - ' . config('platform.name'))
+<?php $__env->startSection('navbar'); ?>
+    <?php if (isset($component)) { $__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar-public','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('navbar-public'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
-@section('navbar')
-    <x-navbar-public />
-@endsection
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8)): ?>
+<?php $attributes = $__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8; ?>
+<?php unset($__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8)): ?>
+<?php $component = $__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8; ?>
+<?php unset($__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8); ?>
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="ticket-page">
     <div class="ticket-stage">
         
@@ -20,13 +39,13 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('recuperer-ticket') }}" class="space-y-4 mt-6">
-                @csrf
+            <form method="POST" action="<?php echo e(route('recuperer-ticket')); ?>" class="space-y-4 mt-6">
+                <?php echo csrf_field(); ?>
                 <div>
                     <div class="relative">
                         <input type="tel" name="phone" id="phone" required
                                 placeholder="Saisissez votre numéro"
-                                value="{{ $phone ?? '' }}"
+                                value="<?php echo e($phone ?? ''); ?>"
                                 class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all">
                         <i class="fas fa-phone absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     </div>
@@ -40,7 +59,7 @@
             </form>
         </div>
 
-        @if(($message ?? '') === 'success' && ($ticket ?? null))
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(($message ?? '') === 'success' && ($ticket ?? null)): ?>
             <div class="ticket-3d" id="ticketCard">
                 <div class="ticket-shadow-layer layer-2"></div>
                 <div class="ticket-shadow-layer layer-1"></div>
@@ -55,7 +74,7 @@
                             <div class="ticket-top">
                                 <div class="ticket-brand">
                                     <span class="ticket-brand-icon"><i class="fas fa-wifi"></i></span>
-                                    <span class="ticket-brand-name">{{ config('platform.name') }}</span>
+                                    <span class="ticket-brand-name"><?php echo e(config('platform.name')); ?></span>
                                 </div>
                             </div>
 
@@ -68,12 +87,12 @@
                         <div class="ticket-body">
                             <div class="ticket-row">
                                 <span class="ticket-label">Utilisateur</span>
-                                <span class="ticket-value">{{ $ticket->user }}</span>
+                                <span class="ticket-value"><?php echo e($ticket->user); ?></span>
                             </div>
                             <div class="ticket-row">
                                 <span class="ticket-label">Mot de passe</span>
                                 <span class="ticket-value ticket-pw">
-                                    <span class="pw-text" data-ticket-id="{{ $ticket->id }}" id="tkPass">••••••</span>
+                                    <span class="pw-text" data-ticket-id="<?php echo e($ticket->id); ?>" id="tkPass">••••••</span>
                                     <button type="button" class="pw-toggle" aria-label="Afficher le mot de passe">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -81,28 +100,28 @@
                             </div>
                             <div class="ticket-row">
                                 <span class="ticket-label">Forfait</span>
-                                <span class="ticket-value">{{ $ticket->forfait }}</span>
+                                <span class="ticket-value"><?php echo e($ticket->forfait); ?></span>
                             </div>
                         </div>
                         
                         <div class="ticket-perforation" aria-hidden="true"></div>
-                        <div class="ticket-stub-id">Ticket N° {{ $ticket->id }}</div>
+                        <div class="ticket-stub-id">Ticket N° <?php echo e($ticket->id); ?></div>
                     </div>
                 </div>
             </div>
             <div class="ticket-ground-shadow" id="groundShadow"></div>
 
-        @elseif(($message ?? '') === 'not_found')
+        <?php elseif(($message ?? '') === 'not_found'): ?>
             <div class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center animate-fade-in">
                 <i class="fas fa-exclamation-circle text-red-500 text-xl mb-2"></i>
                 <p class="text-red-700 font-semibold">Aucun ticket trouvé pour ce numéro.</p>
             </div>
-        @elseif(($message ?? '') === 'missing_input')
+        <?php elseif(($message ?? '') === 'missing_input'): ?>
             <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-center animate-fade-in">
                 <i class="fas fa-exclamation-triangle text-amber-500 text-xl mb-2"></i>
                 <p class="text-amber-700 font-semibold">Veuillez entrer un numéro de téléphone.</p>
             </div>
-        @endif
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 </div>
 
@@ -148,12 +167,12 @@
     right: 16px;
     z-index: 2; color: var(--brand-dark); border: 3px solid var(--brand-dark); border-radius: 8px; padding: 3px 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .72rem; transform: rotate(-13deg); opacity: .85; }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form[action="{{ route("recuperer-ticket") }}"]');
+    const form = document.querySelector('form[action="<?php echo e(route("recuperer-ticket")); ?>"]');
     if (form) {
         form.addEventListener('submit', function() {
             const btn = document.getElementById('recupererBtn');
@@ -196,4 +215,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/pages/recuperer-ticket.blade.php ENDPATH**/ ?>

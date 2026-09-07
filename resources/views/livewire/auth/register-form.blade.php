@@ -52,7 +52,7 @@
                         <i class="fas fa-phone"></i>
                     </span>
                     <input type="tel" wire:model="telephone" required autocomplete="tel"
-                           placeholder="66 63 59 58"
+                           placeholder="Saisissez votre numéro"
                            class="block w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-darkBorder rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-neonGreen focus:ring-2 focus:ring-neonGreen/10 transition-all text-sm">
                 </div>
                 @error('telephone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
@@ -71,7 +71,7 @@
                         <i class="fas fa-lock"></i>
                     </span>
                     <input :type="showPassword ? 'text' : 'password'" wire:model.live="password" required
-                           placeholder="66 12 34 56"
+                           placeholder="Votre mot de passe"
                            class="block w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-darkBorder rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-neonGreen focus:ring-2 focus:ring-neonGreen/10 transition-all text-sm">
                     <button type="button" @click="showPassword = !showPassword"
                             class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-neonGreen transition-colors">

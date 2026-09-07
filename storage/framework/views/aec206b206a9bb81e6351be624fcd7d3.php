@@ -1,12 +1,31 @@
-@extends('layouts.public')
+<?php $__env->startSection('title', 'Contact - ' . config('platform.name')); ?>
 
-@section('title', 'Contact - ' . config('platform.name'))
+<?php $__env->startSection('navbar'); ?>
+    <?php if (isset($component)) { $__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar-public','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('navbar-public'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
-@section('navbar')
-    <x-navbar-public />
-@endsection
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8)): ?>
+<?php $attributes = $__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8; ?>
+<?php unset($__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8)): ?>
+<?php $component = $__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8; ?>
+<?php unset($__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8); ?>
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <section class="relative overflow-hidden bg-slate-50 dark:bg-[#0A0A0C] pt-28 sm:pt-36 lg:pt-40 pb-8 sm:pb-12 transition-colors duration-300">
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-neonGreen/5 filter blur-3xl rounded-full scale-75 -translate-y-12"></div>
@@ -114,7 +133,7 @@
             Rejoignez les dizaines de propriétaires de réseaux Wi-Fi qui automatisent déjà leurs ventes en ligne.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="{{ route('vendor.register') }}" class="w-full sm:w-auto text-center bg-neonGreen text-white dark:text-white font-extrabold px-10 py-4 rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+            <a href="<?php echo e(route('vendor.register')); ?>" class="w-full sm:w-auto text-center bg-neonGreen text-white dark:text-white font-extrabold px-10 py-4 rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                 Devenir Vendeur Maintenant
             </a>
             <a href="/" class="w-full sm:w-auto text-center bg-slate-100 dark:bg-transparent hover:bg-slate-200 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold px-10 py-4 rounded-full transition-all shadow-sm">
@@ -124,7 +143,7 @@
     </div>
 </section>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     const mainHeader = document.getElementById('main-header');
     const headerContainer = document.getElementById('header-container');
@@ -147,5 +166,7 @@
 
 
 </script>
-@endpush
-@endsection
+<?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/pages/contact.blade.php ENDPATH**/ ?>

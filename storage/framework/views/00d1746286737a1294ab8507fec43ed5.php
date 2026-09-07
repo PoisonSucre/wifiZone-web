@@ -1,24 +1,44 @@
-@extends('layouts.public')
-@section('title', config('platform.name') . ' - Monétisez votre WiFi Zone')
+<?php $__env->startSection('title', config('platform.name') . ' - Monétisez votre WiFi Zone'); ?>
 
-@section('showAnchor', true)
+<?php $__env->startSection('showAnchor', true); ?>
 
-@section('navbar')
-    <x-navbar-public />
-@endsection
+<?php $__env->startSection('navbar'); ?>
+    <?php if (isset($component)) { $__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar-public','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('navbar-public'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
-@section('content')
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8)): ?>
+<?php $attributes = $__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8; ?>
+<?php unset($__attributesOriginal1668b5f9e130953f2bdbf60b1b291cc8); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8)): ?>
+<?php $component = $__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8; ?>
+<?php unset($__componentOriginal1668b5f9e130953f2bdbf60b1b291cc8); ?>
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
 
-{{-- ============================================================ --}}
-{{-- HERO — the live captive-portal moment, not a stock photo --}}
-{{-- ============================================================ --}}
+<?php $__env->startSection('content'); ?>
+
+
+
+
 <section class="relative overflow-hidden bg-slate-50 dark:bg-[#0A0A0C] pt-32 sm:pt-40 lg:pt-48 pb-16 sm:pb-24 transition-colors duration-300">
     <div class="absolute inset-0 grid-pattern"></div>
     <div class="orb w-72 h-72 sm:w-96 sm:h-96 bg-neonGreen/20 dark:bg-neonGreen/25 -top-16 -left-16"></div>
     <div class="orb w-64 h-64 sm:w-80 sm:h-80 bg-neonGreen/10 dark:bg-neonGreen/15 top-1/3 -right-10" style="animation-delay:-6s"></div>
 
     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        {{-- Copy column --}}
+        
         <div class="space-y-6 sm:space-y-8 text-center lg:text-left">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neonGreen/10 border border-neonGreen/20 text-neonGreen text-xs font-semibold tracking-wider uppercase mx-auto lg:mx-0">
                 <span class="relative flex h-2 w-2">
@@ -34,22 +54,22 @@
                 Encaissez instantanément vos clients par Mobile Money (Orange Money, Wave, Moov) sans aucune interruption de service, et pilotez les performances de vos forfaits depuis un tableau de bord puissant.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                @auth
-                    <a href="{{ '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                    <a href="<?php echo e('/vendeur/'); ?>" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                         <i class="fas fa-tachometer-alt"></i> Mon Tableau de bord
                     </a>
-                @else
-                    <a href="{{ route('vendor.register') }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+                <?php else: ?>
+                    <a href="<?php echo e(route('vendor.register')); ?>" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                         <i class="fas fa-store"></i> Démarrer Maintenant
                     </a>
-                @endauth
-                <a href="{{ route('installation') }}" class="inline-flex items-center justify-center gap-2 bg-white dark:bg-darkCard/80 hover:bg-slate-100 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full transition-all shadow-sm flex items-center gap-2 group">
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <a href="<?php echo e(route('installation')); ?>" class="inline-flex items-center justify-center gap-2 bg-white dark:bg-darkCard/80 hover:bg-slate-100 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full transition-all shadow-sm flex items-center gap-2 group">
                     <i class="fas fa-wifi text-xs"></i> Besoin d'un WifiZone (installation)
                     <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
                 </a>
             </div>
 
-            {{-- Stat bar --}}
+            
             <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-4 max-w-xl mx-auto lg:mx-0">
                 <div class="pt-4 text-center lg:text-left">
                     <p class="font-display text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white"><span class="stat-counter" data-target="20" data-decimals="0">0</span>+</p>
@@ -66,13 +86,13 @@
             </div>
         </div>
 
-        {{-- Product column — live captive portal mockup --}}
+        
         <div class="relative hidden lg:block text-right">
             <div class="relative float-y inline-block text-left">
                 <div class="phone-frame">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
-                        {{-- State 1 : sélection du forfait --}}
+                        
                         <div class="phone-state active" data-phone-state>
                             <div class="flex items-center justify-between mb-5">
                                 <div>
@@ -95,7 +115,7 @@
                             </div>
                             <div class="mt-5 w-full py-2.5 rounded-xl bg-slate-900 text-white text-center text-[11px] font-bold">Continuer</div>
                         </div>
-                        {{-- State 2 : paiement mobile money --}}
+                        
                         <div class="phone-state" data-phone-state>
                             <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Étape 2/3</p>
                             <p class="text-xs font-bold text-slate-800 mb-4">Choisissez votre moyen de paiement</p>
@@ -119,7 +139,7 @@
                             </div>
                             <div class="mt-3 w-full py-2.5 rounded-xl bg-slate-900 text-white text-center text-[11px] font-bold">Payer maintenant</div>
                         </div>
-                        {{-- State 3 : connecté --}}
+                        
                         <div class="phone-state" data-phone-state>
                             <div class="flex flex-col items-center text-center pt-6">
                                 <div class="w-14 h-14 rounded-full bg-neonGreen/10 flex items-center justify-center text-neonGreen text-2xl mb-4">
@@ -154,13 +174,13 @@
                     </div>
                 </div>
 
-                {{-- Floating status badge --}}
+                
                 <div class="hidden sm:block absolute -left-16 top-10 bg-gradient-to-r from-red-600 to-red-700 rounded-2xl px-4 py-3 shadow-xl " style="animation-delay:-2.5s">
                     <p class="text-[9px] font-semibold text-white uppercase tracking-wide flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Service Actif</p>
                     <p class="font-display text-lg font-extrabold text-white mt-0.5">24h/7J</p>
                 </div>
 
-                {{-- Floating "new sale" toast --}}
+                
                 <div class="hidden sm:flex absolute -right-6 -bottom-4 items-center gap-2 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-2xl px-4 py-2.5 shadow-xl ticker-pop">
                     <i class="fas fa-bolt text-neonGreen text-xs"></i>
                     <p class="text-[10px] font-bold text-slate-700 dark:text-gray-300">Nouveau ticket vendu</p>
@@ -170,13 +190,13 @@
     </div>
 </section>
 
-{{-- ============================================================ --}}
+
 <section class="py-6 sm:py-8 bg-white dark:bg-darkBg border-y border-slate-100 dark:border-darkBorder/30 transition-colors duration-300 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
         <p class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 shrink-0">Compatible avec</p>
         <div class="marquee-wrap relative overflow-hidden flex-1 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div class="marquee-track gap-10 sm:gap-14 items-center">
-                @php
+                <?php
                 $items = [
                     ['type' => 'img', 'src' => '/template/orange.png', 'alt' => 'Orange Money', 'label' => 'Orange Money'],
                     ['type' => 'img', 'src' => '/template/wave.png', 'alt' => 'Wave', 'label' => 'Wave'],
@@ -184,27 +204,27 @@
                     ['type' => 'img', 'src' => '/template/mikrotik.svg', 'alt' => 'MikroTik', 'label' => 'Routeurs Mikrotik'],
                 ];
                 $items = array_merge($items, $items);
-                @endphp
-                @foreach($items as $item)
+                ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <div class="flex items-center gap-2.5 text-slate-500 dark:text-gray-500 shrink-0">
-                    @if($item['type'] === 'img')
-                        <img src="{{ $item['src'] }}" alt="{{ $item['alt'] }}" class="h-5 sm:h-6 max-w-[80px] sm:max-w-[100px] object-contain">
-                    @else
-                        <i class="fas {{ $item['icon'] }} text-neonGreen/80"></i>
-                    @endif
-                    @if(!in_array($item['label'], ['Routeurs Mikrotik', 'Wave']))
-                    <span class="text-xs sm:text-sm font-bold whitespace-nowrap">{{ $item['label'] }}</span>
-                    @endif
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item['type'] === 'img'): ?>
+                        <img src="<?php echo e($item['src']); ?>" alt="<?php echo e($item['alt']); ?>" class="h-5 sm:h-6 max-w-[80px] sm:max-w-[100px] object-contain">
+                    <?php else: ?>
+                        <i class="fas <?php echo e($item['icon']); ?> text-neonGreen/80"></i>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!in_array($item['label'], ['Routeurs Mikrotik', 'Wave'])): ?>
+                    <span class="text-xs sm:text-sm font-bold whitespace-nowrap"><?php echo e($item['label']); ?></span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-                @endforeach
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             </div>
         </div>
     </div>
 </section>
 
-{{-- ============================================================ --}}
-{{-- VENDEURS — features + avant / après --}}
-{{-- ============================================================ --}}
+
+
+
 <section id="vendeurs" class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/30 relative transition-colors duration-300">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-50 via-transparent to-slate-50 dark:from-darkBg dark:to-darkBg pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -249,9 +269,9 @@
     </div>
 </section>
 
-{{-- ============================================================ --}}
-{{-- COMMENT ÇA MARCHE --}}
-{{-- ============================================================ --}}
+
+
+
 <section id="comment-ca-marche" class="py-16 sm:py-24 bg-white dark:bg-darkBg transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
@@ -296,9 +316,9 @@
     </div>
 </section>
 
-{{-- ============================================================ --}}
-{{-- DASHBOARD PREVIEW --}}
-{{-- ============================================================ --}}
+
+
+
 <section class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/20 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -322,7 +342,7 @@
                         <span class="w-2.5 h-2.5 rounded-full bg-red-400/70"></span>
                         <span class="w-2.5 h-2.5 rounded-full bg-amber-400/70"></span>
                         <span class="w-2.5 h-2.5 rounded-full bg-neonGreen/70"></span>
-                        <span class="ml-3 text-[10px] text-slate-400 dark:text-gray-500 font-mono">vendeur.{{ config('platform.name') ? \Illuminate\Support\Str::slug(config('platform.name')) : 'plateforme' }}.com/dashboard</span>
+                        <span class="ml-3 text-[10px] text-slate-400 dark:text-gray-500 font-mono">vendeur.<?php echo e(config('platform.name') ? \Illuminate\Support\Str::slug(config('platform.name')) : 'plateforme'); ?>.com/dashboard</span>
                     </div>
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="grid grid-cols-3 gap-3">
@@ -369,9 +389,9 @@
     </div>
 </section>
 
-{{-- ============================================================ --}}
-{{-- MODÈLES DE TICKETS --}}
-{{-- ============================================================ --}}
+
+
+
 <section id="modeles" class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/20 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-4">
@@ -400,7 +420,7 @@
             </div>
         </div>
         <div id="template-digital" class="template-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
-            @php
+            <?php
             $exemples = [
                 ['label' => '1 Heure', 'montant' => '150', 'features' => ['Usage ponctuel', 'Débit standard', 'Accès illimité']],
                 ['label' => '5 Heures', 'montant' => '250', 'features' => ['Débit amélioré', 'Connexion stable 100%', 'Usage continu']],
@@ -408,61 +428,62 @@
                 ['label' => '3 Jours', 'montant' => '600', 'features' => ['Débit premium', 'Connexion stable', 'Multi-appareils']],
                 ['label' => '1 Semaine', 'montant' => '1000', 'features' => ['Débit illimité', 'Support prioritaire', 'Accès VIP']],
             ];
-            @endphp
-            @foreach($exemples as $index => $f)
+            ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $exemples; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $f): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
             <div class="relative bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder hover:border-neonGreen/40 rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all transform hover:-translate-y-1 hover:shadow-neon-glow overflow-hidden group shadow-sm">
-                @if($index === 2)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($index === 2): ?>
                 <span class="absolute top-0 right-0 bg-neonGreen text-white text-[9px] font-bold uppercase tracking-wide px-3 py-1 rounded-bl-xl">Populaire</span>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <div class="absolute -top-12 -right-12 w-24 h-24 bg-neonGreen/5 rounded-full filter blur-xl group-hover:bg-neonGreen/10 transition-all"></div>
                 <div>
                     <div class="flex items-center justify-between">
                         <i class="fas fa-wifi text-slate-300 dark:text-slate-600 text-xs"></i>
                     </div>
-                    <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white mt-4">{{ $f['label'] }}</h3>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white mt-4"><?php echo e($f['label']); ?></h3>
                 </div>
                 <div class="my-4 sm:my-6 flex items-baseline gap-1">
-                    <span class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ $f['montant'] }}</span>
-                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase">{{ config('platform.currency', 'XOF') }}</span>
+                    <span class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight"><?php echo e($f['montant']); ?></span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase"><?php echo e(config('platform.currency', 'XOF')); ?></span>
                 </div>
                 <ul class="space-y-2 text-[11px] sm:text-xs text-slate-500 dark:text-gray-400 border-t border-slate-100 dark:border-darkBorder/40 pt-3 sm:pt-4 mb-4">
-                    @foreach($f['features'] as $feat)
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-neonGreen text-[10px]"></i> {{ $feat }}</li>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $f['features']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $feat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-neonGreen text-[10px]"></i> <?php echo e($feat); ?></li>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                 </ul>
                 <div class="bg-slate-50 dark:bg-darkBg/50 border border-slate-100 dark:border-darkBorder/30 rounded-xl p-2.5 sm:p-3 text-center transition-colors">
                     <p class="text-[8px] sm:text-[9px] text-slate-400 dark:text-gray-500 uppercase tracking-widest font-semibold mb-1">Code de connexion</p>
-                    <p class="font-mono text-[11px] sm:text-xs font-bold text-slate-800 dark:text-neonGreen tracking-widest">WIFI-{{ 1000 + $index }}</p>
+                    <p class="font-mono text-[11px] sm:text-xs font-bold text-slate-800 dark:text-neonGreen tracking-widest">WIFI-<?php echo e(1000 + $index); ?></p>
                 </div>
             </div>
-            @endforeach
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
         <div id="template-coupon" class="template-container hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
-            @foreach($exemples as $index => $f)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $exemples; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $f): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
             <div class="relative bg-white dark:bg-darkCard border-2 border-dashed border-slate-300 dark:border-darkBorder rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all transform hover:-translate-y-1 hover:shadow-neon-glow overflow-hidden group shadow-md">
-                @if($index === 2)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($index === 2): ?>
                 <span class="absolute top-0 right-0 bg-neonGreen text-white text-[9px] font-bold uppercase tracking-wide px-3 py-1 rounded-bl-xl">Populaire</span>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <div class="absolute top-1/2 -left-3 w-6 h-6 bg-slate-100 dark:bg-[#060608] rounded-full border-r-2 border-dashed border-slate-300 dark:border-darkBorder -translate-y-1/2"></div>
                 <div class="absolute top-1/2 -right-3 w-6 h-6 bg-slate-100 dark:bg-[#060608] rounded-full border-l-2 border-dashed border-slate-300 dark:border-darkBorder -translate-y-1/2"></div>
                 <div>
                     <div class="text-center border-b border-slate-100 dark:border-darkBorder/40 pb-2 sm:pb-3 mb-3 sm:mb-4">
                         <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-wider">Pass Wi-Fi Access</p>
-                        <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1">{{ $f['label'] }}</h3>
+                        <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1"><?php echo e($f['label']); ?></h3>
                     </div>
                 </div>
                 <div class="my-2 sm:my-3 text-center">
-                    <p class="text-xl sm:text-2xl font-black text-neonGreen tracking-tight">{{ $f['montant'] }} {{ config('platform.currency', 'XOF') }}</p>
+                    <p class="text-xl sm:text-2xl font-black text-neonGreen tracking-tight"><?php echo e($f['montant']); ?> <?php echo e(config('platform.currency', 'XOF')); ?></p>
                 </div>
                 <div class="space-y-1.5 sm:space-y-2 my-3 sm:my-4 text-center text-[10px] sm:text-[11px] text-slate-500 dark:text-gray-400">
-                    @foreach($f['features'] as $feat)
-                    <p><i class="fas fa-check-circle text-neonGreen mr-1"></i> {{ $feat }}</p>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $f['features']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $feat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                    <p><i class="fas fa-check-circle text-neonGreen mr-1"></i> <?php echo e($feat); ?></p>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                 </div>
                 <div class="border-t border-slate-100 dark:border-darkBorder/40 pt-3 sm:pt-4 mt-2 text-center">
                     <p class="text-[8px] sm:text-[9px] text-slate-400 dark:text-gray-500 uppercase tracking-widest font-semibold mb-1">Entrez ce code :</p>
                     <p class="font-mono text-xs sm:text-sm font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-darkBg/60 py-1.5 rounded-lg tracking-widest border border-slate-200 dark:border-darkBorder/30">
-                        ZON-{{ 900 + $index }}
+                        ZON-<?php echo e(900 + $index); ?>
+
                     </p>
                     <div class="flex justify-center mt-2 sm:mt-3 opacity-35 dark:opacity-60">
                         <div class="h-5 sm:h-6 w-3/4 flex justify-center gap-0.5">
@@ -478,14 +499,14 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
     </div>
 </section>
 
-{{-- ============================================================ --}}
-{{-- FAQ --}}
-{{-- ============================================================ --}}
+
+
+
 <section class="py-16 sm:py-24 bg-slate-100/50 dark:bg-darkCard/20 transition-colors duration-300">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10 sm:mb-14">
@@ -495,7 +516,7 @@
             </p>
         </div>
         <div class="space-y-3">
-            @php
+            <?php
             $faqs = [
                 ['q' => 'Quels moyens de paiement mes clients peuvent-ils utiliser ?', 'a' => 'Orange Money, Wave et Moov Money sont pris en charge nativement. Vos clients paient depuis leur propre téléphone, sans créer de compte supplémentaire.'],
                 ['q' => 'Dois-je changer mon routeur ou mon installation actuelle ?', 'a' => 'Non. La plateforme s\'intègre à votre équipement existant (Mikrotik) sans configuration technique complexe.'],
@@ -503,25 +524,25 @@
                 ['q' => 'Que se passe-t-il si un client perd son ticket ?', 'a' => 'Il peut récupérer son code de connexion à tout moment depuis la page "Récupérer mon ticket" en indiquant le numéro utilisé pour le paiement.'],
                 ['q' => 'L\'inscription et l\'accès à la plateforme sont-ils vraiment gratuits ?', 'a' => 'Oui, la création de compte vendeur et l\'accès au tableau de bord sont gratuits, sans engagement ni abonnement mensuel caché.'],
             ];
-            @endphp
-            @foreach($faqs as $i => $faq)
+            ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $faqs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
             <div class="rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder overflow-hidden">
                 <button type="button" onclick="toggleFaq(this)" aria-expanded="false" class="faq-toggle w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 text-left">
-                    <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">{{ $faq['q'] }}</span>
+                    <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white"><?php echo e($faq['q']); ?></span>
                     <i class="faq-icon fas fa-plus text-neonGreen text-sm shrink-0"></i>
                 </button>
                 <div class="faq-panel">
-                    <p class="px-5 sm:px-6 pb-4 sm:pb-5 text-sm text-slate-600 dark:text-gray-400 leading-relaxed">{{ $faq['a'] }}</p>
+                    <p class="px-5 sm:px-6 pb-4 sm:pb-5 text-sm text-slate-600 dark:text-gray-400 leading-relaxed"><?php echo e($faq['a']); ?></p>
                 </div>
             </div>
-            @endforeach
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
     </div>
 </section>
 
-{{-- ============================================================ --}}
-{{-- CTA FINAL --}}
-{{-- ============================================================ --}}
+
+
+
 <section class="py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-darkBg transition-colors duration-300">
     <div class="absolute inset-0 grid-pattern"></div>
     <div class="orb w-80 h-80 bg-neonGreen/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-125"></div>
@@ -533,23 +554,23 @@
             Rejoignez les dizaines de propriétaires de réseaux Wi-Fi qui automatisent déjà leurs ventes en ligne et suivent facilement leurs gains mensuels.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            @auth
-                <a href="{{ '/vendeur/' }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                <a href="<?php echo e('/vendeur/'); ?>" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                     <i class="fas fa-tachometer-alt"></i> Mon Tableau de bord
                 </a>
-            @else
-                <a href="{{ route('vendor.register') }}" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
+            <?php else: ?>
+                <a href="<?php echo e(route('vendor.register')); ?>" class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white dark:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-1">
                     Devenir Vendeur Maintenant
                 </a>
-                <a href="{{ route('vendor.login') }}" class="inline-flex items-center justify-center gap-2 bg-slate-100 dark:bg-transparent hover:bg-slate-200 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full transition-all shadow-sm">
+                <a href="<?php echo e(route('vendor.login')); ?>" class="inline-flex items-center justify-center gap-2 bg-slate-100 dark:bg-transparent hover:bg-slate-200 dark:hover:bg-darkCard border border-slate-200 dark:border-darkBorder text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold px-4 py-3 sm:px-5 sm:py-4 text-sm rounded-full transition-all shadow-sm">
                     Se Connecter
                 </a>
-            @endauth
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 </section>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     // --- Scroll progress bar ---
     function updateScrollProgress() {
@@ -625,5 +646,6 @@
         initPhoneCycler();
     });
 </script>
-@endpush
-@endsection
+<?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/mr_raider/Desktop/tickets/hotspot_sass_laravel/resources/views/pages/landing.blade.php ENDPATH**/ ?>
