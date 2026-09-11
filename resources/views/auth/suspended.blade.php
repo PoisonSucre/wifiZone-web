@@ -63,7 +63,10 @@
 
         {{-- Contact --}}
         <p class="text-xs text-slate-400 dark:text-gray-500 mb-4">
-            Contactez-nous au <strong class="text-slate-600 dark:text-gray-300">66 63 59 58 / 64 65 86 44</strong>
+            Contactez-nous sur WhatsApp au
+            <a href="https://wa.me/22662261391" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">62 261391</a>
+            /
+            <a href="https://wa.me/22673525432" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">73-52-54-32</a>
         </p>
 
         {{-- Back --}}

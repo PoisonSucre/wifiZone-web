@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Auth;
 
-use App\Mail\VendorRegisteredMail;
 use App\Models\Vendeur;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;

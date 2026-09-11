@@ -283,10 +283,10 @@
                     <span class="absolute inset-0 rounded-xl bg-amber-400/30 animate-ping"></span>
                 </div>
                 <p class="flex-1 text-slate-700 dark:text-gray-300 text-[13px]">
-                    <strong class="font-extrabold text-slate-900 dark:text-white">{{ $vendeursEnAttente }} vendeur(s)</strong> en attente d'approbation.
+                    <strong class="font-extrabold text-slate-900 dark:text-white">{{ $vendeursEnAttente }} vendeur(s)</strong> en attente de vérification email.
                 </p>
                 <a href="/raider/vendeurs" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md whitespace-nowrap">
-                    Approuver <i class="fas fa-arrow-right text-[10px]"></i>
+                    Voir <i class="fas fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
         @endif

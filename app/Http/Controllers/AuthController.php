@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\VendorRegisteredMail;
 use App\Models\Setting;
 use App\Models\Vendeur;
 use Illuminate\Http\Request;

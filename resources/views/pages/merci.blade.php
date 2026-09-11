@@ -15,10 +15,10 @@
     }
 
     // Numéros de support : ajustez ici si besoin (utilisés pour les liens tel: et WhatsApp)
-    $supportCallNumber = '66 63 59 58';
-    $supportWhatsapp   = '64 65 86 44';
-    $supportCallTel    = '+22666635958';
-    $supportWaLink     = '22664658644';
+    $supportCallNumber = '62 261391';
+    $supportWhatsapp   = '73-52-54-32';
+    $supportCallTel    = '+22662261391';
+    $supportWaLink     = '22673525432';
 @endphp
 
 <div class="ticket-page">

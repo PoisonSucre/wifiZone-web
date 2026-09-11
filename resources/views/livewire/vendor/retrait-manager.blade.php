@@ -433,7 +433,7 @@ class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] fon
                         </div>
                         <div>
                             <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 block">Numéro Mobile Money</label>
-                            <input type="text" wire:model="phoneNumber" required placeholder="Ex: 66 63 59 58"
+                            <input type="text" wire:model="phoneNumber" required placeholder="Ex: 70 12 34 56"
                                    class="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neonGreen/30 focus:border-neonGreen/50 transition-all duration-200">
                             @error('phoneNumber') <p class="text-red-500 text-[11px] mt-1 font-bold">{{ $message }}</p> @enderror
                         </div>
