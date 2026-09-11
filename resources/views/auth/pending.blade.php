@@ -29,9 +29,9 @@
         {{-- Contact --}}
         <p class="text-xs text-slate-400 dark:text-gray-500 mb-4">
             Besoin d'aide ? WhatsApp
-            <a href="https://wa.me/22562261391" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">62 261391</a>
+            <a href="https://wa.me/22662261391" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">62 261391</a>
             /
-            <a href="https://wa.me/22573525432" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">73-52-54-32</a>
+            <a href="https://wa.me/22673525432" target="_blank" rel="noopener" class="text-neonGreen font-semibold hover:underline">73-52-54-32</a>
         </p>
 
         <a href="{{ route('vendor.login') }}" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-neonGreen dark:hover:text-neonGreen transition-colors">

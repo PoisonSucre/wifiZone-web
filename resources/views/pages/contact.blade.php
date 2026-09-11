@@ -37,11 +37,11 @@
                             <h3 class="font-bold text-slate-900 dark:text-white mb-1 text-sm">WhatsApp</h3>
                             <p class="text-xs text-slate-500 dark:text-gray-400 mb-3">Disponible du lundi au samedi, de 8h à 20h.</p>
                             <div class="flex flex-col sm:flex-row gap-3">
-                                <a href="https://wa.me/22562261391?text=Bonjour%2C%20j%27ai%20besoin%20d%27assistance." target="_blank" rel="noopener"
+                                <a href="https://wa.me/22662261391?text=Bonjour%2C%20j%27ai%20besoin%20d%27assistance." target="_blank" rel="noopener"
                                    class="inline-flex items-center justify-center gap-2 bg-neonGreen text-white font-bold px-5 py-2.5 rounded-full text-sm shadow-neon-button hover:bg-neonGreen-400 transition-all transform hover:-translate-y-0.5">
                                     <i class="fab fa-whatsapp"></i> 62 261391
                                 </a>
-                                <a href="https://wa.me/22573525432?text=Bonjour%2C%20j%27ai%20besoin%20d%27assistance." target="_blank" rel="noopener"
+                                <a href="https://wa.me/22673525432?text=Bonjour%2C%20j%27ai%20besoin%20d%27assistance." target="_blank" rel="noopener"
                                    class="inline-flex items-center justify-center gap-2 bg-slate-100 dark:bg-darkBorder/50 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold px-5 py-2.5 rounded-full text-sm border border-slate-200 dark:border-darkBorder transition-all">
                                     <i class="fab fa-whatsapp"></i> 73-52-54-32
                                 </a>

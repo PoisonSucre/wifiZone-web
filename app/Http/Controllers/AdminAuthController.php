@@ -49,6 +49,7 @@ class AdminAuthController extends Controller
         Auth::guard('admin')->login($admin);
 
         $request->session()->regenerate();
+        $request->session()->forget('url.intended');
 
         AdminLog::create([
             'admin_id' => $admin->id,
@@ -59,7 +60,7 @@ class AdminAuthController extends Controller
             'ip' => $request->ip(),
         ]);
 
-        return redirect()->intended(route('admin.dashboard'));
+        return redirect()->route('admin.dashboard');
     }
 
     public function logout(Request $request)
