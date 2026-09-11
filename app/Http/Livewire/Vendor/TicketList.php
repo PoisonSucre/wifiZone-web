@@ -55,8 +55,9 @@ class TicketList extends Component
         $nbDispo = $query->clone()->available()->count();
         $nbVendus = $query->clone()->sold()->count();
 
-        $dispoParForfait = (clone $query)
+        $dispoParForfait = $query->clone()
             ->available()
+            ->reorder()
             ->selectRaw('forfait, COUNT(*) as nb')
             ->groupBy('forfait')
             ->orderByDesc('nb')
