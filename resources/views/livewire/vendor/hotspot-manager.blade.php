@@ -613,10 +613,10 @@
                     </div>
                     <div>
                         <label class="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 block">URL du MikroTik</label>
-                        <input type="url" wire:model="mikrotikUrl" placeholder="Ex: https://votre-routeur.ngrok-free.app"
+                        <input type="url" wire:model="mikrotikUrl" placeholder="Ex: https://votre-routeur.ddns.net"
                                class="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkBg border border-slate-200/80 dark:border-darkBorder text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all duration-200">
                         @error('mikrotikUrl') <p class="text-red-500 text-[11px] mt-1 font-bold">{{ $message }}</p> @enderror
-                        <p class="text-[10px] text-slate-400 mt-1">URL publique de votre routeur MikroTik (ngrok, DDNS, IP publique). Le client sera redirigé ici après achat.</p>
+                        <p class="text-[10px] text-slate-400 mt-1">URL publique de votre routeur MikroTik (DDNS, IP publique). Le client sera redirigé ici après achat.</p>
                     </div>
                     <div class="flex items-center gap-2 pt-1">
                         <button type="submit" wire:loading.attr="disabled"

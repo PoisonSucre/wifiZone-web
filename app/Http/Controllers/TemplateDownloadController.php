@@ -10,7 +10,7 @@ use ZipArchive;
 
 class TemplateDownloadController extends Controller
 {
-    private const SITE_URL = 'https://f0d6-102-180-122-130.ngrok-free.app';
+    private const SITE_URL = 'https://wifipourtous.click';
 
     public function download(Request $request)
     {
@@ -68,7 +68,7 @@ class TemplateDownloadController extends Controller
         $html = file_get_contents($templatePath);
 
         $html = str_replace(
-            ['https://f0d6-102-180-122-130.ngrok-free.app/'],
+            'https://wifipourtous.click/',
             $appUrl . '/',
             $html
         );

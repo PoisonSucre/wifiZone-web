@@ -86,10 +86,6 @@ add dst-host=*.ligdicash.com comment="LigdiCash sous-domaines"
 # --- 3. Ressources nécessaires (CSS, icônes) ---
 add dst-host=cdnjs.cloudflare.com comment="FontAwesome / CDN"
 
-# --- 4. ngrok (si la plateforme utilise ngrok) ---
-add dst-host=ngrok-free.app comment="ngrok"
-add dst-host=*.ngrok-free.app comment="ngrok sous-domaines"
-
 # --- Lien de paiement de votre boutique ---
 # {$shopLink}
 MIKROTIK;

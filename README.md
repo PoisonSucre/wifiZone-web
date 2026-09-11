@@ -478,8 +478,6 @@ add dst-address=IP_SERVEUR comment="IP plateforme"
 add dst-host=ligdicash.com comment="LigdiCash"
 add dst-host=*.ligdicash.com comment="LigdiCash sous-domaines"
 add dst-host=cdnjs.cloudflare.com comment="FontAwesome / CDN"
-add dst-host=ngrok-free.app comment="ngrok"
-add dst-host=*.ngrok-free.app comment="ngrok sous-domaines"
 ```
 
 ### Installation
